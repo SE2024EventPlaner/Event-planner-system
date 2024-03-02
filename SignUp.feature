@@ -22,10 +22,11 @@ Feature: Sign Up
 
 
   Scenario: Successful sign-up as a service provider
-    When The user enter firstName with 'aseel' and finalName with 'zaid' and email with 'barhamshifaa@gmail.com' and password with 'Secret@567' and Confirm password with 'Secret@567' and type with 'service provider'
+    When The user enter firstName with 'aseel' and finalName with 'zaid' and email with 'barhamshifaa@gmail.com' and password with 'Secret@567' and Confirm password with 'Secret@567' and type with 'SERVICE_PROVIDER'
     Then the user's application for service provider is stored for review
     And the admin approves the application
     Then the user data is added to the arraylist
+
 
 
 
