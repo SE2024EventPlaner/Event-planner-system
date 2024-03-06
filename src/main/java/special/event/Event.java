@@ -98,6 +98,7 @@ public class Event {
     public void setEventEndTime(LocalDateTime eventEndTime) {
         this.eventEndTime = eventEndTime;
     }
+    public String getEventLocation() {  return placeOfEvent.getLocationOfPlace(); }
 
     public static Event theEventExists(String nameOfEvent, String idOfEvent) {
         EventRepository eventRepository = new EventRepository();
