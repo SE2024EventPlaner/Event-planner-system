@@ -11,6 +11,7 @@ public class Login {
     String email = "";
     String password = "";
     User user;
+    String y;
     public Login(){
 
     }
@@ -33,7 +34,7 @@ public class Login {
     public void userLoginSucceeds() {
         // Write code here that turns the phrase above into concrete actions
         this.user = this.userComponent.validateLogin(this.email, this.password);
-       assertNotNull(this.user);
+        assertNotNull(this.user);
     }
     @Then("user page {string} appears")
     public void userPageAppears(String string) {
@@ -44,24 +45,28 @@ public class Login {
 
 
     // next scenario
-    @Then("user not login succeeds")
-    public void userNotLoginSucceeds() {
-
-        this.user = this.userComponent.validateLogin(this.email, this.password);
-        assertNull(this.user);
-
-    }
-    @Then("A message appears that the password is wrong")
-    public void aMessageAppearsThatThePasswordIsWrong() {
-        System.out.println("The password is wrong");
-    }
-
-
-    @Then("A message appears that the email is wrong")
-    public void aMessageAppearsThatTheEmailIsWrong() {
-        System.out.println("The email is wrong");
+    @When("the user enters the {string} with {string}")
+    public void theUserEntersTheWith(String string, String string2) {
+        if (string.equals(email))
+        {
+             y=string2;
+            assertFalse(userComponent.existEmail(string2));
+        }
+        else if(string.equals(password))
+        {
+            assertFalse(userComponent.existPassword(y,string2));
+        }
 
 
     }
+    @Then("the {string} should appear")
+    public void theShouldAppear(String string) {
+        System.out.println(string);
+    }
+
+
+
+
+
 
 }
