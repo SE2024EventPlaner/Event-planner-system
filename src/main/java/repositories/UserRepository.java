@@ -18,6 +18,12 @@ public class UserRepository {
     {
         users.add(user1);
     }
+    public static User getfromuser(int i)
+    {
+        return users.get(i);
+
+    }
+
     public static List<User> reviw = new ArrayList<>();
     public static void addToReviw(User service)
     {
