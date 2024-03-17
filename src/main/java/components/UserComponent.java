@@ -7,9 +7,9 @@ import java.util.regex.*;
 public class UserComponent {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
-
+   public UserRepository repo=new UserRepository();
     public User validateLogin(String username, String password){
-        UserRepository userRepository = new UserRepository();
+
         for (User user: UserRepository.users){
             if(user.getEmail().equals(username) && user.getPassword().equals(password)){
                 return user;
@@ -17,6 +17,27 @@ public class UserComponent {
         }
         return null;
     }
+    public boolean existEmail(String email) {
+        for (User user : UserRepository.users) {
+            if (user.getEmail().equals(email) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existPassword(String username,String password){
+        for (User user: UserRepository.users){
+            if(user.getEmail().equals(username) ){
+               if (user.getPassword().equals(password))
+                   return true;
+               else
+                   return false;
+            }
+        }
+       return false;
+    }
+
 
     public User validateLoginAsServiceProvider(String username, String password){
         UserRepository userRepository = new UserRepository();
@@ -48,15 +69,14 @@ public class UserComponent {
     }
 
     public boolean isValidPassword(String password) {
-        if (password.length() < 8 || password.length() > 20) {
+        if (password.length() < 8) {
             return false;
         }
 
-        String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$";
+        String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\p{Punct}])[A-Za-z\\d\\p{Punct}]+$";
         return password.matches(pattern);
     }
 
 
 }
-
 
