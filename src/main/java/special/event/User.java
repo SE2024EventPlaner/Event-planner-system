@@ -41,6 +41,13 @@ public class User {
     public String getType() {
         return type;
     }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+
 
     public void setType(String type) {
         this.type = type;}
