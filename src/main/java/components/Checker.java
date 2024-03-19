@@ -96,5 +96,8 @@ public class Checker {
             return null;
 
     }
+    public static boolean checkStringLength(String str) {
+        return str.length() == 14;
+    }
 
 }
