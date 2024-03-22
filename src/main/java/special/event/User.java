@@ -1,4 +1,7 @@
 package special.event;
+import special.notify.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -8,6 +11,9 @@ public class User {
 
     String firstName;
     String lastName;
+    String message;
+
+    List<Notification> notifications = new ArrayList<>();
 
     public User(String email, String password, String type,String firstName,String lastName) {
         this.email = email;
@@ -20,6 +26,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+
     }
 
     public String getEmail() {
@@ -48,7 +55,27 @@ public class User {
         return lastName;
     }
 
-
+    public void setMessage(String message){
+        this.message = message;
+    }
+    public String getMessage(){
+        return message;
+    }
     public void setType(String type) {
         this.type = type;}
+
+    public void addNotification(Notification n){
+        notifications.add(n);
+    }
+    public List<Notification> getNotifications(){
+        return notifications;
+    }
+    public Boolean isNotificationExit(Notification n) {
+        for (int i = 0; i < notifications.size(); i++) {
+            if (n.equals(notifications.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
