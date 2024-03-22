@@ -1,4 +1,4 @@
-package special.notify;
+package special.event;
 import special.event.User;
 
 import java.util.Date;
