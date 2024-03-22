@@ -8,7 +8,7 @@ public class BookingSystem {
 
         if (event != null) {
             if (isBookingDateValid(bookingDate,event)){
-                if (userBalance >=  event.costOfEvent ) {
+                if (userBalance >=  event.getCostOfEvent() ) {
                     //event.setEventEndTime(bookingDate.plusHours(2)); // Assuming a 2-hour event
                     System.out.println("Booking successful! Event ID: " + eventId + " has been booked for " + bookingDate);
                     return true;
