@@ -12,6 +12,9 @@ public class UserRepository {
         users.add(new User("hello@gmail.com", "123123", "USER","ali","ahmad"));
         users.add(new User("hello2@gmail.com", "123456", "ADMIN","mohamad","nasser"));
         users.add(new User("hello3@gmail.com", "123789", "SERVICE_PROVIDER","saly","mohammad"));
+        users.add(new User("samyahamed22@gmail.com", "s1s2s300", "SERVICE_PROVIDER","Samya","Hamed"));
+
+
     }
 
     public static void addToUsers(User user1)
