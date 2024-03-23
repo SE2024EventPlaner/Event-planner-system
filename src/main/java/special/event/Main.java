@@ -142,7 +142,7 @@ public class Main {
                     if (userType.equals("SERVICE_PROVIDER")) {
                         System.out.println("Enter the services you need to provide: ");
                         String message = scanner.next();
-                        user2.setmessage(message);
+                        user2.setMessage(message);
                         UserRepository.addToReviw(user2);
                     }
 
