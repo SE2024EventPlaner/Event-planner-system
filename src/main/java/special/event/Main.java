@@ -1,9 +1,13 @@
 package special.event;
 
+import com.sun.source.tree.WhileLoopTree;
+import repositories.EventRepository;
 import repositories.UserRepository;
 import special.event.User;
 import components.UserComponent;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,20 +24,21 @@ public class Main {
         String userType = "";
         String confirmPassword;
         int y = 0;
+        User user2;
         int x = 0;
         String type = "";
         UserComponent userComponent = new UserComponent();
         User loggedInUser = null;
-        System.out.println("\n\n********   Welcome to the Event Planner System   ********\n");
+        System.out.println("\n\n****   Welcome to the Event Planner System   ****\n");
 
         do {
             System.out.print("Press 1 for login, 2 for Signup: ");
             x = scanner.nextInt();
 
             if (x == 1) {
-                System.out.println("\n***         Login         ***\n");
+                System.out.println("\n**         Login         **\n");
                 while (true) {
-                    System.out.print("Username:");
+                    System.out.print("Email:");
                     username = scanner.next();
                     if (userComponent.existEmail(username)) {
                         break;
@@ -61,7 +66,7 @@ public class Main {
                 }
 
             } else if (x == 2) {
-                System.out.println("***         Signup         ***\n");
+                System.out.println("*         Signup         *\n");
 
                 System.out.print("Enter first name: ");
                 String firstName = scanner.next();
@@ -132,12 +137,20 @@ public class Main {
 
                 if (isValid) {
                     System.out.println("Creating an account successfully");
-                    UserRepository.addToUsers(new User(email, signuppass, userType, firstName, lastName));
+                    user2=new User(email, signuppass, userType, firstName, lastName);
+                    UserRepository.addToUsers(user2);
                     loggedInUser=userComponent.validateLogin(email,signuppass);
-                    if (type.equals("SERVICE_PROVIDER")) {
-                        // Store the application for service provider review
-                        // Add more logic here for the service provider application
-                        System.out.println("Your application as a service provider is stored for review.");
+                    if (userType.equals("SERVICE_PROVIDER")) {
+                        System.out.println("Enter the services you need to provide: ");
+                        String message = scanner.next();
+                        UserRepository.addToReviw(user2);
+                        Notification accountRequestNotification = new Notification();
+                        accountRequestNotification.createAccountCreationRequest(user2,message);
+                        for(User admin :UserRepository.users){
+                            if(admin.getType().equals("ADMIN")){
+                                admin.addNotification(accountRequestNotification);
+                            }
+                        }
                     }
 
                     // Add the user data to the UserRepository
@@ -154,13 +167,381 @@ public class Main {
             }
         } while (true); // Repeat until a valid input is provided
 
-
         type = loggedInUser.getType();
-        if (userComponent.validateUserType(loggedInUser, type)) {
-            if (type.equals("SERVICE_PROVIDER"))
-                System.out.println("Logged in as a service provider.");
-            else if (type.equals("ADMIN"))
-                System.out.println("Logged in as an Admin.");
+         if (userComponent.validateUserType(loggedInUser, type)) {
+            if (type.equals("SERVICE_PROVIDER")) {
+                System.out.println("\t** Hello in your profile **\n");
+                System.out.println("Name: " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName());
+                System.out.println("Email: " + loggedInUser.getEmail() + "\n");
+
+                boolean continueLoop = true;
+                while (continueLoop) {
+                    System.out.println("Select a number to view its contents:");
+                    System.out.println("1- Edit your profile");
+                    System.out.println("2- Names of your events and their total number");
+                    System.out.println("3- Names of your booked events and their total number");
+                    System.out.println("4- Names of your unbooked events and their total number");
+                    System.out.println("5- Event management");
+                    System.out.println("6- Your notifications");
+                    System.out.println("7- Logout");
+                    int choice = scanner.nextInt();
+
+                    switch (choice) {
+                        case 1:
+
+                            break;
+                        case 2:
+                            System.out.println("\t\tYOUR EVENTS :  \n");
+                            for (Event event : EventRepository.events) {
+                                if (event.eventOwner.getEmail().equals(loggedInUser.getEmail()))
+                                    System.out.println("Name Of Event :" + event.getNameOfEvent() + "\tID Of Event :" + event.getIdOfEvent() + "\n");
+                            }
+                            System.out.println("The total number of your events = " + EventRepository.events.size() + "\n");
+                            break;
+                        case 3:
+                            int numberOfBookedEvent = 0;
+                            System.out.println("\t\tYOUR BOOKED EVENTS :");
+                            for (Event event : EventRepository.events) {
+                                if (event.getstatusOfEvent().equalsIgnoreCase("booked")) {
+                                    System.out.println("Name Of Event :" + event.getNameOfEvent() + "\tID Of Event:" + event.getIdOfEvent());
+                                    numberOfBookedEvent++;
+                                }
+                            }
+                            System.out.println("\nThe total number of your booked events = " + numberOfBookedEvent + "\n");
+                            break;
+
+                        case 4:
+                            int numberOfUnbookedEvent = 0;
+                            System.out.println("\t\tYOUR UnBOOKED EVENTS :");
+                            for (Event event : EventRepository.events) {
+                                if (event.getstatusOfEvent().equalsIgnoreCase("unbooked")) {
+                                    System.out.println("Name Of Event :" + event.getNameOfEvent() + "\tID Of Event:" + event.getIdOfEvent());
+                                    numberOfUnbookedEvent++;
+                                }
+                            }
+                            System.out.println("\nThe total number of your Unbooked events = " + numberOfUnbookedEvent + "\n");
+                            break;
+
+                        case 5:
+                                System.out.println("Select one:");
+                                System.out.println("1- Add new event");
+                                System.out.println("2- Edit an event");
+                                System.out.println("3- Delete an event");
+                                int eventChoice = scanner.nextInt();
+                                switch (eventChoice) {
+                                    case 1:
+                                        String name, ID;
+                                        float cost;
+                                        int capacity;
+                                        System.out.println("\t*   Now..you can add new event !   *\n");
+
+                                        while (true) {
+                                            System.out.println("Enter the name of event :");
+                                            name = scanner.next();
+                                            if (name == null || name.length() <= 1)
+                                                System.out.println("The name you entered is invalid, please try again....!");
+                                            else
+                                                break;
+                                        }
+
+                                        while (true) {
+                                            System.out.println("Enter the ID of event :");
+                                            ID = scanner.next();
+                                            if (!Event.checkIdOfEvent(ID))
+                                                System.out.println(" please try again....!");
+                                            else
+                                                break;
+                                        }
+
+                                        while (true) {
+                                            System.out.println("Enter the Cost of event :");
+                                            cost = scanner.nextFloat();
+                                            if (!Event.checkCostOfEvent(cost))
+                                                System.out.println(" please try again....!");
+                                            else
+                                                break;
+                                        }
+
+
+                                        System.out.println("Enter the event start time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
+                                        String date1 = scanner.next();
+                                        LocalDateTime startDate = Event.dateConverter(date1);
+
+
+                                        System.out.println("Enter the event end time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
+                                        String date2 = scanner.next();
+                                        LocalDateTime endDate = Event.dateConverter(date2);
+
+
+                                        System.out.println("Enter the location -city- of event : ");
+                                        String city = scanner.next();
+
+                                        System.out.println("Enter the place-hall/hotel- of event :");
+                                        String place = scanner.next();
+
+
+                                        while (true) {
+                                            System.out.println("Enter the capacity of Place :");
+                                            capacity = scanner.nextInt();
+                                            if (!Place.checkCapacityOfPlace(capacity))
+                                                System.out.println(" please try again....!");
+                                            else
+                                                break;
+                                        }
+
+                                        Event.addEvent(name, ID, cost, startDate, endDate, city, capacity, place, loggedInUser.getEmail(), loggedInUser.getPassword());
+
+                                        break;
+                                    case 2:
+
+                                        while (true) {
+
+                                            System.out.println("Enter the new name of event :");
+                                            String name1 = scanner.next();
+                                            System.out.println("Enter the new ID of event :");
+                                            String ID1 = scanner.next();
+                                            if (Event.theEventExists(name1, ID1) == null)
+                                                System.out.println("The information you entered does not match any existing event\n  Pleas try again ...! ");
+                                            else
+                                                break;
+                                        }
+
+                                        String name2, ID2;
+                                        float cost2;
+                                        int capacity2;
+
+                                        while (true) {
+                                            System.out.println("Enter the name of event :");
+                                            name2 = scanner.next();
+                                            if (name2 == null || name2.length() <= 1)
+                                                System.out.println("The name you entered is invalid, please try again....!");
+                                            else
+                                                break;
+                                        }
+
+                                        while (true) {
+                                            System.out.println("Enter the ID of event :");
+                                            ID2 = scanner.next();
+                                            if (!Event.checkIdOfEvent(ID2))
+                                                System.out.println(" please try again....!");
+                                            else
+                                                break;
+                                        }
+
+                                        while (true) {
+                                            System.out.println("Enter the Cost of event :");
+                                            cost2 = scanner.nextFloat();
+                                            if (!Event.checkCostOfEvent(cost2))
+                                                System.out.println(" please try again....!");
+                                            else
+                                                break;
+                                        }
+
+
+                                        System.out.println("Enter the event start time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
+                                        String date3 = scanner.next();
+                                        LocalDateTime startDate2 = Event.dateConverter(date3);
+
+
+                                        System.out.println("Enter the event end time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
+                                        String date4 = scanner.next();
+                                        LocalDateTime endDate2 = Event.dateConverter(date4);
+
+
+                                        System.out.println("Enter the location -city- of event : ");
+                                        String city2 = scanner.next();
+
+                                        System.out.println("Enter the place-hall/hotel- of event :");
+                                        String place2 = scanner.next();
+
+
+                                        while (true) {
+                                            System.out.println("Enter the capacity of Place :");
+                                            capacity2 = scanner.nextInt();
+                                            if (!Place.checkCapacityOfPlace(capacity2))
+                                                System.out.println(" please try again....!");
+                                            else
+                                                break;
+                                        }
+
+                                        Event.addEvent(name2, ID2, cost2, startDate2, endDate2, city2, capacity2, place2, loggedInUser.getEmail(), loggedInUser.getPassword());
+                                        break;
+
+                                    case 3:
+                                        System.out.println("*   Now..you can delete an event !   *\n");
+                                        System.out.println("Enter the name of the event you want to delete :");
+                                        String nameOfEvent = scanner.next();
+                                        System.out.println("Enter the ID of the event you want to delete");
+                                        String idOfEvent = scanner.next();
+                                        Event.deleteEvent(nameOfEvent, idOfEvent);
+                                        break;
+
+                                }
+
+                                break;
+                                case 6:
+                                    System.out.println("Your Notifications:");
+                                    // notification
+                                    break;
+                                case 7:
+                                    continueLoop = false;
+
+                                    break;
+                                default:
+                                    System.out.println("Invalid choice");
+
+                            }
+
+                }
+            }
+
+
+            else if (type.equals("ADMIN")) {
+                System.out.println("\t** Hello in your profile **\n");
+                System.out.println("Name: " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName());
+                System.out.println("Email: " + loggedInUser.getEmail() + "\n");
+
+                boolean continueLoop = true;
+                while (continueLoop) {
+                    System.out.println("Select a number to view its contents:");
+                    System.out.println("1- Edit your profile");
+                    System.out.println("2- Statistics and analysis");
+                    System.out.println("3- Your notifications");
+                    System.out.println("4- Send an announcement");
+                    System.out.println("5- Logout");
+                    int choice = scanner.nextInt();
+
+                    switch(choice) {
+                        case 1: {
+                            //profile
+                            break;
+                        }
+                        case 2: {
+                            //reports
+                            break;
+                        }
+                        case 3: {
+                            Boolean continueLoop1 =true;
+                            while (continueLoop1) {
+                                System.out.println("Your Notifications:");
+                                System.out.println("Select a number to view more details:");
+                                int i = 1;
+
+                                for (Notification n : loggedInUser.notifications) {
+                                    System.out.println(i + "- " + n.getMessage() + " at ( " + n.getSentDateTime() + " )");
+                                    i++;
+                                }
+                                System.out.println(i+"- Back to home page");
+                                int choice1 = scanner.nextInt();
+                                if(choice1<i && choice1>1){
+
+                                    Notification n = loggedInUser.notifications.get(choice1-1);
+                                    System.out.println(n.showNtificationDetails());
+                                    if(n.getType().equals(Notification.NotificationType.ACCOUNTREQUEST)){
+                                        boolean continueLoop2 = true;
+                                        while (continueLoop2) {
+                                            System.out.println("Select a number:");
+                                            System.out.println("1- accept the request");
+                                            System.out.println("2- reject the request");
+                                            System.out.println("3- Back to notification page");
+                                            int choice2 = scanner.nextInt();
+                                            switch (choice2) {
+                                                case 1: {
+                                                    n.setApproved(true);
+                                                    n.sender.notifications.remove(n);
+                                                    //email sent
+                                                    //add user from revie to user reposetory
+                                                    continueLoop2 = false;
+                                                    break;
+                                                }
+                                                case 2: {
+                                                    n.setApproved(false);
+                                                    n.sender.notifications.remove(n);
+                                                    //email sent
+                                                    continueLoop2 = false;
+                                                    break;
+                                                }
+                                                case 3: {
+                                                    continueLoop2 = false;
+                                                    break;
+                                                }
+                                                default:{
+                                                    System.out.println("Invalid choice");
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    else{
+                                        boolean continueLoop2 = true;
+                                        while (continueLoop2) {
+                                            System.out.println("Enter 1 to back to notification page ");
+                                            int choice2 = scanner.nextInt();
+                                            switch (choice2) {
+                                                case 1:{
+                                                    continueLoop2 = false;
+                                                    break;
+                                                }
+                                                default:{
+                                                    System.out.println("Invalid choice");
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                                else if(choice1==1){
+                                    continueLoop1 = false;
+                                }
+                                else{
+                                    System.out.println("Invalid choice");
+                                }
+
+
+                            }
+
+                            break;
+                        }
+                        case 4:{
+                            Boolean continueLoop1 =true;
+                            while (continueLoop1) {
+                                System.out.println("Select a number :");
+                                System.out.println("1- Enter a new message to sent");
+                                System.out.println("2- Back to home page");
+                                int choice1 = scanner.nextInt();
+                                switch (choice1) {
+                                    case 1: {
+                                        System.out.println("*   Now..you can send an announcement !   *\n");
+                                        System.out.println("Enter the message you want to send to users:");
+                                        String message = scanner.next();
+                                        Notification notification = new Notification();
+                                        notification.createAnnouncement(loggedInUser,message);
+                                        notification.sendAdminAnnouncement(loggedInUser);
+
+                                        break;
+                                    }
+                                    case 2: {
+                                        continueLoop1 = false;
+
+                                        break;
+                                    }
+                                    default:
+                                        System.out.println("Invalid choice");
+                                }
+                            }
+
+                            break;
+                        }
+                        case 5:
+
+                            continueLoop = false;
+
+                            break;
+                        default: System.out.println("Invalid choice");
+                    }
+                }
+
+            }
             else {
                 System.out.println("Logged in as a regular user.");
                 for (int i = 0; i < UserRepository.users.size(); i++) {
@@ -175,5 +556,13 @@ public class Main {
                 }
             }
         }
+
+
+
+
+
+
+
+
     }
 }
