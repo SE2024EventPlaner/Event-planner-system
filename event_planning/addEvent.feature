@@ -41,7 +41,7 @@ Feature: Adding new Event
   Scenario Outline: success information
     Given The user login as Service Provider with   "<email>" and "<password>"
     When The user add a new event
-    Then The User enter name of event with "Birthday event"
+    Then The User enter name of event with "event"
     And The User enter id of event with "707070"
     And  The User enter Cost of the event with "2000"
     And The User enter  Event start time with "2024-03-02T10:15:30.908732"
@@ -53,5 +53,16 @@ Feature: Adding new Event
     And The user should see a message that the event was added successfully
     Examples:
       | email                   | password    |
-      | samyahamed22@gmail.com  | 123789      |
+      | hello3@gmail.com  | 123789      |
 
+  Scenario: Conflict warning when adding an event with the same location and time as another event
+    Given The user is logged in as a Service Provider with email "samyahamed22@gmail.com" and password "s1s2s300"
+    When The user tries to add a new event with location "Nablus" and name of place "Farah hall for events" and start time "2024-03-05T10:00:00"  and end time "2024-08-05T00:00:00"
+    And there is another event with this places and dates
+    Then A message "It is not possible to add. There has been a conflict in dates and locations" should be displayed
+
+  Scenario: Start time of event is equal to the end time of event
+    Given The user is logged in as a Service Provider with email "samyahamed22@gmail.com" and password "s1s2s300"
+    When The user tries to add a new event with start time "2024-03-05T10:00:00" and end time "2024-03-05T10:00:00"
+    Then No save of information should occur
+    And  A message "You need to set a valid duration for the event" should be displayed
