@@ -115,7 +115,21 @@ public class Event {
             return false;
         }
     }
-  
+    public static boolean checkSimilarityEvent(String nameOfPlace, LocalDateTime eventStartTime, LocalDateTime eventEndTime, String locationOfPlace) {
+        for (Event event : EventRepository.events) {
+            if (event.getPlaceOfEvent().getNameOfPlace().equals(nameOfPlace) &&
+                    event.getEventStartTime().isEqual(eventStartTime) &&
+                    event.getEventEndTime().isEqual(eventEndTime) &&
+                    event.getEventLocation().equals(locationOfPlace)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
 
     public static boolean checkCostOfEvent(float cost) {
         if (cost != 0.0F && !(cost < 0.0F)) {
@@ -211,4 +225,4 @@ public class Event {
         }
 
     }
-                           }
+}
