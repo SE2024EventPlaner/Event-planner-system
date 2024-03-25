@@ -1,5 +1,6 @@
 package special.event;
 
+import components.EventComponent;
 import components.UserComponent;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -98,7 +99,7 @@ public class EventMng {
     }
     @Then("the new event must  be added to the event list")
     public void theNewEventMustBeAddedToTheEventList() {
-     assertTrue(Event.addEvent(nameOfEvent,idOfEvent,costOfEvent,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.email,user.password));
+     assertTrue(EventComponent.addEvent(nameOfEvent,idOfEvent,costOfEvent,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.getEmail(),user.getPassword()));
 
     }
     @Then("The user should see a message that the event was added successfully")
@@ -112,7 +113,7 @@ public class EventMng {
 
     @When("The user add an existing event with the id {string} and the name {string}")
     public void theUserAddAnExistingEventWithTheIdAndTheName(String id, String name) {
-        this.event =Event.theEventExists(name,id);
+        this.event =EventComponent.theEventExists(name,id);
         assertNotNull(this.event);
     }
 
@@ -132,7 +133,7 @@ public class EventMng {
     {
         if (string.equals("idOfEvent"))
         {
-            assertFalse(Event.checkIdOfEvent(string2));
+            assertFalse(EventComponent.checkIdOfEvent(string2));
         }
         else if(string.equals("capacityOfPlace"))
         {
@@ -150,7 +151,7 @@ public class EventMng {
             try {
 
                 float c = Float.parseFloat(string2);
-                assertFalse(Event.checkCostOfEvent(c));
+                assertFalse(EventComponent.checkCostOfEvent(c));
 
             } catch (NumberFormatException e) {
 
@@ -170,7 +171,7 @@ public class EventMng {
 
     @When("the user deletes an event with not available id {string} and not available name {string}")
     public void theUserDeletesAnEventWithNotAvailableIdAndNotAvailableName(String name, String id) {
-      assertFalse(Event.deleteEvent(name,id ));
+      assertFalse(EventComponent.deleteEvent(name,id ));
     }
     @Then("The user should see a message that this event does not exist")
     public void theUserShouldSeeAMessageThatThisEventDoesNotExist() {
@@ -183,12 +184,12 @@ public class EventMng {
 
     @When("the user selects valid  {string} and {string}")
     public void theUserSelectsValidAnd(String id , String name) {
-        this.event=Event.theEventExists(name,id);
+        this.event=EventComponent.theEventExists(name,id);
         assertNotNull(this.event);
     }
     @When("The system will delete the selected event from events list")
     public void theSystemWillDeleteTheSelectedEventFromEventsList() {
-       assertTrue(Event.deleteEvent(this.event.getNameOfEvent(),this.event.getIdOfEvent()));
+       assertTrue(EventComponent.deleteEvent(this.event.getNameOfEvent(),this.event.getIdOfEvent()));
     }
     @Then("The user will see that the event has been modified")
     public void theUserWillSeeThatTheEventHasBeenModified() {
@@ -196,7 +197,7 @@ public class EventMng {
     }
     @Then("the modified event will be added to the events list")
     public void theModifiedEventWillBeAddedToTheEventsList() {
-        Event.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
+        EventComponent.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
     }
 
 
@@ -208,7 +209,7 @@ public class EventMng {
     }
     @When("the user selects an invalid event {string} and {string}")
     public void theUserSelectsAnInvalidEventAnd(String name, String id) {
-        assertNull(Event.theEventExists(name,id));
+        assertNull(EventComponent.theEventExists(name,id));
     }
     @Then("the system displays an error message")
     public void theSystemDisplaysAnErrorMessage() {
@@ -233,7 +234,7 @@ public class EventMng {
     }
     @When("there is another event with this places and dates")
     public void thereIsAnotherEventWithThisPlacesAndDates() {
-        assertTrue(Event.checkSimilarityEvent(nameOfPlace,eventStartTime,eventEndTime,locationOfPlace));
+        assertTrue(EventComponent.checkSimilarityEvent(nameOfPlace,eventStartTime,eventEndTime,locationOfPlace));
     }
     @Then("A message {string} should be displayed")
     public void aMessageShouldBeDisplayed(String string) {
