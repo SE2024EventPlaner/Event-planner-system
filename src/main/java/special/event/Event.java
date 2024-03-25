@@ -17,27 +17,27 @@ import repositories.UserRepository;
 
 
 public class Event {
-    String nameOfEvent;
-    String idOfEvent;
-    // ArrayList<String> serviceOfEvent ;
+    private String nameOfEvent;
+    private String idOfEvent;
     public static final String[] serviceOfEvent = {"DJ", "Restaurant", "Studio", "People to organize event", "Decorations"};
 
-    float costOfEvent;
+    private float costOfEvent;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    String statusOfEvent="unbook";
     LocalDateTime eventStartTime;
     LocalDateTime eventEndTime;
     Place placeOfEvent;
     User eventOwner;
 
+    private User bookedUser;
 
     //   public ArrayList<Reservation> timeSlots;
     public Event() {
+
     }
-
-
     public Event(String nameOfEvent, String idOfEvent, float costOfEvent,
-                 LocalDateTime eventStartTime, LocalDateTime eventEndTime
-            , String nameOfPlace, int capacityOfPlace,
+                 LocalDateTime eventStartTime, LocalDateTime eventEndTime,
+                 String nameOfPlace, int capacityOfPlace,
                  String locationOfPlace, String ownerEmail, String ownerPassword) {
         this.nameOfEvent = nameOfEvent;
         this.idOfEvent = idOfEvent;
@@ -47,17 +47,8 @@ public class Event {
         placeOfEvent = new Place(nameOfPlace, capacityOfPlace, locationOfPlace);
         eventOwner = new User(ownerEmail, ownerPassword);
 
-
     }
 
-
-
-
-  /*  public Event(){
-        timeSlots = new ArrayList<Reservation>();
-    }
-
-    public Event(String name ,String id ,)*/
 
     public String getIdOfEvent() {
         return idOfEvent;
@@ -100,75 +91,45 @@ public class Event {
     }
     public String getEventLocation() {  return placeOfEvent.getLocationOfPlace(); }
 
-    public static Event theEventExists(String nameOfEvent, String idOfEvent) {
-        EventRepository eventRepository = new EventRepository();
-        for (Event event : EventRepository.events) {
-            if (event.getNameOfEvent().equals(nameOfEvent) && event.getIdOfEvent().equals(idOfEvent)) {
-                return event;
-            }
-        }
-        return null;
-
+    public String getstatusOfEvent() {
+        return statusOfEvent;
     }
 
-    public static boolean checkIdOfEvent(String id) {
-        if (id.equals(0) || id.length() != 6) {
-            System.out.println("ID of event must not be  zeros or more/less than 6 numbers");
-            return false;
-        } else
+    public void setstatusOfEvent( String statusOfEvent) {
+        this.statusOfEvent= statusOfEvent;
+    }
+
+    public User getBookedUser() {
+        return bookedUser;
+    }
+
+    public void setBookedUser(User bookedUser) {
+        this.bookedUser = bookedUser;
+    }
+
+    public void setEventStatus(String status) {
+        this.statusOfEvent = status;
+    }
+
+
+
+
+    public Place getPlaceOfEvent() {
+        return placeOfEvent;
+    }
+    public User getEventOwner(){return eventOwner;}
+
+
+
+
+
+    public boolean bookEvent(User user) {
+        if (this.bookedUser == null) {
+            this.bookedUser = user;
             return true;
-    }
-
-    public static boolean checkCostOfEvent(float cost) {
-        if (cost == 0 || cost < 0) {
-            System.out.println("Cost of event must not be  zeros negative value ");
-            return false;
-        } else
-            return true;
-    }
-
-    public static boolean addEvent(String nameOfEvent, String idOfEvent, float costOfEvent,
-                                   LocalDateTime eventStartTime, LocalDateTime eventEndTime
-            , String nameOfPlace, int capacityOfPlace,
-                                   String locationOfPlace, String ownerEmail, String ownerPassword) {
-
-        if (theEventExists(nameOfEvent, idOfEvent) == null && checkIdOfEvent(idOfEvent)== true &&checkCostOfEvent(costOfEvent)==true) {
-            EventRepository R = new EventRepository();
-            R.events.add(new Event(nameOfEvent, idOfEvent, costOfEvent, eventStartTime, eventEndTime, nameOfPlace, capacityOfPlace, locationOfPlace, ownerEmail, ownerPassword));
-            System.out.println("The event was added successfully");
-            return true;
-        } else
-
-            System.out.println("The event you are trying to add already exists");
-        return false;
-
-    }
-
-
-    public static boolean deleteEvent(String name, String id) {
-        if (theEventExists(name, id) == null) {
-            System.out.println("The event you want to delete does not exist");
-            return false;
         } else {
-            EventRepository eventRepository = new EventRepository();
-
-            for (int i = 0; i < EventRepository.events.size(); i++) {
-               if( EventRepository.events.get(i).getNameOfEvent().equals(name)&&EventRepository.events.get(i).getIdOfEvent().equals(id))
-               {
-                   EventRepository.events.remove(i);
-                   System.out.println("The event was successfully deleted");
-               }
-            }
-
-             return true;
+            System.out.println("Event is already booked.");
+            return false;
         }
     }
-
-
-   //مهمممممممممممممممممممممم
-  /*  public boolean reserveSlot(Reservation reservation){
-        // validate.
-    }*/
-
-
 }

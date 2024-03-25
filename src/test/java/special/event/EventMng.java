@@ -217,4 +217,37 @@ public class EventMng {
 
 
 
+    @Given("The user is logged in as a Service Provider with email {string} and password {string}")
+    public void theUserIsLoggedInAsAServiceProviderWithEmailAndPassword(String email, String password) {
+        this.user = new UserComponent().validateLoginAsServiceProvider(email, password);
+
+    }
+
+
+    @When("The user tries to add a new event with location {string} and name of place {string} and start time {string}  and end time {string}")
+    public void theUserTriesToAddANewEventWithLocationAndNameOfPlaceAndStartTimeAndEndTime(String location, String namePlace, String startTime, String endTime) {
+        locationOfPlace= location;
+        this.eventEndTime=LocalDateTime.parse(endTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.eventStartTime=LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        nameOfPlace = namePlace;
+    }
+    @When("there is another event with this places and dates")
+    public void thereIsAnotherEventWithThisPlacesAndDates() {
+        assertTrue(Event.checkSimilarityEvent(nameOfPlace,eventStartTime,eventEndTime,locationOfPlace));
+    }
+    @Then("A message {string} should be displayed")
+    public void aMessageShouldBeDisplayed(String string) {
+      System.out.println(string);
+    }
+
+    @When("The user tries to add a new event with start time {string} and end time {string}")
+    public void theUserTriesToAddANewEventWithStartTimeAndEndTime(String start_time, String end_time) {
+        this.eventEndTime=LocalDateTime.parse(end_time, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.eventStartTime=LocalDateTime.parse(start_time, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+    @Then("No save of information should occur")
+    public void noSaveOfInformationShouldOccur() {
+     assertEquals(eventStartTime,eventEndTime);
+    }
+
 }
