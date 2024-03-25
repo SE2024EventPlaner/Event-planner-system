@@ -120,9 +120,6 @@ public class Event {
     public User getEventOwner(){return eventOwner;}
 
 
-
-
-
     public boolean bookEvent(User user) {
         if (this.bookedUser == null) {
             this.bookedUser = user;
