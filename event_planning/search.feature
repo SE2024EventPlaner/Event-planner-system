@@ -1,6 +1,6 @@
 Feature: Search
 
-  Scenario : search about events by name only
+  Scenario: search about events by name only
     Given I am on the vendor search page
     When I select search by event name "birthday"
     And I submit the search
