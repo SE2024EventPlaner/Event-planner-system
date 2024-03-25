@@ -15,7 +15,7 @@ Feature: Search
     And The meesage no result appears
 
 
-  Scenario : search about events by name and location
+  Scenario: search about events by name and location
     Given I am on the vendor search page
     When I select search by event name "name" and event location "location"
     And I submit the search
@@ -44,7 +44,7 @@ Feature: Search
     And The meesage no result appears
 
 
-  Scenario :search about events by name ,price and location
+  Scenario:search about events by name ,price and location
     Given I am on the vendor search page
     When I select search by event name "name" ,event location "location" and event price range between Min Price "Min_Price " and Max Price "Max_Price"
     And I submit the search
