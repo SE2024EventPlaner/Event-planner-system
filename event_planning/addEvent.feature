@@ -57,7 +57,7 @@ Feature: Adding new Event
 
   Scenario: Conflict warning when adding an event with the same location and time as another event
     Given The user is logged in as a Service Provider with email "samyahamed22@gmail.com" and password "s1s2s300"
-    When The user tries to add a new event with location "Nablus" and name of place "Farah hall for events" and start time "2024-03-05T10:00:00"  and end time "2024-08-05T00:00:00"
+    When The user tries to add a new event with location "Nablus" and name of place "Farah hall for events" and start time "2024-03-29T06:00:00"  and end time "2024-03-29T08:00:00"
     And there is another event with this places and dates
     Then A message "It is not possible to add. There has been a conflict in dates and locations" should be displayed
 
