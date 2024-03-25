@@ -29,7 +29,7 @@ Feature: Search
     And The meesage no result appears
 
 
-  Scenario :search about events by name and price
+  Scenario:search about events by name and price
     Given I am on the vendor search page
     When I select search by event name "name" and the price range between Min Price "Min_Price " and Max Price "Max_Price"
     And I submit the search
