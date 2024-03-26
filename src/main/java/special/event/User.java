@@ -1,18 +1,22 @@
 package special.event;
 import java.util.ArrayList;
 import java.util.List;
+import repositories.EventRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
-    String email;
-    String password;
-    String type;
 
-    String firstName;
-    String lastName;
-    String message;
-
+    private String email;
+    private String password;
+    private String type;
+    private String firstName;
+    private String lastName;
+    private String message;
     List<Notification> notifications = new ArrayList<>();
+    public  ArrayList<Event>bookedEvent1 = new ArrayList<>();//to store an event that the service not agree yet .
+    public  ArrayList<Event>bookedEvent2 = new ArrayList<>();////to store an event that the service agree.
 
     public User(String email, String password, String type,String firstName,String lastName) {
         this.email = email;
@@ -25,7 +29,6 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-
     }
 
     public String getEmail() {
@@ -53,6 +56,13 @@ public class User {
     public String getLastName() {
         return lastName;
     }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public void setMessage(String message){
         this.message = message;
@@ -60,6 +70,7 @@ public class User {
     public String getMessage(){
         return message;
     }
+
     public void setType(String type) {
         this.type = type;}
 
@@ -76,5 +87,16 @@ public class User {
             }
         }
         return false;
+    }
+
+
+    public  List<Event> getBookedEventsForUser(String Email) {
+        List<Event> bookedEvents = new ArrayList<>();
+        for (Event event : this.bookedEvent2) {
+            if (event.getBookedUser() != null && event.getBookedUser().getEmail().equals(Email)) {
+                bookedEvents.add(event);
+            }
+        }
+        return bookedEvents;
     }
 }
