@@ -1,10 +1,10 @@
 package special.event;
 
-
 import components.UserComponent;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import repositories.EventRepository;
 import repositories.UserRepository;
 
 
@@ -23,6 +23,8 @@ public class NotificationSteps {
     Notification notification = new Notification();
     User admin ;
     User user;
+    Event event;
+
     @Given("the admin is on the notification page in the admin account with email {string}")
     public void theAdminIsOnTheNotificationPageInTheAdminAccount(String adminEmail) {
         this.adminEmail = adminEmail;
@@ -35,12 +37,11 @@ public class NotificationSteps {
     @When("a user submits a request to create a business account from the email {string} and write the {string} of his service")
     public void aUserSubmitsARequestToCreateABusinessAccountFromTheEmailAndWriteTheOfHisService(String userEmail, String SeviceMessage) {
         for (int i = 0; i<UserRepository.reviw.size();i++){
-            if(UserRepository.reviw.get(i).email.equals(userEmail)){
+            if(UserRepository.reviw.get(i).getEmail().equals(userEmail)){
                 user =UserRepository.reviw.get(i);
             }
         }
         this.SeviceMessage = SeviceMessage;
-        user.message = SeviceMessage;
         notification.createAccountCreationRequest(user,SeviceMessage);
     }
 
@@ -101,7 +102,7 @@ public class NotificationSteps {
 
         int size = UserRepository.users.size();
         for(int i=0;i<size;i++){
-            if(!UserRepository.users.get(i).email.equals(adminEmail)){
+            if(!UserRepository.users.get(i).getEmail().equals(adminEmail)){
                 UserRepository.users.get(i).addNotification(notification);
             }
         }
@@ -110,7 +111,7 @@ public class NotificationSteps {
     public void allUsersReceiveTheAnnouncementMessage() {
         boolean allUsersReceived = true;
         for (User user : UserRepository.users) {
-            if (!user.isNotificationExit(notification)&&!user.type.equals("ADMIN")) {
+            if (!user.isNotificationExit(notification)&&!user.getType().equals("ADMIN")) {
                 allUsersReceived = false;
                 break;
             }
@@ -119,11 +120,12 @@ public class NotificationSteps {
     }
 
 
-    @When("a user with email {string} submits a reservation request with reservation details {string}")
-    public void aUserWithEmailSubmitsAReservationRequest(String userEmail,String reservationDetails) {
+    @When("a user with email {string} submits a reservation request an Event")
+    public void aUserWithEmailSubmitsAReservationRequest(String userEmail) {
         this.user = getUser(userEmail);
         assertNotNull(userEmail);
-        notification.createReservationRequest(user,reservationDetails);
+        this.event= EventRepository.events.get(0);
+        notification.createReservationRequest(user,event);
 
     }
     @When("the service provider {string} receives a notification regarding the reservation request")
@@ -139,7 +141,7 @@ public class NotificationSteps {
     }
     @Then("a confirmation message {string} is sent to the user as notification")
     public void aConfirmationMessageIsSentToTheUserAsNotification(String string) {
-        notification.createReplyMessage(serviceProvider,true);
+        notification.createReplyMessage(serviceProvider,true,event);
         user.addNotification(notification);
         assertTrue(user.isNotificationExit(notification));
     }
@@ -151,7 +153,7 @@ public class NotificationSteps {
     }
     @Then("a rejection message {string} is sent to the user as notification")
     public void aRejectionMessageIsSentToTheUserAsNotification(String string) {
-        notification.createReplyMessage(serviceProvider,false);
+        notification.createReplyMessage(serviceProvider,false,event);
         user.addNotification(notification);
         assertTrue(user.isNotificationExit(notification));
     }
@@ -163,7 +165,7 @@ public class NotificationSteps {
     public User getUser(String email){
         int size = UserRepository.users.size();
         for(int i=0;i<size;i++){
-            if(UserRepository.users.get(i).email.equals(email)){
+            if(UserRepository.users.get(i).getEmail().equals(email)){
 
                 return UserRepository.users.get(i);
             }
