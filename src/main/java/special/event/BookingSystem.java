@@ -9,8 +9,16 @@ public class BookingSystem {
         if (event != null) {
             if (isBookingDateValid(bookingDate,event)){
                 if (userBalance >=  event.getCostOfEvent() ) {
-                    //event.setEventEndTime(bookingDate.plusHours(2)); // Assuming a 2-hour event
-                    System.out.println("Booking successful! Event ID: " + eventId + " has been booked for " + bookingDate);
+                  System.out.println("Booking successful! Event ID: " + eventId + " has been booked for " + bookingDate);
+                    // add to arraylist event
+                    loggedInUser.bookedEvent1.add(event);
+                    Notification ReservationNotification = new Notification();
+                    ReservationNotification.createReservationRequest(loggedInUser,event);
+                    ReservationNotification.sendReservationRequest();
+                    System.out.println("We will send you a notification when your reservation request is accepted !");
+
+                    // يرسل ل السيرفس بروفايدر طلب للموافقة اسيل:
+
                     return true;
                 } else  {
                     System.out.println("Insufficient funds. Booking failed.");
