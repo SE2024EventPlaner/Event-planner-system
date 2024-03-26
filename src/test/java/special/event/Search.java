@@ -19,18 +19,20 @@ public class Search {
     String xsearchMaPrice;
     String searchdate;
 
-    @Given("I am on the vendor search page")
+    @Given("I am on the search page")
     public void iAmOnTheVendorSearchPage() { }
 
     @When("I select search by event name {string}")
-    public void iSelectSearchByEventName(String searchName) { }
+    public void iSelectSearchByEventName(String existSearchName) {
+        this.resultEvents = Checker.checkNameOfEvent(existSearchName);
+    }
+
 
     @When("I submit the search")
     public void iSubmitTheSearch() { }
 
-    @Then("I should see the events with name {string}")
-    public void iShouldSeeTheEventsWithNameIfTheyExist(String existSearchName) {
-        this.resultEvents = Checker.checkNameOfEvent(existSearchName);
+    @Then("I should see the events with this name")
+    public void iShouldSeeTheEventsWithNameIfTheyExist() {
         assertNotNull(resultEvents);
     }
     @Then("I should not see the events with name {string}")
@@ -43,26 +45,31 @@ public class Search {
 
     }
 
-    @When("I select search by event name and event location")
-    public void iSelectSearchByEventNameAndEventLocation() {
-
-    }
-    @Then("I should see the events with this name {string} in the required location {string}")
-    public void iShouldSeeTheEventsWithThisNameInTheRequiredLocation(String existSearchName, String existSearchLocation) {
+    @When("I select search by event name {string} and event location {string}")
+    public void iSelectSearchByEventNameAndEventLocation(String existSearchName, String existSearchLocation) {
         this.resultEvents = Checker.checkNameAndLocationOfEvent(existSearchName,existSearchLocation);
         assertNotNull(resultEvents);
+    }
+    @Then("I should see the events with this name in the required location")
+    public void iShouldSeeTheEventsWithThisNameInTheRequiredLocation() {
+
+    }
+    @When("I select search by event name {string} or event location {string}")
+    public void iSelectSearchByEventNameOrEventLocation(String nonExistSearchName, String nonExistSearchLocation) {
+        this.resultEvents = Checker.checkNameAndLocationOfEvent(nonExistSearchName,nonExistSearchLocation);
+
     }
 
 
     @Then("I should not see the events with name {string} and location {string}")
-    public void iShouldNotSeeTheEventsWithNameAndLocation(String nonExistSearchName, String nonExistSearchLocation) {
-        this.resultEvents = Checker.checkNameAndLocationOfEvent(nonExistSearchName,nonExistSearchLocation);
+    public void iShouldNotSeeTheEventsWithNameAndLocation() {
         assertNull(resultEvents);
     }
 
     @When("I select search by event name {string} and the price range between Min Price {string} and Max Price {string}")
     public void iSelectSearchByEventNameAndThePriceRangeBetweenMinPriceAndMaxPrice(String string, String string2, String string3) {
-        this.resultEvents = Checker.checkNameAndPriceOfEvent(string,string2,string3);
+
+        this.resultEvents = Checker.checkNameAndPriceOfEvent(string,Float.parseFloat(string2),Float.parseFloat(string3));
         assertNotNull(resultEvents);
     }
     @Then("I should see the events with this name and within this price")
@@ -71,7 +78,7 @@ public class Search {
     }
     @When("I select search by event name {string} or  no event within the price range Min Price {string} and Max Price {string}")
     public void iSelectSearchByEventNameOrNoEventWithinThePriceRangeMinPriceAndMaxPrice(String string, String string2, String string3) {
-        this.resultEvents = Checker.checkNameAndPriceOfEvent(string,string2,string3);
+        this.resultEvents = Checker.checkNameAndPriceOfEvent(string,Float.parseFloat(string2),Float.parseFloat(string3));
         assertNull(resultEvents);
     }
     @Then("I should not see any result")
@@ -79,21 +86,25 @@ public class Search {
 
     @When("I select search by event name {string} ,event location {string} and event price range between Min Price {string} and Max Price {string}")
     public void iSelectSearchByEventNameEventLocationAndEventPriceRangeBetweenMinPriceAndMaxPrice(String string, String string2, String string3, String string4) {
-        this.resultEvents = Checker.checkNameLocationAndPriceOfEvent(string,string2,string3,string4);
+        this.resultEvents = Checker.checkNameLocationAndPriceOfEvent(string,string2,Float.parseFloat(string3),Float.parseFloat(string4));
         assertNotNull(resultEvents);
     }
     @Then("I should see the events with this name and within this price in the required location")
     public void iShouldSeeTheEventsWithThisNameAndWithinThisPriceInTheRequiredLocation() {
 
     }
-    @When("I select search by event name {string}, event location {string} and event within the price range Min Price {string} and Max Price {string}")
+    @When("I select search by event name {string} or event location {string} or or  no event within the price range Min Price {string} and Max Price {string}")
     public void iSelectSearchByEventNameEventLocationAndEventWithinThePriceRangeMinPriceAndMaxPrice(String string, String string2, String string3, String string4) {
-        this.resultEvents = Checker.checkNameLocationAndPriceOfEvent(string,string2,string3,string4);
+        this.resultEvents = Checker.checkNameLocationAndPriceOfEvent(string,string2,Float.parseFloat(string3),Float.parseFloat(string4));
         assertNull(resultEvents);
     }
 
     @When("I select to show all events")
     public void iSelectToShowAllEvents() {
+
+    }
+    @When("I need to see all events")
+    public void iNeedToSeeAllEvents() {
 
     }
     @Then("I should see all events")
