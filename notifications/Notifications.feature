@@ -22,13 +22,15 @@ Feature: notifications
 
 
   Scenario: User Reservation Request Approval
-    When a user with email "hello@gmail.com" submits a reservation request with reservation details "details"
+    When a user with email "hello@gmail.com" submits a reservation request an Event
     And the service provider "hello3@gmail.com" receives a notification regarding the reservation request
     And the service provider approves the request
     Then a confirmation message "Your reservation request has been approved" is sent to the user as notification
 
   Scenario: User Reservation Request Rejection
-    Given a user with email "hello@gmail.com" submits a reservation request with reservation details "details"
+    When a user with email "hello@gmail.com" submits a reservation request an Event
     And the service provider "hello3@gmail.com" receives a notification regarding the reservation request
     And the service provider rejects the request
     Then a rejection message "Your reservation request has been rejected" is sent to the user as notification
+
+
