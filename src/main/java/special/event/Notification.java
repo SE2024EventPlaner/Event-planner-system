@@ -1,5 +1,6 @@
 package special.event;
 import components.UserComponent;
+import repositories.EventRepository;
 import repositories.UserRepository;
 import special.event.User;
 
@@ -9,7 +10,7 @@ public class Notification {
     User sender;
     String message;
     String seviceMessage;
-    String reservationDetails;
+    Event event;
     NotificationType type;
     boolean approved;
     String state = "reject";
@@ -45,8 +46,9 @@ public class Notification {
         this.type = NotificationType.ADMINANNOUNCEMENT;
         this.sentDateTime = new Date();
     }
-    public  void createReplyMessage(User sender, Boolean approved) {
+    public  void createReplyMessage(User sender, Boolean approved,Event event) {
         this.sender = sender;
+        this.event = event;
         String state = "reject";
         if(approved.equals(true)){
             state = "accept";
@@ -60,11 +62,11 @@ public class Notification {
     }
 
     //create REQUEST notification
-    public void createReservationRequest(User sender, String reservationDetails) {
+    public void createReservationRequest(User sender, Event event) {
         this.sender = sender;
         this.message = "The USER " + sender.getFirstName() +
                 " submitted a reservation request";
-        this.reservationDetails = reservationDetails;
+        this.event = event;
         this.approved = false;
         this.type = NotificationType.RESERVATIONREQUEST;
 
@@ -81,6 +83,14 @@ public class Notification {
 
         this.sentDateTime = new Date();
 
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public Event getEvent() {
+        return event;
     }
 
     public User getSender() {
@@ -118,7 +128,6 @@ public class Notification {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return sdf.format(sentDateTime);
     }
-
     public void setSentDateTime(Date sentDateTime) {
         this.sentDateTime = sentDateTime;
     }
@@ -128,33 +137,90 @@ public class Notification {
     public String getSeviceMessage(){
         return seviceMessage;
     }
-    public void sendAdminAnnouncement(User sender){
+    public void sendAdminAnnouncement(){
         if(type.equals(NotificationType.ADMINANNOUNCEMENT)){
             User reciever;
             for(int i = 0; i< UserRepository.users.size();i++){
                 reciever = UserRepository.users.get(i);
-                if(!sender.getEmail().equals(reciever.getEmail())){
+                if(!this.sender.getEmail().equals(reciever.getEmail())){
                     reciever.addNotification(this);
                 }
             }
             System.out.println("The message was sent successfully !");
         }
     }
+    public void sendReservationRequest(){
+        if(type.equals(NotificationType.RESERVATIONREQUEST)){
+            User provider = null;
+            Event event1;
+            for(int i = 0; i< EventRepository.events.size(); i++){
+                event1 = EventRepository.events.get(i);
+                if(event1.equals(this.event)){
+                    provider =  event1.getEventOwner();
+                    break;
+                }
+            }
+            if(!provider.equals(null))
+            provider.addNotification(this);
+            System.out.println("Your request was sent successfully !");
+        }
+    }
+
+    public void sendCreationRequest(){
+        if(type.equals(NotificationType.ACCOUNTREQUEST)){
+        for (User admin : UserRepository.users) {
+            if (admin.getType().equals("ADMIN")) {
+                admin.addNotification(this);
+            }
+        }
+        System.out.println("Wait for the admin's approval to access your account ! ");
+        }
+
+    }
+    public void sendReplyMessage(User reciever){
+        if(type.equals(NotificationType.REPLYANNOUNCEMENT)){
+            for (User user : UserRepository.users) {
+                if (user.equals(reciever)) {
+                    user.addNotification(this);
+                }
+            }
+            System.out.println("Your reply was sent successfully !");
+        }
+
+    }
+
+
+
+
+
+
     public String showNtificationDetails(){
         String details;
         if(type.equals(NotificationType.REPLYANNOUNCEMENT)){
-            details="The "+sender.getType() +" "+ sender.getFirstName() +" " +state + " Your request to book a  event ";
-            //need editing
+            details="The "+sender.getType() +" "+ sender.getFirstName() +" " +state + " Your request to book "+event.getNameOfEvent()+" event";
+
 
         }else if(type.equals(NotificationType.RESERVATIONREQUEST)){
-            details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+
-                    " submitted a reservation request with this description \n"
-                    +reservationDetails+"\nDo you agree to the request?";
-            //need editing
+            details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+" with this email: "+sender.getEmail() +"\nsubmitted a reservation request with this description: \n"
+           +"\nEvent ID: " + event.getIdOfEvent()
+           +"\nEvent Name: " + event.getNameOfEvent()
+           +"\nLocation: " + event.getPlaceOfEvent().getLocationOfPlace()
+           +"\nStart Time: " + event.getEventStartTime()
+           +"\nEnd Time: " + event.getEventEndTime()
+           +"\nCost: " + event.getCostOfEvent()
+           +"\nStatus: " + event.getstatusOfEvent()
+           +"\n------------------------"
+            +"\nDo you agree to the request?";
+
+        }else if(type.equals(NotificationType.ADMINANNOUNCEMENT)){
+        details="No details";
+
         }else{
             details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+
-                    " submitted a service porovider account creation request with this description "
-                    +seviceMessage+"\nDo you agree to the request?";
+                    " submitted a service porovider account creation request with this description: \n"
+                    +seviceMessage
+                    +"\n------------------------"
+                    +"\nDo you agree to the request?";
 
         }
         return details;
