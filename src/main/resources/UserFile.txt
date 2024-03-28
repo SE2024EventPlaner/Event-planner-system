@@ -1,0 +1,4 @@
+hello@gmail.com,123123,USER,ali,ahmad
+hello2@gmail.com,123456,ADMIN,mohamad,nasser
+hello3@gmail.com,123789,SERVICE_PROVIDER,saly,mohammad
+samyahamed22@gmail.com,s1s2s300,SERVICE_PROVIDER,Samya,Hamed
