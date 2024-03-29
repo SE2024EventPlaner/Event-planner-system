@@ -43,6 +43,21 @@ public class UserRepository {
 
 
     }
+     public static void addToUsers(User user1)
+    {
+        users.add(user1);
+    }
+    public static User getfromuser(int i)
+    {
+        return users.get(i);
+
+    }
+
+    public static List<User> reviw = new ArrayList<>();
+    public static void addToReviw(User service)
+    {
+        reviw.add(service);
+    }
 
 
     public static void appendUser(String fileName, String Email ,String password , String Type ,String firstName ,String lastName ) {
