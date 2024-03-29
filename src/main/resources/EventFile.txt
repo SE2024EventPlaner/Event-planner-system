@@ -1,5 +1,5 @@
-Birthday,101010,1000,2024-03-29T06:00:00,2024-03-29T08:00:00,Farah hall for events,120,Nablus,samyahamed22@gmail.com,s1s2s300
-Marriage,202020,2900,2024-03-20T12:00:00,2024-03-20T14:00:00,AL-masa hall for events,200,Jenin,samyahamed22@gmail.com,s1s2s300
-Graduation,303030,1800,2024-04-05T10:00:00,2024-04-05T12:00:00,five stars hall for events,130,Nablus,samyahamed22@gmail.com,s1s2s300
-gender determination,404040,1000,2024-05-09T13:00:00,2024-05-09T15:00:00,Golden Palace Hall,130,Tulkarm,samyahamed22@gmail.com,s1s2s300
-Official,505050,1600,2024-05-05T15:00:00,2024-05-05T17:00:00,Grand Park Hotel,130,Ramallah,samyahamed22@gmail.com,s1s2s300
+Birthday,101010,1000,2024-03-29T06:00:00,2024-03-29T08:00:00,Farah hall for events,120,Nablus,samyahamed22@gmail.com,s1s2s300,500
+Marriage,202020,2900,2024-03-20T12:00:00,2024-03-20T14:00:00,AL-masa hall for events,200,Jenin,samyahamed22@gmail.com,s1s2s300,2000
+Graduation,303030,1800,2024-04-05T10:00:00,2024-04-05T12:00:00,five stars hall for events,130,Nablus,samyahamed22@gmail.com,s1s2s300,900
+gender determination,404040,1000,2024-05-09T13:00:00,2024-05-09T15:00:00,Golden Palace Hall,130,Tulkarm,samyahamed22@gmail.com,s1s2s300,500
+Official,505050,1600,2024-05-05T15:00:00,2024-05-05T17:00:00,Grand Park Hotel,130,Ramallah,samyahamed22@gmail.com,s1s2s300,1000
