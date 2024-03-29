@@ -240,9 +240,10 @@ public class Main {
                     }
                     if (userType.equals("USER")) {
                         UserRepository.addToUsers(user2);
+                        // Add the user data to the UserRepository
                         System.out.println("The account is now complete and you are able to log in :) ");
                     }
-                    // Add the user data to the UserRepository
+                    
 
                     // Exit the loop after successful signup
                 } else {
@@ -513,7 +514,7 @@ public class Main {
                                                             replyNotification.createReplyMessage(loggedInUser, true, n.getEvent());
                                                             replyNotification.sendReplyMessage(n.sender);
                                                             loggedInUser.notifications.remove(n);
-                                                            //new reservation   SendMail.getSendEmail(messageContent, recipientEmail);
+                                                            //new reservation   
                                                             n.sender.bookedEvent2.add(n.getEvent());
                                                             n.sender.bookedEvent1.remove(n.getEvent());
                                                             System.out.println("Reservation successful!");
@@ -613,6 +614,7 @@ public class Main {
                                 case 3: {
                                     Boolean continueLoop1 = true;
                                     while (continueLoop1) {
+                                        System.out.println("------------------------");
                                         System.out.println("Your Notifications:");
                                         System.out.println("\tSelect a number to view more details:");
                                         int i = 1;
@@ -630,6 +632,7 @@ public class Main {
                                             if (n.getType().equals(Notification.NotificationType.ACCOUNTREQUEST)) {
                                                 boolean continueLoop2 = true;
                                                 while (continueLoop2) {
+                                                    System.out.println("------------------------");
                                                     System.out.println("Select a number:");
                                                     System.out.println("1- accept the request");
                                                     System.out.println("2- reject the request");
@@ -640,20 +643,20 @@ public class Main {
                                                             n.setApproved(true);
                                                             loggedInUser.notifications.remove(n);
                                                             UserRepository.addToUsers(n.sender);
-                                                            SendMail.getSendEmail("Accepted :) ", n.sender.getEmail());
-
                                                             System.out.println("A service provider account has been created");
                                                             UserRepository.reviw.remove(n.sender);
                                                             //email sent
+                                                            SendMail.getSendEmail("Accepted :) ", n.sender.getEmail());
                                                             continueLoop2 = false;
                                                             break;
                                                         }
                                                         case 2: {
                                                             n.setApproved(false);
                                                             loggedInUser.notifications.remove(n);
-                                                            SendMail.getSendEmail("Rejected :( ", n.sender.getEmail());
-
+                                                            System.out.println("The operation succeeded!");
+                                                            UserRepository.reviw.remove(n.sender);
                                                             //email sent
+                                                            SendMail.getSendEmail("Rejected :( ", n.sender.getEmail());
                                                             continueLoop2 = false;
                                                             break;
                                                         }
@@ -669,6 +672,7 @@ public class Main {
                                             } else {
                                                 boolean continueLoop2 = true;
                                                 while (continueLoop2) {
+                                                    System.out.println("------------------------");
                                                     System.out.println("Enter 1 to back to notification page ");
                                                     int choice2 = readIntegerFromUser(scanner);
                                                     switch (choice2) {
@@ -697,6 +701,7 @@ public class Main {
                                 case 4: {
                                     Boolean continueLoop1 = true;
                                     while (continueLoop1) {
+                                        System.out.println("------------------------");
                                         System.out.println("Select a number :");
                                         System.out.println("1- Enter a new message to sent");
                                         System.out.println("2- Back to home page");
@@ -704,6 +709,7 @@ public class Main {
 
                                         switch (choice1) {
                                             case 1: {
+                                                System.out.println("------------------------");
                                                 System.out.println("*   Now..you can send an announcement !   *\n");
                                                 System.out.println("Enter the message you want to send to users:");
                                                 String message = scanner.next();
@@ -745,7 +751,7 @@ public class Main {
                         while (continueLoop3) {
                             System.out.println("What would you like to do?");
                             System.out.println("1. View available events");
-                            System.out.println("2. Search");//aseeel.
+                            System.out.println("2. Search");
                             System.out.println("3. Book an event");
                             System.out.println("4. View booked events");
                             System.out.println("5. Cancel booked events");
@@ -779,8 +785,9 @@ public class Main {
                                     List<Event> resultEvents;
                                     boolean continueLoop = true;
                                     while (continueLoop) {
+                                        System.out.println("------------------------");
                                         System.out.println("1. Search by name");
-                                        System.out.println("2. Search by name and location");//aseeel.
+                                        System.out.println("2. Search by name and location");
                                         System.out.println("3. Search by name and price");
                                         System.out.println("4. Search by name, place and price");
                                         System.out.println("5. Show all events");
@@ -789,6 +796,7 @@ public class Main {
                                         int choice1 = readIntegerFromUser(scanner);
                                         switch (choice1) {
                                             case 1: {
+                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 resultEvents = Checker.checkNameOfEvent(eventName);
@@ -816,6 +824,7 @@ public class Main {
 
                                             }
                                             case 2: {
+                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 System.out.println("1. Enter location of event: ");
@@ -844,6 +853,7 @@ public class Main {
 
                                             }
                                             case 3: {
+                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 System.out.println("1. Enter minimum price of event: ");
@@ -874,6 +884,7 @@ public class Main {
 
                                             }
                                             case 4: {
+                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 System.out.println("1. Enter location of event: ");
@@ -906,6 +917,7 @@ public class Main {
 
                                             }
                                             case 5: {
+                                                System.out.println("------------------------");
                                                 resultEvents = EventRepository.events;
                                                 if (!resultEvents.equals(null)) {
                                                     printEventDetails(resultEvents);
@@ -1087,6 +1099,7 @@ public class Main {
                                 case 7: {
                                     Boolean continueLoop1 = true;
                                     while (continueLoop1) {
+                                        System.out.println("------------------------");
                                         System.out.println("Your Notifications:");
                                         System.out.println("Select a number to view more details:");
                                         int i = 1;
@@ -1104,6 +1117,7 @@ public class Main {
 
                                             boolean continueLoop2 = true;
                                             while (continueLoop2) {
+                                                System.out.println("------------------------");
                                                 System.out.println("Enter 1 to back to notification page ");
                                                 int choice2 = readIntegerFromUser(scanner);
                                                 switch (choice2) {
