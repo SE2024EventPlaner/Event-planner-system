@@ -49,7 +49,7 @@ public  boolean checkCostOfEvent(float cost) {
         return true;
 }
 
-    public   LocalDateTime dateConverter(String date){
+    public static  LocalDateTime dateConverter(String date){
         try {
             // Define a DateTimeFormatter for parsing the date-time string
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
