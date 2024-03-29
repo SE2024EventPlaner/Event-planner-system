@@ -20,10 +20,9 @@ public class Checker {
             }
         }
 
-        if(!resultEvents.isEmpty())
+
             return resultEvents;
-        else
-            return null;
+
 
     }
     public static List<Event> checkNameAndLocationOfEvent(String searchName,String searchLocation) {
@@ -40,10 +39,9 @@ public class Checker {
                 resultEvents.add(event);
             }
         }
-        if(!resultEvents.isEmpty())
+
             return resultEvents;
-        else
-            return null;
+
 
     }
     public static List<Event> checkNameAndPriceOfEvent(String searchName,float minPrice,float maxPrice) {
@@ -64,10 +62,9 @@ public class Checker {
                 resultEvents.add(event);
             }
         }
-        if(!resultEvents.isEmpty())
+
             return resultEvents;
-        else
-            return null;
+
 
     }
     public static List<Event> checkNameLocationAndPriceOfEvent(String searchName,String searchLocation,float minPrice,float maxPrice) {
@@ -90,10 +87,9 @@ public class Checker {
                 resultEvents.add(event);
             }
         }
-        if(!resultEvents.isEmpty())
+
             return resultEvents;
-        else
-            return null;
+
 
     }
     public static boolean checkStringLength(String str) {
