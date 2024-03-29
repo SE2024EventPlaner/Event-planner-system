@@ -81,11 +81,7 @@ public class UserRepository {
 
 
 
-    public static User getfromuser(int i)
-    {
-        return users.get(i);
-
-    }
+  
 
 
 
