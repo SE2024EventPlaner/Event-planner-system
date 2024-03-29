@@ -143,12 +143,7 @@ public class Main {
                 }
 
             } else if (x == 2) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                       //shifaa edit
-                    }
-                });
+               
                 System.out.println("**       Signup      **\n");
 
                 System.out.print("Enter first name: ");
