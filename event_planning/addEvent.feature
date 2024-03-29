@@ -1,7 +1,5 @@
 Feature: Adding new Event
 
-
-
   Scenario Outline:error whit inputs
     Given The user login as Service Provider with   "<email>" and "<password>"
     When The user add a new event
@@ -44,8 +42,9 @@ Feature: Adding new Event
     Then The User enter name of event with "event"
     And The User enter id of event with "707070"
     And  The User enter Cost of the event with "2000"
+    And  The User enter Construction Cost Of Event with "1500"
     And The User enter  Event start time with "2024-03-02T10:15:30.908732"
-    And The User enter  Event end time with "2024-07-02T23:00:00.908732"
+    And The User enter  Event end time with "2024-03-02T23:00:00.908732"
     And The User enter Location of event with 'Ramallah'
     And The User enter Place of event with "City Inn Palace Hotel"
     And The User enter Capacity of Place with "180"
@@ -54,6 +53,8 @@ Feature: Adding new Event
     Examples:
       | email                   | password    |
       | hello3@gmail.com  | 123789      |
+
+
 
   Scenario: Conflict warning when adding an event with the same location and time as another event
     Given The user is logged in as a Service Provider with email "samyahamed22@gmail.com" and password "s1s2s300"

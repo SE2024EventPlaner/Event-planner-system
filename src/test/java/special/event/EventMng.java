@@ -1,7 +1,7 @@
 package special.event;
 
-import components.EventComponent;
 import components.UserComponent;
+import components.EventComponent;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -23,14 +23,16 @@ public class EventMng {
     String idOfEvent;
     String nameOfPlace;
     float costOfEvent;
+    float constructionCost;
     int capacityOfPlace;
     LocalDateTime eventStartTime;
     LocalDateTime eventEndTime;
     String locationOfPlace;
     User user;
-    EventComponent eventComponent= new EventComponent();
     Event event;
     boolean A;
+    EventComponent eventComponent= new EventComponent();
+
 
 
     @Given("The user login as Service Provider with   {string} and {string}")
@@ -66,6 +68,25 @@ public class EventMng {
 
 
     }
+
+
+
+    @Then("The User enter Construction Cost Of Event with {string}")
+    public void theUserEnterConstructionCostOfEventWith(String constructionCost) {
+        try {
+
+            this.constructionCost = Float.parseFloat(constructionCost);
+
+
+        } catch (NumberFormatException e) {
+
+            System.out.println("Invalid input. Please enter a valid float number.");
+        }
+
+
+    }
+
+
     @Then("The User enter  Event start time with {string}")
     public void theUserEnterEventStartTimeWith(String startTime) {
 
@@ -98,9 +119,11 @@ public class EventMng {
         }
 
     }
+
+
     @Then("the new event must  be added to the event list")
     public void theNewEventMustBeAddedToTheEventList() {
-     assertTrue(eventComponent.addEvent(nameOfEvent,idOfEvent,costOfEvent,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.getEmail(),user.getPassword()));
+     assertTrue(eventComponent.addEvent(nameOfEvent,idOfEvent,costOfEvent,constructionCost,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.getEmail(),user.getPassword()));
 
     }
     @Then("The user should see a message that the event was added successfully")
@@ -198,7 +221,7 @@ public class EventMng {
     }
     @Then("the modified event will be added to the events list")
     public void theModifiedEventWillBeAddedToTheEventsList() {
-        eventComponent.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
+        eventComponent.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.constructionCost,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
     }
 
 
@@ -216,6 +239,7 @@ public class EventMng {
     public void theSystemDisplaysAnErrorMessage() {
         System.out.println("The event you requested does not exist");
     }
+
 
 
 
@@ -239,7 +263,7 @@ public class EventMng {
     }
     @Then("A message {string} should be displayed")
     public void aMessageShouldBeDisplayed(String string) {
-      System.out.println(string);
+        System.out.println(string);
     }
 
     @When("The user tries to add a new event with start time {string} and end time {string}")
@@ -249,7 +273,9 @@ public class EventMng {
     }
     @Then("No save of information should occur")
     public void noSaveOfInformationShouldOccur() {
-     assertEquals(eventStartTime,eventEndTime);
+        assertEquals(eventStartTime,eventEndTime);
     }
 
 }
+
+
