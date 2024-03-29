@@ -277,9 +277,9 @@ public class Main {
                             System.out.println("7- Logout");
                             int choice = readIntegerFromUser(scanner);
 
-                            switch (choice) {
+                          switch (choice) {
                                 case 1: {
-                                    //edit
+                                     //edit
                                     break;
                                 }
                                 case 2: {
@@ -314,7 +314,7 @@ public class Main {
                                 }
                                 case 3: {
 
-                                    //طباعة الايفت القادمة فقط
+                                  //طباعة الايفت القادمة فقط
                                 }
                                 case 4: {
 
@@ -324,17 +324,23 @@ public class Main {
                                     System.out.println("Select one:");
                                     System.out.println("1- Add new event");
                                     System.out.println("2- Edit an event");
-                                    System.out.println("3- Delete an event");
+                                    System.out.println("3- Add an image for an event");
+                                    System.out.println("4- Delete an event");
                                     int eventChoice = readIntegerFromUser(scanner);
                                     switch (eventChoice) {
                                         case 1: {
+                                            // Add a new event
+                                            // Prompt the user to input event details
                                             String name, ID;
                                             float cost;
+                                            String date2;
+                                            LocalDateTime endDate;
                                             int capacity;
-                                            System.out.println("\t*   Now..you can add new event !   *\n");
+                                            System.out.println("\t*   Now..you can add a new event!   *\n");
 
+                                            // Validate and input event name
                                             while (true) {
-                                                System.out.println("Enter the name of event :");
+                                                System.out.println("Enter the name of the event:");
                                                 name = scanner.next();
                                                 if (name == null || name.length() <= 1)
                                                     System.out.println("The name you entered is invalid, please try again....!");
@@ -342,8 +348,9 @@ public class Main {
                                                     break;
                                             }
 
+                                            // Validate and input event ID
                                             while (true) {
-                                                System.out.println("Enter the ID of event :");
+                                                System.out.println("Enter the ID of the event:");
                                                 ID = scanner.next();
                                                 if (!eventComponent.checkIdOfEvent(ID))
                                                     System.out.println(" please try again....!");
@@ -351,8 +358,9 @@ public class Main {
                                                     break;
                                             }
 
+                                            // Validate and input event cost
                                             while (true) {
-                                                System.out.println("Enter the Cost of event :");
+                                                System.out.println("Enter the cost of the event:");
                                                 cost = scanner.nextFloat();
                                                 if (!eventComponent.checkCostOfEvent(cost))
                                                     System.out.println(" please try again....!");
@@ -360,36 +368,55 @@ public class Main {
                                                     break;
                                             }
 
-                                            //بتظهر مباشرة انه يختار صورة
-                                            System.out.println("Enter the event start time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
+                                            // Input event start time
+                                            System.out.println("Enter the event start time (use format yyyy-mm-ddThh:mm:ss.908732):");
                                             String date1 = scanner.next();
                                             LocalDateTime startDate = eventComponent.dateConverter(date1);
 
-
-                                            System.out.println("Enter the event end time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
-                                            String date2 = scanner.next();
-                                            LocalDateTime endDate = eventComponent.dateConverter(date2);
-
-
-                                            System.out.println("Enter the location -city- of event : ");
-                                            String city = scanner.next();
-
-                                            System.out.println("Enter the place-hall/hotel- of event :");
-                                            String place = scanner.next();
-
-
+                                            // Input event end time
                                             while (true) {
-                                                System.out.println("Enter the capacity of Place :");
-                                                capacity = readIntegerFromUser(scanner);
-                                                if (!Place.checkCapacityOfPlace(capacity))
-                                                    System.out.println(" please try again....!");
-                                                else
+                                                System.out.println("Enter the event end time (use format yyyy-mm-ddThh:mm:ss.908732):");
+                                                date2 = scanner.next();
+                                                endDate = eventComponent.dateConverter(date2);
+                                                if (startDate.isEqual(endDate)) {
+                                                    System.out.println("The start date cannot be the same as the end date. Please enter a valid date.\n");
+                                                } else {
                                                     break;
+                                                }
                                             }
 
+                                            // Input event location and capacity
+                                            System.out.println("Enter the location (city) of the event:");
+                                            String city = scanner.next();
+
+                                            System.out.println("Enter the place (hall/hotel) of the event:");
+                                            String place = scanner.next();
+
+                                            // Validate and input event capacity
+                                            while (true) {
+                                                try {
+                                                    System.out.println("Enter the capacity of the place:");
+                                                    String o=scanner.next();
+                                                    capacity = Integer.parseInt(o);
+                                                    if (!Place.checkCapacityOfPlace(capacity))
+                                                        System.out.println(" please try again....!");
+                                                    else
+                                                        break;
+                                                } catch (NumberFormatException e) {
+                                                    System.out.println("Invalid input! Please enter an integer.");
+                                                }
+                                            }
+
+                                            // Check if the location is already booked at the same time
+                                            if (eventComponent.checkSimilarityEvent(place, startDate, endDate, city)) {
+                                                System.out.println("Sorry, this location is already booked at the same time.");
+                                                break; // Exit the switch case
+                                            }
+
+                                            // Add the event
                                             eventComponent.addEvent(name, ID, cost, startDate, endDate, city, capacity, place, loggedInUser.getEmail(), loggedInUser.getPassword());
 
-                                            break;
+                                            break; // Exit the switch case
                                         }
                                         case 2: {
                                             while (true) {
@@ -467,6 +494,38 @@ public class Main {
                                             break;
                                         }
                                         case 3: {
+                                            System.out.println("Enter the ID of the event that you want to add an image:");
+                                            String eventId = scanner.next();
+                                            boolean eventFound = false;
+
+                                            for (Event event : EventRepository.events) {
+                                                if (event.getIdOfEvent().equals(eventId)) {
+                                                    eventFound = true;
+                                                    if (event.getpath() == null) {
+                                                        ImageUploader uploader = new ImageUploader();
+                                                        uploader.setVisible(true);
+                                                        uploader.event = event; // تهيئة الكائن event
+                                                        Path imagePath = uploader.getimagepath();
+                                                        if (imagePath != null) {
+                                                            event.setpath(imagePath);
+                                                            System.out.println(event.getpath());
+                                                            break;
+                                                        }
+                                                    } else {
+                                                        System.out.println("The event already has an image.");
+                                                    }
+                                                }
+                                            }
+
+                                            if (!eventFound) {
+                                                System.out.println("Event not found.");
+                                            }
+
+                                            break;
+                                        }
+
+                                        case 4: {
+
                                             System.out.println("*   Now..you can delete an event !   *\n");
                                             System.out.println("Enter the name of the event you want to delete :");
                                             String nameOfEvent = scanner.next();
