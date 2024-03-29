@@ -146,8 +146,7 @@ public class Main {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        ImageUploader imageUploader = new ImageUploader();
-                        imageUploader.setVisible(true);
+                       //shifaa edit
                     }
                 });
                 System.out.println("**       Signup      **\n");
@@ -243,7 +242,7 @@ public class Main {
                         // Add the user data to the UserRepository
                         System.out.println("The account is now complete and you are able to log in :) ");
                     }
-                    
+
 
                     // Exit the loop after successful signup
                 } else {
@@ -280,7 +279,7 @@ public class Main {
 
                             switch (choice) {
                                 case 1: {
-                                     //edit
+                                    //edit
                                     break;
                                 }
                                 case 2: {
@@ -315,7 +314,7 @@ public class Main {
                                 }
                                 case 3: {
 
-                                  //طباعة الايفت القادمة فقط
+                                    //طباعة الايفت القادمة فقط
                                 }
                                 case 4: {
 
@@ -361,7 +360,7 @@ public class Main {
                                                     break;
                                             }
 
-                                            //بتظهر مباشرة انه يختار صورة 
+                                            //بتظهر مباشرة انه يختار صورة
                                             System.out.println("Enter the event start time \n NOTE: use this format:yyyy-mm-ddThh:mm:ss.908732\n Enter:");
                                             String date1 = scanner.next();
                                             LocalDateTime startDate = eventComponent.dateConverter(date1);
@@ -488,6 +487,8 @@ public class Main {
                                         System.out.println("Your Notifications:");
                                         System.out.println("Select a number to view more details:");
                                         int i = 1;
+                                        if( loggedInUser.notifications.isEmpty())
+                                            System.out.println("No notifications !!!!");
 
                                         for (Notification n : loggedInUser.notifications) {
                                             System.out.println(i + "- " + n.getMessage() + " at ( " + n.getSentDateTime() + " )");
@@ -514,7 +515,7 @@ public class Main {
                                                             replyNotification.createReplyMessage(loggedInUser, true, n.getEvent());
                                                             replyNotification.sendReplyMessage(n.sender);
                                                             loggedInUser.notifications.remove(n);
-                                                            //new reservation   
+                                                            //new reservation
                                                             n.sender.bookedEvent2.add(n.getEvent());
                                                             n.sender.bookedEvent1.remove(n.getEvent());
                                                             System.out.println("Reservation successful!");
@@ -801,7 +802,7 @@ public class Main {
                                                 eventName = scanner.next();
                                                 resultEvents = Checker.checkNameOfEvent(eventName);
                                                 System.out.println("------------------------");
-                                                if (!resultEvents.equals(null)) {
+                                                if (!resultEvents.isEmpty()) {
                                                     printEventDetails(resultEvents);
                                                 } else {
                                                     System.out.println("No result :(");
@@ -820,6 +821,7 @@ public class Main {
                                                         }
                                                     }
                                                 }
+                                                break;
 
 
                                             }
@@ -850,6 +852,7 @@ public class Main {
                                                         }
                                                     }
                                                 }
+                                                break;
 
                                             }
                                             case 3: {
@@ -881,6 +884,7 @@ public class Main {
                                                         }
                                                     }
                                                 }
+                                                break;
 
                                             }
                                             case 4: {
@@ -914,6 +918,7 @@ public class Main {
                                                         }
                                                     }
                                                 }
+                                                break;
 
                                             }
                                             case 5: {
@@ -938,6 +943,7 @@ public class Main {
                                                         }
                                                     }
                                                 }
+                                                break;
 
                                             }
                                             case 6: {
@@ -946,6 +952,7 @@ public class Main {
                                             }
                                             default: {
                                                 System.out.println("Invalid choice");
+                                                break;
                                             }
                                         }
                                     }
@@ -1161,4 +1168,3 @@ public class Main {
 
     }
 }
-
