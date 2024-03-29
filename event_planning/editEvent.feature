@@ -1,62 +1,50 @@
-Feature: Search
-
-  Scenario: Search for an existing event by name
-    Given I am on the vendor search page
-    When I select search by event name "Birthday"
-    And I submit the search
-    Then I should see the events with name "Birthday"
-
-  Scenario: Search for a non-existing event by name
-    Given I am on the vendor search page
-    When I select search by event name "non-existing"
-    And I submit the search
-    Then I should not see the events with name "non-existing"
-    And The meesage no result appears
-
-  Scenario: search about existing events by name and location
-    Given I am on the vendor search page
-    When I select search by event name and event location
-    And I submit the search
-    Then I should see the events with this name "Birthday" in the required location "Nablus"
-
-  Scenario: search about non-existing events by name and location
-    Given I am on the vendor search page
-    When I select search by event name and event location
-    And I submit the search
-    Then I should not see the events with name "Birthday" and location "non-exist location"
-    And The meesage no result appears
+Feature: Edit Event
 
 
-  Scenario:search about existing events by name and price
-    Given I am on the vendor search page
-    When I select search by event name "Birthday" and the price range between Min Price "600 " and Max Price "2000"
-    And I submit the search
-    Then I should see the events with this name and within this price
+  Scenario Outline: User selects a valid event ID to edit
+    Given The user login as Service Provider with   "<email>" and "<password>"
+    When the user selects valid  "<id of event>" and "<name of event>"
+    And The system will delete the selected event from events list
+    Then The User enter name of event with "Birthday event"
+    And The User enter id of event with "707070"
+    And  The User enter Cost of the event with "2000"
+    And The User enter  Event start time with "2024-03-02T10:15:30.908732"
+    And The User enter  Event end time with "2024-07-02T23:00:00.908732"
+    And The User enter Location of event with 'Ramallah'
+    And The User enter Place of event with "City Inn Palace Hotel"
+    And The User enter Capacity of Place with "180"
+    Then The user will see that the event has been modified
+    And the modified event will be added to the events list
+
+    Examples:
+      |id of event    |name of event          |
+      |101010         |Birthday               |
+      |202020         |Marriage               |
+      |303030         |Graduation             |
+      |404040         |gender determination   |
+      |505050         |Official               |
+
+    #And the user can modify the Name of the event to "new name"
+    #And the user can modify the id of the event to "new id"
+    #And the user can modify the Cost of the event "new cost"
+    #And the user can modify the place of event to "new place"
+    #And the user can modify the location of place to "new place"
+    #And the user can modify the capacity of place to "1000"
+    #And the user can modify the Event start time to "2024-03-02T10:15:30.908732"
+    #And the user can modify the Event end time to "2024-08-06T10:15:30.908732"
+    #Then The event will be modified
+    #And the modified event will be added to the events list
 
 
-  Scenario: search about non-existing  events by name and price
-    Given I am on the vendor search page
-    When I select search by event name "Birthday" or  no event within the price range Min Price "100 " and Max Price "400"
-    And I submit the search
-    Then I should not see any result
-    And The meesage no result appears
-
-
-  Scenario:search about existing events by name ,price and location
-    Given I am on the vendor search page
-    When I select search by event name "Birthday" ,event location "Nablus" and event price range between Min Price "600 " and Max Price "2000"
-    And I submit the search
-    Then I should see the events with this name and within this price in the required location
-
-
-  Scenario: search about non-existing events by name ,price and location
-    Given I am on the vendor search page
-    When I select search by event name "Birthday", event location "non-existing" and event within the price range Min Price "100" and Max Price "650"
-    And I submit the search
-    Then I should not see any result
-    And The meesage no result appears
-
-  Scenario: showing all events
-    Given I am on the vendor search page
-    When I select to show all events
-    Then I should see all events
+  Scenario Outline: User selects an invalid event ID and name to edit
+    Given The user login as Service Provider with   "<email>" and "<password>"
+    And the user wants to edit an event
+    When the user selects an invalid event "<id of event>" and "<name of event>"
+    Then the system displays an error message
+    Examples:
+      |id of event    |name of event          |
+      |101010         |Birthday               |
+      |202020         |Marriage               |
+      |303030         |Graduation             |
+      |404040         |gender determination   |
+      |505050         |Official               |

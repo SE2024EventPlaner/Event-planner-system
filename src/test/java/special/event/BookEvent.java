@@ -1,24 +1,23 @@
 package special.event;
-import components.UserComponent;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import org.junit.Assert;
-import repositories.EventRepository;
+import repositories.UserRepository;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
 import static org.junit.Assert.*;
-import static special.event.BookingSystem.bookEvent;
+
 public class BookEvent {
-   private String eventId;
+    private String eventId;
     private String location;
     private float costOfEvent;
     private LocalDateTime bookingDate;
     private float userBalance;
     private String errorMessage;
     private String unavailableEventId;
-
+    User loggedInUser = UserRepository.users.get(0);
     Event event1,event2,event3;
 
    /* private Event findEventByIdAndLocation(String eventId, String location) {
@@ -37,61 +36,61 @@ public class BookEvent {
     //return "Booking success message";  // Return appropriate message after booking
     //}
 
-   /* @Given("that an event with ID {string} is available for booking")
-    public void thatAnEventWithIDIsAvailableForBooking(String eventId) {
-       this.eventId = eventId;
+    /* @Given("that an event with ID {string} is available for booking")
+     public void thatAnEventWithIDIsAvailableForBooking(String eventId) {
+        this.eventId = eventId;
 
 
-    }
-    @Given("the venue is located in {string}")
-    public void theVenueIsLocatedIn(String location) {
+     }
+     @Given("the venue is located in {string}")
+     public void theVenueIsLocatedIn(String location) {
+         this.location = location;
+
+     }
+     @Given("the booking price is {float} dollars")
+     public void theBookingPriceIsDollars(float bookingPrice) {
+        // this.costOfEvent = bookingPrice;
+     }
+     @When("the user tries to book the venue with the ID {string} for the next month")
+     public void theUserTriesToBookTheVenueWithTheIDForTheNextMonth(String eventId) {
+        // this.eventId = eventId;
+         //this.bookingDate = LocalDateTime.now().plusMonths(1);
+         this.userBalance = 2500; // Replace with the actual user's balance
+         BookingSystem.bookEvent(eventId, location, bookingDate, userBalance);
+     }
+     @Then("the system should confirm the booking with a success message")
+     public void theSystemShouldConfirmTheBookingWithASuccessMessage() {
+         System.out.println("The Event is booked");
+
+     }
+     @Then("the event status should be updated to {string}")
+     public void theEventStatusShouldBeUpdatedTo(String status) {
+         assertNotNull("Event ID should not be null", eventId);
+         assertNotNull("Location should not be null", location);
+
+         Event event = BookingSystem.findEventByIdAndLocation(eventId, location);
+         Assert.assertNotNull("Event should not be null",event);
+
+         boolean eventStatus = event.getstatusOfEvent();
+         assertNotNull("Event status should not be null", eventStatus);
+
+         // Log relevant information for debugging
+         System.out.println("Event ID: " + eventId);
+         System.out.println("Location: " + location);
+         System.out.println("Expected Status: " + status);
+         System.out.println("Actual Status: " + eventStatus);
+
+         // Perform the assertion
+         assertEquals("Event status does not match", status, eventStatus);
+     }*/
+    @Given("that an event with ID {string} and with location {string} is available for booking")
+    public void thatAnEventWithIDAndWithLocationIsAvailableForBooking(String id, String location) {
+
         this.location = location;
-
+        this.eventId = id;
+        event1 =BookingSystem.findEventByIdAndLocation(id,location);
+        assertNotNull(event1);
     }
-    @Given("the booking price is {float} dollars")
-    public void theBookingPriceIsDollars(float bookingPrice) {
-       // this.costOfEvent = bookingPrice;
-    }
-    @When("the user tries to book the venue with the ID {string} for the next month")
-    public void theUserTriesToBookTheVenueWithTheIDForTheNextMonth(String eventId) {
-       // this.eventId = eventId;
-        //this.bookingDate = LocalDateTime.now().plusMonths(1);
-        this.userBalance = 2500; // Replace with the actual user's balance
-        BookingSystem.bookEvent(eventId, location, bookingDate, userBalance);
-    }
-    @Then("the system should confirm the booking with a success message")
-    public void theSystemShouldConfirmTheBookingWithASuccessMessage() {
-        System.out.println("The Event is booked");
-
-    }
-    @Then("the event status should be updated to {string}")
-    public void theEventStatusShouldBeUpdatedTo(String status) {
-        assertNotNull("Event ID should not be null", eventId);
-        assertNotNull("Location should not be null", location);
-
-        Event event = BookingSystem.findEventByIdAndLocation(eventId, location);
-        Assert.assertNotNull("Event should not be null",event);
-
-        boolean eventStatus = event.getstatusOfEvent();
-        assertNotNull("Event status should not be null", eventStatus);
-
-        // Log relevant information for debugging
-        System.out.println("Event ID: " + eventId);
-        System.out.println("Location: " + location);
-        System.out.println("Expected Status: " + status);
-        System.out.println("Actual Status: " + eventStatus);
-
-        // Perform the assertion
-        assertEquals("Event status does not match", status, eventStatus);
-    }*/
-   @Given("that an event with ID {string} and with location {string} is available for booking")
-   public void thatAnEventWithIDAndWithLocationIsAvailableForBooking(String id, String location) {
-
-       this.location = location;
-       this.eventId = id;
-       event1 =BookingSystem.findEventByIdAndLocation(id,location);
-      assertNotNull(event1);
-   }
     @When("The user is trying to book an event with a budget of {string} and date with {string}")
     public void theUserIsTryingToBookAnEventWithABudgetOfAndDateWith(String s1, String s2) {
         try {
@@ -110,7 +109,7 @@ public class BookEvent {
         } catch (Exception e) {
             System.out.println("Error: Invalid input string or format");
         }
-        assertTrue(BookingSystem.bookEvent(this.eventId,this.location,this.bookingDate,this.userBalance));
+        assertTrue(BookingSystem.bookEvent(this.eventId,this.location,this.bookingDate,this.userBalance,this.loggedInUser));
 
 
     }
@@ -122,28 +121,28 @@ public class BookEvent {
     @Then("the event status should be updated to {string}")
     public void theEventStatusShouldBeUpdatedTo(String string) {
 
-       event1.setstatusOfEvent(string);
+        event1.setstatusOfEvent(string);
     }
 
 
-//second scenario
+    //second scenario
     @Given("that an event with ID {string} and location {string} is not available for booking")
     public void thatAnEventWithIDAndLocationIsNotAvailableForBooking(String id, String location) {
 
-       assertNull(BookingSystem.findEventByIdAndLocation(id,location));
+        assertNull(BookingSystem.findEventByIdAndLocation(id,location));
 
     }
 
     @Then("the system should display an error message indicating that the event is not available for booking")
     public void theSystemShouldDisplayAnErrorMessageIndicatingThatTheEventIsNotAvailableForBooking() {
-       System.out.println("The event you are trying to book is not available");
+        System.out.println("The event you are trying to book is not available");
     }
 
-// thired scenario
+    // thired scenario
     @Given("that an event with ID {string} and location with {string} is available for booking")
     public void thatAnEventWithIDAndLocationWithIsAvailableForBooking(String string, String string2) {
-    event2= BookingSystem.findEventByIdAndLocation(string,string2);
-    assertNotNull(event2);
+        event2= BookingSystem.findEventByIdAndLocation(string,string2);
+        assertNotNull(event2);
     }
     @Given("the booking date is {string}")
     public void theBookingDateIs(String s) {
@@ -173,8 +172,8 @@ public class BookEvent {
 
     @Given("that an event with ID {string} and located in {string} is available for booking")
     public void thatAnEventWithIDAndLocatedInIsAvailableForBooking(String S, String S2) {
-       event3 =BookingSystem.findEventByIdAndLocation(S,S2);
-      assertNotNull(event3);
+        event3 =BookingSystem.findEventByIdAndLocation(S,S2);
+        assertNotNull(event3);
     }
     @Given("the user's account balance is {string} dollars")
     public void theUserSAccountBalanceIsDollars(String s) {
