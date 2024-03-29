@@ -29,7 +29,7 @@ public class EventRepository {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 10) {
+                if (parts.length == 11) {
                     String eventName = parts[0].trim();
                     String eventId = parts[1].trim();
                    float eventCost =Float.parseFloat( parts[2].trim());
@@ -40,12 +40,13 @@ public class EventRepository {
                     String eventLocation= parts[7].trim();
                     String ownerEmail =parts[8].trim();
                     String ownerPassword =parts[9].trim();
+                    float constructionCostOfEvent =Float.parseFloat( parts[10].trim());
 
                     LocalDateTime startTime2 = EventComponent.dateConverter(startTime1);// LocalDateTime.parse(startTime1, formatter);
                     LocalDateTime endTime2 = EventComponent.dateConverter(endTime1);//LocalDateTime.parse(endTime1, formatter);
 
 
-                    events.add(new Event(eventName,eventId,eventCost,startTime2,endTime2,eventPlace,capacityPlace,eventLocation,ownerEmail,ownerPassword));
+                    events.add(new Event(eventName,eventId,eventCost,constructionCostOfEvent,startTime2,endTime2,eventPlace,capacityPlace,eventLocation,ownerEmail,ownerPassword));
                 } else {
                     System.err.println("Invalid format in line: " + line);
                 }
