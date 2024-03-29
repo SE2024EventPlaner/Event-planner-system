@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import repositories.EventRepository;
 public class BookingSystem {
 
-    public static boolean bookEvent(String eventId, String location, LocalDateTime bookingDate, float userBalance) {
+    public static boolean bookEvent(String eventId, String location, LocalDateTime bookingDate, float userBalance,User loggedInUser) {
         Event event = findEventByIdAndLocation(eventId,location);
 
         if (event != null) {
