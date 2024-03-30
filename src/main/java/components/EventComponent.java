@@ -49,7 +49,7 @@ public  boolean checkCostOfEvent(float cost) {
         return true;
 }
 
-    public   LocalDateTime dateConverter(String date){
+    public static  LocalDateTime dateConverter(String date){
         try {
             // Define a DateTimeFormatter for parsing the date-time string
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -81,13 +81,13 @@ public  boolean checkCostOfEvent(float cost) {
             return true;
         }
     }
-    public  boolean addEvent(String nameOfEvent, String idOfEvent, float costOfEvent,
+    public  boolean addEvent(String nameOfEvent, String idOfEvent, float costOfEvent,float eventConstructionCost,
                                    LocalDateTime eventStartTime, LocalDateTime eventEndTime
                                    , String nameOfPlace, int capacityOfPlace,
                                    String locationOfPlace, String ownerEmail, String ownerPassword) {
 
         if (theEventExists(nameOfEvent, idOfEvent) == null && checkIdOfEvent(idOfEvent) &&checkCostOfEvent(costOfEvent)) {
-            EventRepository.events.add(new Event(nameOfEvent, idOfEvent, costOfEvent, eventStartTime, eventEndTime, nameOfPlace, capacityOfPlace, locationOfPlace, ownerEmail, ownerPassword));
+            EventRepository.events.add(new Event(nameOfEvent, idOfEvent, costOfEvent,eventConstructionCost, eventStartTime, eventEndTime, nameOfPlace, capacityOfPlace, locationOfPlace, ownerEmail, ownerPassword));
             System.out.println("The event was added successfully");
             return true;
         } else

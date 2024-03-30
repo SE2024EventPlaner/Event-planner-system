@@ -1,114 +1,65 @@
-package special.event;
+Feature: Search
 
-import components.Checker;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import repositories.EventRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
-public class Search {
-    List<Event> resultEvents = new ArrayList<>();
-    String searchName;
-    String searchLocatin;
-    String searchMinPrice;
-    String xsearchMaPrice;
-    String searchdate;
-
-    @Given("I am on the search page")
-    public void iAmOnTheVendorSearchPage() { }
-
-    @When("I select search by event name {string}")
-    public void iSelectSearchByEventName(String existSearchName) {
-        this.resultEvents = Checker.checkNameOfEvent(existSearchName);
-    }
+  Scenario: search about events by name only
+    Given I am on the search page
+    When I select search by event name "Birthday"
+    And I submit the search
+    Then I should see the events with this name
 
 
-    @When("I submit the search")
-    public void iSubmitTheSearch() { }
-
-    @Then("I should see the events with this name")
-    public void iShouldSeeTheEventsWithNameIfTheyExist() {
-        assertNotNull(resultEvents);
-    }
-    @Then("I should not see the events with name {string}")
-    public void iShouldNotSeeTheEventsWithName(String nonExistSearchName) {
-        this.resultEvents = Checker.checkNameOfEvent(nonExistSearchName);
-        assertNull(searchName);
-    }
-    @Then("The meesage no result appears")
-    public void theMeesageNoResultAppears() {
-
-    }
-
-    @When("I select search by event name {string} and event location {string}")
-    public void iSelectSearchByEventNameAndEventLocation(String existSearchName, String existSearchLocation) {
-        this.resultEvents = Checker.checkNameAndLocationOfEvent(existSearchName,existSearchLocation);
-        assertNotNull(resultEvents);
-    }
-    @Then("I should see the events with this name in the required location")
-    public void iShouldSeeTheEventsWithThisNameInTheRequiredLocation() {
-
-    }
-    @When("I select search by event name {string} or event location {string}")
-    public void iSelectSearchByEventNameOrEventLocation(String nonExistSearchName, String nonExistSearchLocation) {
-        this.resultEvents = Checker.checkNameAndLocationOfEvent(nonExistSearchName,nonExistSearchLocation);
-
-    }
+  Scenario: search about non-existing events by name
+    Given I am on the search page
+    When I select search by event name "non-existing"
+    And I submit the search
+    Then I should not see any result
+    And The meesage no result appears
 
 
-    @Then("I should not see the events with name {string} and location {string}")
-    public void iShouldNotSeeTheEventsWithNameAndLocation() {
-        assertNull(resultEvents);
-    }
+  Scenario: search about events by name and location
+    Given I am on the search page
+    When I select search by event name "Birthday" and event location "Nablus"
+    And I submit the search
+    Then I should see the events with this name in the required location
 
-    @When("I select search by event name {string} and the price range between Min Price {string} and Max Price {string}")
-    public void iSelectSearchByEventNameAndThePriceRangeBetweenMinPriceAndMaxPrice(String string, String string2, String string3) {
+  Scenario: search about non-existing events by name and location
+    Given I am on the search page
+    When I select search by event name "non-existing" or event location "non-existing"
+    And I submit the search
+    Then I should not see any result
+    And The meesage no result appears
 
-        this.resultEvents = Checker.checkNameAndPriceOfEvent(string,Float.parseFloat(string2),Float.parseFloat(string3));
-        assertNotNull(resultEvents);
-    }
-    @Then("I should see the events with this name and within this price")
-    public void iShouldSeeTheEventsWithThisNameAndWithinThisPrice() {
 
-    }
-    @When("I select search by event name {string} or  no event within the price range Min Price {string} and Max Price {string}")
-    public void iSelectSearchByEventNameOrNoEventWithinThePriceRangeMinPriceAndMaxPrice(String string, String string2, String string3) {
-        this.resultEvents = Checker.checkNameAndPriceOfEvent(string,Float.parseFloat(string2),Float.parseFloat(string3));
-        assertNull(resultEvents);
-    }
-    @Then("I should not see any result")
-    public void iShouldNotSeeAnyResult() {  }
+  Scenario:search about events by name and price
+    Given I am on the search page
+    When I select search by event name "Birthday" and the price range between Min Price "500 " and Max Price "2000"
+    And I submit the search
+    Then I should see the events with this name and within this price
 
-    @When("I select search by event name {string} ,event location {string} and event price range between Min Price {string} and Max Price {string}")
-    public void iSelectSearchByEventNameEventLocationAndEventPriceRangeBetweenMinPriceAndMaxPrice(String string, String string2, String string3, String string4) {
-        this.resultEvents = Checker.checkNameLocationAndPriceOfEvent(string,string2,Float.parseFloat(string3),Float.parseFloat(string4));
-        assertNotNull(resultEvents);
-    }
-    @Then("I should see the events with this name and within this price in the required location")
-    public void iShouldSeeTheEventsWithThisNameAndWithinThisPriceInTheRequiredLocation() {
 
-    }
-    @When("I select search by event name {string} or event location {string} or or  no event within the price range Min Price {string} and Max Price {string}")
-    public void iSelectSearchByEventNameEventLocationAndEventWithinThePriceRangeMinPriceAndMaxPrice(String string, String string2, String string3, String string4) {
-        this.resultEvents = Checker.checkNameLocationAndPriceOfEvent(string,string2,Float.parseFloat(string3),Float.parseFloat(string4));
-        assertNull(resultEvents);
-    }
+  Scenario: search about non-existing  events by name and price
+    Given I am on the search page
+    When I select search by event name "non-existing" or  no event within the price range Min Price "10 " and Max Price "90"
+    And I submit the search
+    Then I should not see any result
+    And The meesage no result appears
 
-    @When("I select to show all events")
-    public void iSelectToShowAllEvents() {
 
-    }
-    @When("I need to see all events")
-    public void iNeedToSeeAllEvents() {
+  Scenario:search about events by name ,price and location
+    Given I am on the search page
+    When I select search by event name "Birthday" ,event location "Nablus" and event price range between Min Price "500" and Max Price "2000"
+    And I submit the search
+    Then I should see the events with this name and within this price in the required location
 
-    }
-    @Then("I should see all events")
-    public void iShouldSeeAllEvents() {
-        this.resultEvents = EventRepository.events;
-    }
-}
+
+  Scenario: search about non-existing events by name ,price and location
+    Given I am on the search page
+    When I select search by event name "non-existing" or event location "non-existing" or or  no event within the price range Min Price "10" and Max Price "90"
+    And I submit the search
+    Then I should not see any result
+    And The meesage no result appears
+
+  Scenario: showing all events
+    Given I am on the search page
+    When I need to see all events
+    Then I should see all events
+
