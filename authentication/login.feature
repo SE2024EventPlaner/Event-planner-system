@@ -9,7 +9,7 @@ Feature: Login
   Examples:
     | email            | password | type             |
     | hello@gmail.com  | 123123   | USER             |
-    | hello2@gmail.com | 123456   | ADMIN            |
+    | aaadmain78@gmail.com | 123456   | ADMIN            |
     | hello3@gmail.com | 123789   | SERVICE_PROVIDER |
 
 
