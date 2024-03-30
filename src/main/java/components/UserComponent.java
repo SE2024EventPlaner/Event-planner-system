@@ -7,7 +7,7 @@ import java.util.regex.*;
 public class UserComponent {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
-   public UserRepository repo=new UserRepository();
+    public UserRepository repo=new UserRepository();
     public User validateLogin(String username, String password){
 
         for (User user: UserRepository.users){
@@ -29,13 +29,13 @@ public class UserComponent {
     public boolean existPassword(String username,String password){
         for (User user: UserRepository.users){
             if(user.getEmail().equals(username) ){
-               if (user.getPassword().equals(password))
-                   return true;
-               else
-                   return false;
+                if (user.getPassword().equals(password))
+                    return true;
+                else
+                    return false;
             }
         }
-       return false;
+        return false;
     }
 
 

@@ -73,7 +73,7 @@ public class Notification {
         this.sentDateTime = new Date();
 
     }
-    public void createAccountCreationRequest(User sender, String SeviceMessage) {
+    public void createAccountCreationRequest(User sender, String seviceMessage) {
         this.sender = sender;
         this.message = "Someone submitted an account creation request with the following name and email: "
                 + sender.getFirstName() + " - " + sender.getEmail();
@@ -151,18 +151,12 @@ public class Notification {
     }
     public void sendReservationRequest(){
         if(type.equals(NotificationType.RESERVATIONREQUEST)){
-            User provider = null;
-            Event event1;
-            for(int i = 0; i< EventRepository.events.size(); i++){
-                event1 = EventRepository.events.get(i);
-                if(event1.equals(this.event)){
-                    provider =  event1.getEventOwner();
-                    break;
-                }
+            User provider = this.event.getEventOwner();
+
+            if(!provider.equals(null)) {
+                provider.addNotification(this);
+                System.out.println("Your request was sent successfully !");
             }
-            if(!provider.equals(null))
-            provider.addNotification(this);
-            System.out.println("Your request was sent successfully !");
         }
     }
 
