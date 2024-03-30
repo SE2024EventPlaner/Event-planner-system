@@ -272,8 +272,105 @@ public class Main {
 
                             switch (choice) {
                                 case 1: {
-                                     //edit
-                                    break;
+                                     
+                            System.out.println("\t**\tNow you can Edit Your Profile\t**\t");
+                            System.out.println("Choose one of the fields to modify:");
+                            System.out.println("1-your First Name : ");
+                            System.out.println("2-Your Last Nme :");
+                            System.out.println("3-Your Email");
+                            System.out.println("4-Your Password");
+                            int input5= scanner.nextInt();
+                            switch (input5) {
+                                case 1: //edit first Name
+                                {  System.out.println("Your Current First Name: " + loggedInUser.getFirstName());
+                                    String newFirstName;
+                                    while (true){
+                                     System.out.print("Enter New First Name: ");
+                                     newFirstName = scanner.next().trim();
+                                     if (newFirstName.isEmpty()||newFirstName.length()==1) {
+                                         System.out.println("Invalid input! Please try again.");
+                                     }
+                                     else
+                                         loggedInUser.setFirstName(newFirstName);
+                                         break;
+                                    }
+                                    System.out.println("Updated successfully");
+                                    System.out.println(loggedInUser.getFirstName());
+
+
+                                    break;}
+                                case 2://edit last name
+                                {
+                                    System.out.println("Your Current Last Name: " + loggedInUser.getLastName());
+                                    while (true) {
+                                        System.out.print("Enter New Last Name: ");
+                                        String newLastName = scanner.next().trim();
+                                        if (newLastName.isEmpty() || newLastName.length() == 1) {
+                                            System.out.println(" Invalid input! Please try again.");
+                                        } else
+                                            loggedInUser.setFirstName(newLastName);
+                                        System.out.println("Updated successfully");
+                                        break;
+                                    }
+                                }
+                                case 3://edit Email
+                                { System.out.println("Your Current Email : " + loggedInUser.getEmail());
+                                    boolean existEmail2=false;
+                                    while (true) {
+                                        System.out.print("Enter New email: ");
+                                        String newEmail = scanner.next().trim();
+
+                                        if (!userComponent.isValidEmail(newEmail)) {
+                                            System.out.println("The email you entered is invalid. Please try again.");
+                                            continue;
+                                        }
+
+                                        for (User user : UserRepository.users) {
+                                            if (user.getEmail().equals(newEmail)) {
+                                                existEmail2 = true;
+                                                break;
+                                            }
+                                        }
+                                        if (existEmail2) {
+                                            System.out.println("The email you entered is already exist. Please enter another one.");
+                                            existEmail2 = false;
+                                        } else {
+
+                                            loggedInUser.setEmail(newEmail);
+                                            System.out.println("Updated successfully");
+                                            break;
+                                        }
+                                    }
+                                break;}
+                                case 4:{ //edit Password
+                                System.out.print("Your Current Password: "+loggedInUser.getPassword());
+                                    String newPassword ;
+                                    while (true) {
+                                        System.out.print("Enter new password: ");
+                                        newPassword = scanner.next().trim();
+                                        if (userComponent.isValidPassword(newPassword)) {
+                                            break;
+                                        } else {
+                                            System.out.println("The password should contain at least 8 characters including at least one uppercase letter, one lowercase letter, one digit, and one of the following symbols: !@#$%^");
+                                        }
+                                    }
+
+                                    while (true) {
+                                        System.out.print("Enter Confirm new password:");
+                                       String confirmNewPassword = scanner.next();
+                                        if (confirmNewPassword.equals(newPassword)) {
+                                            loggedInUser.setPassword(newPassword);
+                                         System.out.println("Updated successfully");
+                                            break;
+                                        } else {
+                                            System.out.println("The confirmed password does not match the original password.");
+                                        }
+                                    }
+                                    break;}
+
+
+                            }
+                            break;
                                 }
                                 case 2: {
                                     System.out.println("\t\tYOUR EVENTS :  \n");
