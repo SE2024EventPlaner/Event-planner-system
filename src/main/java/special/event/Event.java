@@ -28,6 +28,7 @@ public class Event {
     LocalDateTime eventEndTime;
     Place placeOfEvent;
     User eventOwner;
+    float constructionCostOfEvent;
 
     private User bookedUser;
 
@@ -35,7 +36,7 @@ public class Event {
     public Event() {
 
     }
-    public Event(String nameOfEvent, String idOfEvent, float costOfEvent,
+    public Event(String nameOfEvent, String idOfEvent, float costOfEvent,float eventConstructionCost,
                  LocalDateTime eventStartTime, LocalDateTime eventEndTime,
                  String nameOfPlace, int capacityOfPlace,
                  String locationOfPlace, String ownerEmail, String ownerPassword) {
@@ -67,7 +68,13 @@ public class Event {
     public String getNameOfEvent() {
         return nameOfEvent;
     }
+ public float geteventConstructionCost() {
+        return constructionCostOfEvent;
+    }
 
+    public void seteventConstructionCost(float constructionCostOfEvent) {
+        this.constructionCostOfEvent = constructionCostOfEvent;
+    }
     public void setNameOfEvent(String nameOfEvent) {
         this.nameOfEvent = nameOfEvent;
     }
