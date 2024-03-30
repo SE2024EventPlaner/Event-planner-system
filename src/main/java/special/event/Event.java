@@ -51,8 +51,6 @@ public class Event {
         this.constructionCostOfEvent=constructionCostOfEvent;
         this.eventStartTime = eventStartTime;
         this.eventEndTime = eventEndTime;
-        this.eventConstructionCost=eventConstructionCost;
-
         placeOfEvent = new Place(nameOfPlace, capacityOfPlace, locationOfPlace);
         for (User user: UserRepository.users){
             if(user.getEmail().equals(ownerEmail) && user.getPassword().equals(ownerPassword))
@@ -70,12 +68,8 @@ public class Event {
         this.idOfEvent = idOfEvent;
     }
 
-      public String getIdOfEvent() {
-        return idOfEvent;
-    }
-    public void setpath(Path p) {
-        this.imagePath = p;
-    }
+     
+    
     public String getNameOfEvent() {
         return nameOfEvent;
     }
