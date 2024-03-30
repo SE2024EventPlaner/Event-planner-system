@@ -1,18 +1,9 @@
 package special.event;
 
-import com.thoughtworks.qdox.model.expression.Constant;
-
-import javax.xml.crypto.Data;
-import java.math.BigDecimal;
-import java.sql.Time;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.apache.maven.surefire.shared.lang3.ObjectUtils;
-import repositories.EventRepository;
 import repositories.UserRepository;
 
 
@@ -28,14 +19,15 @@ public class Event {
     LocalDateTime eventEndTime;
     Place placeOfEvent;
     User eventOwner;
-
+    Path imagePath;
+    float eventConstructionCost;
     private User bookedUser;
 
     //   public ArrayList<Reservation> timeSlots;
     public Event() {
 
     }
-    public Event(String nameOfEvent, String idOfEvent, float costOfEvent,
+    public Event(String nameOfEvent, String idOfEvent, float costOfEvent,float eventConstructionCost,
                  LocalDateTime eventStartTime, LocalDateTime eventEndTime,
                  String nameOfPlace, int capacityOfPlace,
                  String locationOfPlace, String ownerEmail, String ownerPassword) {
@@ -44,14 +36,28 @@ public class Event {
         this.costOfEvent = costOfEvent;
         this.eventStartTime = eventStartTime;
         this.eventEndTime = eventEndTime;
+        this.eventConstructionCost=eventConstructionCost;
         placeOfEvent = new Place(nameOfPlace, capacityOfPlace, locationOfPlace);
         eventOwner = new User(ownerEmail, ownerPassword);
+        for (User user: UserRepository.users){
+            if(user.getEmail().equals(ownerEmail) && user.getPassword().equals(ownerPassword)){
+                eventOwner =user;
+            }
+        }
+
 
     }
 
 
     public String getIdOfEvent() {
         return idOfEvent;
+    }
+    public void setpath(Path p) {
+        this.imagePath = p;
+    }
+
+    public Path getpath() {
+        return imagePath;
     }
 
     public void setIdOfEvent(String idOfEvent) {
@@ -106,7 +112,6 @@ public class Event {
     public void setBookedUser(User bookedUser) {
         this.bookedUser = bookedUser;
     }
-
     public void setEventStatus(String status) {
         this.statusOfEvent = status;
     }
@@ -118,9 +123,6 @@ public class Event {
         return placeOfEvent;
     }
     public User getEventOwner(){return eventOwner;}
-
-
-
 
 
     public boolean bookEvent(User user) {
