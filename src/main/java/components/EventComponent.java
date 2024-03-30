@@ -10,44 +10,44 @@ import java.time.format.DateTimeFormatter;
 
 public class EventComponent {
     public EventRepository eventRepository = new EventRepository();
-public  Event theEventExists(String nameOfEvent, String idOfEvent) {
+    public  Event theEventExists(String nameOfEvent, String idOfEvent) {
 
-    for (Event event : EventRepository.events) {
-        if (event.getNameOfEvent().equals(nameOfEvent) && event.getIdOfEvent().equals(idOfEvent)) {
-            return event;
+        for (Event event : EventRepository.events) {
+            if (event.getNameOfEvent().equals(nameOfEvent) && event.getIdOfEvent().equals(idOfEvent)) {
+                return event;
+            }
         }
-    }
-    return null;
+        return null;
 
-}
-public  boolean checkSimilarityEvent(String nameOfPlace, LocalDateTime eventStartTime, LocalDateTime eventEndTime, String locationOfPlace) {
-    for (Event event : EventRepository.events) {
-        if (event.getPlaceOfEvent().getNameOfPlace().equals(nameOfPlace) &&
-                event.getEventStartTime().isEqual(eventStartTime) &&
-                event.getEventEndTime().isEqual(eventEndTime) &&
-                event.getEventLocation().equals(locationOfPlace)) {
+    }
+    public  boolean checkSimilarityEvent(String nameOfPlace, LocalDateTime eventStartTime, LocalDateTime eventEndTime, String locationOfPlace) {
+        for (Event event : EventRepository.events) {
+            if (event.getPlaceOfEvent().getNameOfPlace().equals(nameOfPlace) &&
+                    event.getEventStartTime().isEqual(eventStartTime) &&
+                    event.getEventEndTime().isEqual(eventEndTime) &&
+                    event.getEventLocation().equals(locationOfPlace)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public  boolean checkIdOfEvent(String id) {
+        if (id.equals(0) || id.length() != 6) {
+            System.out.println("ID of event must not be  zeros or more/less than 6 numbers");
+            return false;
+        } else
             return true;
-        }
     }
-    return false;
-}
 
-
-public  boolean checkIdOfEvent(String id) {
-    if (id.equals(0) || id.length() != 6) {
-        System.out.println("ID of event must not be  zeros or more/less than 6 numbers");
-        return false;
-    } else
-        return true;
-}
-
-public  boolean checkCostOfEvent(float cost) {
-    if (cost == 0 || cost < 0) {
-        System.out.println("Cost of event must not be  zeros negative value ");
-        return false;
-    } else
-        return true;
-}
+    public  boolean checkCostOfEvent(float cost) {
+        if (cost == 0 || cost < 0) {
+            System.out.println("Cost of event must not be  zeros negative value ");
+            return false;
+        } else
+            return true;
+    }
 
     public static  LocalDateTime dateConverter(String date){
         try {
@@ -82,9 +82,9 @@ public  boolean checkCostOfEvent(float cost) {
         }
     }
     public  boolean addEvent(String nameOfEvent, String idOfEvent, float costOfEvent,float eventConstructionCost,
-                                   LocalDateTime eventStartTime, LocalDateTime eventEndTime
-                                   , String nameOfPlace, int capacityOfPlace,
-                                   String locationOfPlace, String ownerEmail, String ownerPassword) {
+                             LocalDateTime eventStartTime, LocalDateTime eventEndTime
+            , String nameOfPlace, int capacityOfPlace,
+                             String locationOfPlace, String ownerEmail, String ownerPassword) {
 
         if (theEventExists(nameOfEvent, idOfEvent) == null && checkIdOfEvent(idOfEvent) &&checkCostOfEvent(costOfEvent)) {
             EventRepository.events.add(new Event(nameOfEvent, idOfEvent, costOfEvent,eventConstructionCost, eventStartTime, eventEndTime, nameOfPlace, capacityOfPlace, locationOfPlace, ownerEmail, ownerPassword));
@@ -111,6 +111,7 @@ public  boolean checkCostOfEvent(float cost) {
                 System.out.println("Location Of Event :"+ EventRepository.events.get(i).getPlaceOfEvent().getLocationOfPlace());
                 System.out.println("Place Of Event :" +EventRepository.events.get(i).getPlaceOfEvent().getNameOfPlace());
                 System.out.println("Capacity Of Event :" +EventRepository.events.get(i).getPlaceOfEvent().getCapacityOfPlace());
+
                 System.out.println("\n");
             }
         }
