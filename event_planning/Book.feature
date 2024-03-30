@@ -1,14 +1,11 @@
 Feature: BookEvent
   Example:
   |101010|Birthday   | Nablus      | 1000 |
-  |303030|Graduation | Nablus      | 1800  |
+  |303030|Graduation | Nablus      | 1800 |
   |202020|Marriage   | Jenin       | 2900 |
   Scenario: Successful Booking
-    Given that an event with ID "101010" and with location "Nablus" is available for booking
-    #And the venue is located in "Nablus"
-    #And the booking price is 1000 dollars
+    Given that an event with ID "101010" and with location "Nablus" is available for booking for user with Email "hello@gmail.com" and with password "123123"
     When The user is trying to book an event with a budget of "1000" and date with "2024-03-29T06:00:00"
-       #venue with the ID "101010" for the next month
     Then the system should confirm the booking with a success message
     And the event status should be updated to "booked"
 
