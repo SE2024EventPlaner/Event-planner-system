@@ -17,14 +17,12 @@ public class EventRepository {
     public static List<Event> events = new ArrayList<>();
 
 
-    public static Path filePath = Paths.get("C:/Users/Dell/SoftwarProject22/EventPlaner99/src/main/resources/EventFile.txt");
-     public static String fileOfEvent = filePath.toAbsolutePath().toString();
+    public static Path filePath = Paths.get("C:/Users/Dell/software_project/EventPlaner9911/src/main/resources/EventFile.txt");
+    public static String fileOfEvent = filePath.toAbsolutePath().toString();
     public EventRepository(){
 
-       readEventFile(fileOfEvent);
-
     }
-    public static void readEventFile(String fileName){
+    public  void readEventFile(String fileName){
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -32,7 +30,7 @@ public class EventRepository {
                 if (parts.length == 11) {
                     String eventName = parts[0].trim();
                     String eventId = parts[1].trim();
-                   float eventCost =Float.parseFloat( parts[2].trim());
+                    float eventCost =Float.parseFloat( parts[2].trim());
                     String startTime1 = parts[3].trim();
                     String endTime1 = parts[4].trim();
                     String eventPlace= parts[5].trim();

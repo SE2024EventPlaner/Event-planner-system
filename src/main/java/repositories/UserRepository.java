@@ -12,15 +12,15 @@ public class UserRepository {
 
     public static List<User> users = new ArrayList<>();
 
-    static Path filePath = Paths.get("C:/Users/Dell/SoftwarProject22/EventPlaner99/src/main/resources/UserFile.txt");
+    static Path filePath = Paths.get("C:/Users/Dell/software_project/EventPlaner9911/src/main/resources/UserFile.txt");
     public static String fileOfUser = filePath.toAbsolutePath().toString();
 
     public UserRepository( ){
 
-     readUsers(fileOfUser);
+
     }
 
-    public static void readUsers(String fileName){
+    public  void readUsers(String fileName){
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -43,7 +43,7 @@ public class UserRepository {
 
 
     }
-     public static void addToUsers(User user1)
+    public static void addToUsers(User user1)
     {
         users.add(user1);
     }
@@ -81,7 +81,7 @@ public class UserRepository {
 
 
 
-  
+
 
 
 
