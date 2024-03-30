@@ -23,7 +23,7 @@ Feature: Adding new Event
     Given The user login as Service Provider with   "<email>" and "<password>"
     When The user add an existing event with the id "<id of event>" and the name "<name of event>"
     Then the new event must not be added to the event list
-     And The user should see a message that adding the event failed
+    And The user should see a message that adding the event failed
 
 
     Examples:
