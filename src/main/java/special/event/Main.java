@@ -7,12 +7,16 @@ import repositories.UserRepository;
 import special.event.User;
 
 import javax.swing.*;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static components.ImageUploader.openImage;
+import static special.event.BookingSystem.findEventByIdAndLocation;
 
 public class Main {
 
@@ -92,6 +96,7 @@ public class Main {
         int y = 0;
         User user2;
         int x = 0;
+        Event event1=null;
         String type = "";
         UserComponent userComponent = new UserComponent();
         User loggedInUser = null;
@@ -143,7 +148,6 @@ public class Main {
                 }
 
             } else if (x == 2) {
-               
                 System.out.println("**       Signup      **\n");
 
                 System.out.print("Enter first name: ");
@@ -218,27 +222,21 @@ public class Main {
                 if (isValid) {
                     System.out.println("Creating an account successfully");
                     user2 = new User(email, signuppass, userType, firstName, lastName);
-
+                    if (userType.equals("USER")) {
+                        UserRepository.addToUsers(user2);
+                        System.out.println("The account is now complete and you are able to log in :) ");
+                    }
                     loggedInUser = userComponent.validateLogin(email, signuppass);
-
                     if (userType.equals("SERVICE_PROVIDER")) {
                         System.out.println("Enter the services you need to provide: ");
-
                         String SeviceMessage = scanner.next();
-
                         UserRepository.addToReviw(user2);
                         Notification accountRequestNotification = new Notification();
                         accountRequestNotification.createAccountCreationRequest(user2, SeviceMessage);
                         accountRequestNotification.sendCreationRequest();
                         signupSurvice = Boolean.TRUE;
                     }
-                    if (userType.equals("USER")) {
-                        UserRepository.addToUsers(user2);
-                        // Add the user data to the UserRepository
-                        System.out.println("The account is now complete and you are able to log in :) ");
-                    }
-
-
+                    // Add the user data to the UserRepository
                     // Exit the loop after successful signup
                 } else {
                     System.out.println("Account creation failed.");
@@ -265,14 +263,14 @@ public class Main {
                             System.out.println("Select a number to view its contents:");
                             System.out.println("1- Edit your profile:");
                             System.out.println("2- Analyze the event that you have:");
-                            System.out.println("3- Calyndar:");
-                            System.out.println("4- Show a picture of event:");
+                            System.out.println("3- Calendar:");
+                            System.out.println("4- Upload picture of event:");
                             System.out.println("5- Event management:");
                             System.out.println("6- Your notifications:");
                             System.out.println("7- Logout");
                             int choice = readIntegerFromUser(scanner);
 
-                          switch (choice) {
+                            switch (choice) {
                                 case 1: {
                                      //edit
                                     break;
@@ -520,14 +518,33 @@ public class Main {
                                         }
 
                                         case 4: {
+                                            System.out.println("Enter the ID of the event that you want to Show the image:");
+                                            String eventId = scanner.next();
+                                            boolean eventFound = false;
 
-                                            System.out.println("*   Now..you can delete an event !   *\n");
+                                            for (Event event : EventRepository.events) {
+                                                if (event.getIdOfEvent().equals(eventId)) {
+                                                    eventFound = true;
+                                                    if (event.getpath() == null) {
+                                                        System.out.println("The event does'nt have any images.");
+                                                    } else {
+                                                        ImageUploader.openImage(event.getpath());
+                                                    }
+                                                }
+                                            }
+
+                                            if (!eventFound) {
+                                                System.out.println("Event not found.");
+                                            }
+
+                                            break;
+                                          /*  System.out.println("*   Now..you can delete an event !   *\n");
                                             System.out.println("Enter the name of the event you want to delete :");
                                             String nameOfEvent = scanner.next();
                                             System.out.println("Enter the ID of the event you want to delete");
                                             String idOfEvent = scanner.next();
                                             eventComponent.deleteEvent(nameOfEvent, idOfEvent);
-                                            break;
+                                            break;*/
 
                                         }
 
@@ -541,8 +558,6 @@ public class Main {
                                         System.out.println("Your Notifications:");
                                         System.out.println("Select a number to view more details:");
                                         int i = 1;
-                                        if( loggedInUser.notifications.isEmpty())
-                                            System.out.println("No notifications !!!!");
 
                                         for (Notification n : loggedInUser.notifications) {
                                             System.out.println(i + "- " + n.getMessage() + " at ( " + n.getSentDateTime() + " )");
@@ -569,7 +584,7 @@ public class Main {
                                                             replyNotification.createReplyMessage(loggedInUser, true, n.getEvent());
                                                             replyNotification.sendReplyMessage(n.sender);
                                                             loggedInUser.notifications.remove(n);
-                                                            //new reservation
+                                                            //new reservation   SendMail.getSendEmail(messageContent, recipientEmail);
                                                             n.sender.bookedEvent2.add(n.getEvent());
                                                             n.sender.bookedEvent1.remove(n.getEvent());
                                                             System.out.println("Reservation successful!");
@@ -669,7 +684,6 @@ public class Main {
                                 case 3: {
                                     Boolean continueLoop1 = true;
                                     while (continueLoop1) {
-                                        System.out.println("------------------------");
                                         System.out.println("Your Notifications:");
                                         System.out.println("\tSelect a number to view more details:");
                                         int i = 1;
@@ -687,7 +701,6 @@ public class Main {
                                             if (n.getType().equals(Notification.NotificationType.ACCOUNTREQUEST)) {
                                                 boolean continueLoop2 = true;
                                                 while (continueLoop2) {
-                                                    System.out.println("------------------------");
                                                     System.out.println("Select a number:");
                                                     System.out.println("1- accept the request");
                                                     System.out.println("2- reject the request");
@@ -698,20 +711,20 @@ public class Main {
                                                             n.setApproved(true);
                                                             loggedInUser.notifications.remove(n);
                                                             UserRepository.addToUsers(n.sender);
+                                                            SendMail.getSendEmail("Accepted :) ", n.sender.getEmail());
+
                                                             System.out.println("A service provider account has been created");
                                                             UserRepository.reviw.remove(n.sender);
                                                             //email sent
-                                                            SendMail.getSendEmail("Accepted :) ", n.sender.getEmail());
                                                             continueLoop2 = false;
                                                             break;
                                                         }
                                                         case 2: {
                                                             n.setApproved(false);
                                                             loggedInUser.notifications.remove(n);
-                                                            System.out.println("The operation succeeded!");
-                                                            UserRepository.reviw.remove(n.sender);
-                                                            //email sent
                                                             SendMail.getSendEmail("Rejected :( ", n.sender.getEmail());
+
+                                                            //email sent
                                                             continueLoop2 = false;
                                                             break;
                                                         }
@@ -727,7 +740,6 @@ public class Main {
                                             } else {
                                                 boolean continueLoop2 = true;
                                                 while (continueLoop2) {
-                                                    System.out.println("------------------------");
                                                     System.out.println("Enter 1 to back to notification page ");
                                                     int choice2 = readIntegerFromUser(scanner);
                                                     switch (choice2) {
@@ -756,7 +768,6 @@ public class Main {
                                 case 4: {
                                     Boolean continueLoop1 = true;
                                     while (continueLoop1) {
-                                        System.out.println("------------------------");
                                         System.out.println("Select a number :");
                                         System.out.println("1- Enter a new message to sent");
                                         System.out.println("2- Back to home page");
@@ -764,7 +775,6 @@ public class Main {
 
                                         switch (choice1) {
                                             case 1: {
-                                                System.out.println("------------------------");
                                                 System.out.println("*   Now..you can send an announcement !   *\n");
                                                 System.out.println("Enter the message you want to send to users:");
                                                 String message = scanner.next();
@@ -801,12 +811,11 @@ public class Main {
                         System.out.println("\t** Hello in your profile **\n");
                         System.out.println("Name: " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName());
                         System.out.println("Email: " + loggedInUser.getEmail() + "\n");
-
                         boolean continueLoop3 = true;
                         while (continueLoop3) {
                             System.out.println("What would you like to do?");
                             System.out.println("1. View available events");
-                            System.out.println("2. Search");
+                            System.out.println("2. Search");//aseeel.
                             System.out.println("3. Book an event");
                             System.out.println("4. View booked events");
                             System.out.println("5. Cancel booked events");
@@ -840,9 +849,8 @@ public class Main {
                                     List<Event> resultEvents;
                                     boolean continueLoop = true;
                                     while (continueLoop) {
-                                        System.out.println("------------------------");
                                         System.out.println("1. Search by name");
-                                        System.out.println("2. Search by name and location");
+                                        System.out.println("2. Search by name and location");//aseeel.
                                         System.out.println("3. Search by name and price");
                                         System.out.println("4. Search by name, place and price");
                                         System.out.println("5. Show all events");
@@ -851,12 +859,11 @@ public class Main {
                                         int choice1 = readIntegerFromUser(scanner);
                                         switch (choice1) {
                                             case 1: {
-                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 resultEvents = Checker.checkNameOfEvent(eventName);
                                                 System.out.println("------------------------");
-                                                if (!resultEvents.isEmpty()) {
+                                                if (!resultEvents.equals(null)) {
                                                     printEventDetails(resultEvents);
                                                 } else {
                                                     System.out.println("No result :(");
@@ -875,12 +882,10 @@ public class Main {
                                                         }
                                                     }
                                                 }
-                                                break;
 
 
                                             }
                                             case 2: {
-                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 System.out.println("1. Enter location of event: ");
@@ -906,11 +911,9 @@ public class Main {
                                                         }
                                                     }
                                                 }
-                                                break;
 
                                             }
                                             case 3: {
-                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 System.out.println("1. Enter minimum price of event: ");
@@ -938,11 +941,9 @@ public class Main {
                                                         }
                                                     }
                                                 }
-                                                break;
 
                                             }
                                             case 4: {
-                                                System.out.println("------------------------");
                                                 System.out.println("1. Enter name of event: ");
                                                 eventName = scanner.next();
                                                 System.out.println("1. Enter location of event: ");
@@ -972,11 +973,9 @@ public class Main {
                                                         }
                                                     }
                                                 }
-                                                break;
 
                                             }
                                             case 5: {
-                                                System.out.println("------------------------");
                                                 resultEvents = EventRepository.events;
                                                 if (!resultEvents.equals(null)) {
                                                     printEventDetails(resultEvents);
@@ -997,7 +996,6 @@ public class Main {
                                                         }
                                                     }
                                                 }
-                                                break;
 
                                             }
                                             case 6: {
@@ -1006,7 +1004,6 @@ public class Main {
                                             }
                                             default: {
                                                 System.out.println("Invalid choice");
-                                                break;
                                             }
                                         }
                                     }
@@ -1015,27 +1012,26 @@ public class Main {
                                     break;
                                 }
 
-                                case 3:
-                      /*      System.out.println("Available Events:");
-                            for (Event event : EventRepository.events) {
-                                System.out.println("Event ID: " + event.getIdOfEvent());
-                                System.out.println("Event Name: " + event.getNameOfEvent());
-                                System.out.println("Location: " + event.getPlaceOfEvent().getLocationOfPlace());
-                                System.out.println("Start Time: " + event.getEventStartTime());
-                                System.out.println("End Time: " + event.getEventEndTime());
-                                System.out.println("Cost: " + event.getCostOfEvent());
-                                System.out.println("Status: " + event.getstatusOfEvent());
-                                System.out.println("------------------------");
-                            }*/
-                                {
-                                    System.out.print("Enter your balance: ");
-                                    float userBalance = scanner.nextFloat();
-                                    System.out.print("Enter the ID of the event you want to book: ");
-                                    String eventId = scanner.next();
+                                case 3: {
+                                    String eventId1;
+                                    String location1;
+                                    Event event;
+                                    System.out.println("\t**Now you can book an event**\t");
+
+                                    while (true) {
+                                        System.out.print("Enter the ID of the event you want to book: ");
+                                        eventId1 = scanner.next();
+                                        System.out.print("Enter the location of the event you want to book: ");
+                                        location1 = scanner.next();
+                                        event = findEventByIdAndLocation(eventId1,location1);
+                                        if(event==null){
+                                            System.out.println("The Event not found.");
+                                        }
+                                        else
+                                            break;
+                                    }
                                     System.out.print("Enter booking date (yyyy-MM-dd'T'HH:mm:ss): ");
                                     String bookingDateStr = scanner.next();
-                                    System.out.print("Enter the location of the event you want to book: ");
-                                    String location = scanner.next();
 
                                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
                                     LocalDateTime bookingDate;
@@ -1045,24 +1041,22 @@ public class Main {
                                         System.out.println("Invalid date format. Please enter the date in the format yyyy-MM-dd'T'HH:mm:ss.");
                                         break;
                                     }
-                                    boolean bookingSuccessful = BookingSystem.bookEvent(eventId, location, bookingDate, userBalance, loggedInUser);
+                                    System.out.print("Enter your balance: ");
+                                    float userBalance = scanner.nextFloat();
+
+                                    boolean bookingSuccessful = BookingSystem.bookEvent(eventId1, location1, bookingDate, userBalance, loggedInUser);
                                     if (bookingSuccessful) {
-                                        // userBalance -= event.costOfEvent;
-                                        //payment process
-                                        Event event = BookingSystem.findEventByIdAndLocation(eventId, location);
 
-
-                                        ////////////////////////////////////////////
-
-                                    } else {
+                                    }
+                                    else {
                                         System.out.println("Booking failed. Please try again.");
                                     }
+
                                     break;
                                 }
                                 case 4: {
                                     String userEmail = loggedInUser.getEmail();
                                     List<Event> bookedEvents = loggedInUser.getBookedEventsForUser(userEmail);
-                                    ;
                                     if (!bookedEvents.isEmpty()) {
                                         System.out.println("Booked Events:");
                                         for (Event event : bookedEvents) {
@@ -1160,7 +1154,6 @@ public class Main {
                                 case 7: {
                                     Boolean continueLoop1 = true;
                                     while (continueLoop1) {
-                                        System.out.println("------------------------");
                                         System.out.println("Your Notifications:");
                                         System.out.println("Select a number to view more details:");
                                         int i = 1;
@@ -1172,13 +1165,20 @@ public class Main {
                                         System.out.println(i + "- Back to home page");
                                         int choice1 = readIntegerFromUser(scanner);
                                         if (choice1 < i && choice1 >= 1) {
-
                                             Notification n = loggedInUser.notifications.get(choice1 - 1);
                                             System.out.println(n.showNtificationDetails());
+                                            if (n.isApproved()) {
+                                                System.out.println("Enter your credit card Number:");
+                                                String CardNumber = scanner.next();
+                                                boolean Successfulpayment = BookingSystem.processPayment(CardNumber, n.getEvent(), loggedInUser);
+                                                if (Successfulpayment)
+                                                    System.out.println("Payment Successful .");
+                                                else
+                                                    System.out.println("Payment failed.");
+                                            }
 
                                             boolean continueLoop2 = true;
                                             while (continueLoop2) {
-                                                System.out.println("------------------------");
                                                 System.out.println("Enter 1 to back to notification page ");
                                                 int choice2 = readIntegerFromUser(scanner);
                                                 switch (choice2) {
@@ -1191,7 +1191,8 @@ public class Main {
                                                     }
                                                 }
                                             }
-                                        } else if (choice1 == i) {
+                                         }
+                                        else if (choice1 == i) {
                                             continueLoop1 = false;
                                         } else {
                                             System.out.println("Invalid choice");
@@ -1222,3 +1223,4 @@ public class Main {
 
     }
 }
+
