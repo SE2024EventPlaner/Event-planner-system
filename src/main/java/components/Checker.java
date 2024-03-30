@@ -20,10 +20,9 @@ public class Checker {
             }
         }
 
-        if(!resultEvents.isEmpty())
-            return resultEvents;
-        else
-            return null;
+
+        return resultEvents;
+
 
     }
     public static List<Event> checkNameAndLocationOfEvent(String searchName,String searchLocation) {
@@ -40,18 +39,17 @@ public class Checker {
                 resultEvents.add(event);
             }
         }
-        if(!resultEvents.isEmpty())
-            return resultEvents;
-        else
-            return null;
+
+        return resultEvents;
+
 
     }
-    public static List<Event> checkNameAndPriceOfEvent(String searchName,String minPrice,String maxPrice) {
+    public static List<Event> checkNameAndPriceOfEvent(String searchName,float minPrice,float maxPrice) {
         resultEvents.clear();
         String nameOfEvent;
         float costOfEvent;
-        float minPriceOfEvent = Float.parseFloat(minPrice);
-        float maxPriceOfEvent = Float.parseFloat(maxPrice);
+        float minPriceOfEvent = minPrice;
+        float maxPriceOfEvent = maxPrice;
 
         for (Event event : EventRepository.events) {
             nameOfEvent = event.getNameOfEvent();
@@ -59,24 +57,23 @@ public class Checker {
 
             if ( (nameOfEvent.contains(searchName) )
                     &&(minPriceOfEvent <= costOfEvent)
-                      &&(costOfEvent <= maxPriceOfEvent) ) {
+                    &&(costOfEvent <= maxPriceOfEvent) ) {
 
                 resultEvents.add(event);
             }
         }
-        if(!resultEvents.isEmpty())
-            return resultEvents;
-        else
-            return null;
+
+        return resultEvents;
+
 
     }
-    public static List<Event> checkNameLocationAndPriceOfEvent(String searchName,String searchLocation,String minPrice,String maxPrice) {
+    public static List<Event> checkNameLocationAndPriceOfEvent(String searchName,String searchLocation,float minPrice,float maxPrice) {
         resultEvents.clear();
         String nameOfEvent;
         String locationOfEvent;
         float costOfEvent;
-        float minPriceOfEvent = Float.parseFloat(minPrice);
-        float maxPriceOfEvent = Float.parseFloat(maxPrice);
+        float minPriceOfEvent = minPrice;
+        float maxPriceOfEvent = maxPrice;
 
         for (Event event : EventRepository.events) {
             nameOfEvent = event.getNameOfEvent();
@@ -90,10 +87,9 @@ public class Checker {
                 resultEvents.add(event);
             }
         }
-        if(!resultEvents.isEmpty())
-            return resultEvents;
-        else
-            return null;
+
+        return resultEvents;
+
 
     }
     public static boolean checkStringLength(String str) {
