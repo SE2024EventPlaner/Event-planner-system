@@ -4,6 +4,7 @@ import com.thoughtworks.qdox.model.expression.Constant;
 
 import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +32,8 @@ public class Event {
     private Place placeOfEvent;
     User eventOwner;
     private User bookedUser;
+    Path imagePath;
+
 
 
     //   public ArrayList<Reservation> timeSlots;
@@ -48,9 +51,12 @@ public class Event {
         this.eventStartTime = eventStartTime;
         this.eventEndTime = eventEndTime;
         placeOfEvent = new Place(nameOfPlace, capacityOfPlace, locationOfPlace);
-        eventOwner = new User(ownerEmail, ownerPassword);
+        for (User user: UserRepository.users){
+            if(user.getEmail().equals(ownerEmail) && user.getPassword().equals(ownerPassword))
+                eventOwner =user;
 
     }
+        }
 
 
     public String getIdOfEvent() {
@@ -110,6 +116,16 @@ public class Event {
 
     public void setstatusOfEvent( String statusOfEvent) {
         this.statusOfEvent= statusOfEvent;
+    }
+
+
+
+    public void setpath(Path p) {
+        this.imagePath = p;
+    }
+
+    public Path getpath() {
+        return imagePath;
     }
 
 
