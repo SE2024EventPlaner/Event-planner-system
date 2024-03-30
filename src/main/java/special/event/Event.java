@@ -136,15 +136,7 @@ public class Event {
 
 
 
-    public boolean bookEvent(User user) {
-        if (this.bookedUser == null) {
-            this.bookedUser = user;
-            return true;
-        } else {
-            System.out.println("Event is already booked.");
-            return false;
-        }
-    }
+  
 
 
 
