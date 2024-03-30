@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import repositories.EventRepository;
 import repositories.UserRepository;
 
 
@@ -34,6 +35,9 @@ public class SignUp {
     String finalName= "";
     String Confirm_password = "";
 
+    UserRepository o=new UserRepository();
+    EventRepository kk=new EventRepository();
+
     String type= "";
 
     User user;
@@ -48,6 +52,9 @@ public class SignUp {
         password=inpass;
         email=inemail;
         type=typ;
+        o.readUsers(UserRepository.fileOfUser);
+        kk.readEventFile(EventRepository.fileOfEvent);
+
     }
 
 
@@ -61,7 +68,7 @@ public class SignUp {
     }
     @Then("The user should see a confirmation message")
     public void theUserShouldSeeAConfirmationMessage() {
-     System.out.println("You have been registered successfully");
+        System.out.println("You have been registered successfully");
     }
 
 
@@ -87,7 +94,7 @@ public class SignUp {
     }
     @Then("a {string} should appear")
     public void aShouldAppear(String string) {
-     System.out.println(string);
+        System.out.println(string);
     }
 
     @Then("the user's application for service provider is stored for review")
@@ -98,7 +105,7 @@ public class SignUp {
     }
     @Then("the admin approves the application")
     public void theAdminApprovesTheApplication() {
-      assertTrue(true);
+        assertTrue(true);
     }
 
     @Then("the user data is added to the arraylist")

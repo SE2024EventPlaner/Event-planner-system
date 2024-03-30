@@ -6,6 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import repositories.EventRepository;
+import repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,8 @@ public class EventMng {
     String locationOfPlace;
     User user;
     Event event;
+    UserRepository o=new UserRepository();
+    EventRepository kk=new EventRepository();
     boolean A;
     EventComponent eventComponent= new EventComponent();
 
@@ -38,7 +41,10 @@ public class EventMng {
     @Given("The user login as Service Provider with   {string} and {string}")
     public void theUserLoginAsServiceProviderWithAnd(String email, String password) {
         this.user = new UserComponent().validateLoginAsServiceProvider(email, password);
-       // assertNotNull(this.user);
+        // assertNotNull(this.user);
+        o.readUsers(UserRepository.fileOfUser);
+        kk.readEventFile(EventRepository.fileOfEvent);
+
 
     }
 
@@ -48,7 +54,7 @@ public class EventMng {
     }
     @Then("The User enter name of event with {string}")
     public void theUserEnterNameOfEventWith(String name) {
-      this.nameOfEvent=name;
+        this.nameOfEvent=name;
     }
     @Then("The User enter id of event with {string}")
     public void theUserEnterIdOfEventWith(String id) {
@@ -90,7 +96,7 @@ public class EventMng {
     @Then("The User enter  Event start time with {string}")
     public void theUserEnterEventStartTimeWith(String startTime) {
 
-    this.eventStartTime=LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.eventStartTime=LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
     }
     @Then("The User enter  Event end time with {string}")
@@ -111,7 +117,7 @@ public class EventMng {
 
         try {
 
-           this.capacityOfPlace = Integer.parseInt(capacity);
+            this.capacityOfPlace = Integer.parseInt(capacity);
 
         } catch (NumberFormatException e) {
 
@@ -123,12 +129,12 @@ public class EventMng {
 
     @Then("the new event must  be added to the event list")
     public void theNewEventMustBeAddedToTheEventList() {
-     assertTrue(eventComponent.addEvent(nameOfEvent,idOfEvent,costOfEvent,constructionCost,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.getEmail(),user.getPassword()));
+        assertTrue(eventComponent.addEvent(nameOfEvent,idOfEvent,costOfEvent,constructionCost,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.getEmail(),user.getPassword()));
 
     }
     @Then("The user should see a message that the event was added successfully")
     public void theUserShouldSeeAMessageThatTheEventWasAddedSuccessfully() {
-       System.out.println("The event was added successfully");
+        System.out.println("The event was added successfully");
     }
 
 
@@ -147,7 +153,7 @@ public class EventMng {
     }
     @Then("The user should see a message that adding the event failed")
     public void theUserShouldSeeAMessageThatAddingTheEventFailed() {
-      assertTrue(true);
+        assertTrue(true);
 
     }
 
@@ -186,7 +192,7 @@ public class EventMng {
     }
     @Then("The user should see  a {string}")
     public void theUserShouldSeeA(String string) {
-      assert (true);
+        assert (true);
     }
 
 
@@ -195,7 +201,7 @@ public class EventMng {
 
     @When("the user deletes an event with not available id {string} and not available name {string}")
     public void theUserDeletesAnEventWithNotAvailableIdAndNotAvailableName(String name, String id) {
-      assertFalse(eventComponent.deleteEvent(name,id ));
+        assertFalse(eventComponent.deleteEvent(name,id ));
     }
     @Then("The user should see a message that this event does not exist")
     public void theUserShouldSeeAMessageThatThisEventDoesNotExist() {
@@ -213,7 +219,7 @@ public class EventMng {
     }
     @When("The system will delete the selected event from events list")
     public void theSystemWillDeleteTheSelectedEventFromEventsList() {
-       assertTrue(eventComponent.deleteEvent(this.event.getNameOfEvent(),this.event.getIdOfEvent()));
+        assertTrue(eventComponent.deleteEvent(this.event.getNameOfEvent(),this.event.getIdOfEvent()));
     }
     @Then("The user will see that the event has been modified")
     public void theUserWillSeeThatTheEventHasBeenModified() {
@@ -277,5 +283,4 @@ public class EventMng {
     }
 
 }
-
 

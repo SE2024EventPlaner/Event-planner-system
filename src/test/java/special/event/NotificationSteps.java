@@ -25,11 +25,13 @@ public class NotificationSteps {
     User user;
     Event event;
 
+
     @Given("the admin is on the notification page in the admin account with email {string}")
     public void theAdminIsOnTheNotificationPageInTheAdminAccount(String adminEmail) {
         this.adminEmail = adminEmail;
         this.admin = getUser(adminEmail);
         assertNotNull(admin);
+
 
     }
 
@@ -53,13 +55,13 @@ public class NotificationSteps {
     public void theAdminApprovesTheRequest() {
 
         notification.setApproved(true);
-       assertTrue(notification.isApproved());
+        assertTrue(notification.isApproved());
     }
     @Then("a confirmation message {string} is sent to the user's email address {string}")
     public void aConfirmationMessageIsSentToTheUserSEmailAddress(String emailMessage, String userEmail) {
-       //email message
+        //email message
         if(notification.isApproved()){
-           System.out.println("Message sent !");
+            System.out.println("Message sent !");
         }
 
     }

@@ -19,6 +19,8 @@ public class BookEvent {
     private String errorMessage;
     private String unavailableEventId;
     User loggedInUser ;
+
+
     UserComponent userComponent =new UserComponent();
     Event event1,event2,event3;
 
@@ -147,6 +149,6 @@ public class BookEvent {
     }
 
 
-   
+
 
 }
