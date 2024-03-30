@@ -11,6 +11,7 @@ public class Event {
     private String nameOfEvent;
     private String idOfEvent;
     public static final String[] serviceOfEvent = {"DJ", "Restaurant", "Studio", "People to organize event", "Decorations"};
+
     private float costOfEvent;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     String statusOfEvent="unbook";
@@ -19,11 +20,14 @@ public class Event {
     Place placeOfEvent;
     User eventOwner;
     Path imagePath;
+    float eventConstructionCost;
     private User bookedUser;
+
+    //   public ArrayList<Reservation> timeSlots;
     public Event() {
 
     }
-    public Event(String nameOfEvent, String idOfEvent, float costOfEvent,
+    public Event(String nameOfEvent, String idOfEvent, float costOfEvent,float eventConstructionCost,
                  LocalDateTime eventStartTime, LocalDateTime eventEndTime,
                  String nameOfPlace, int capacityOfPlace,
                  String locationOfPlace, String ownerEmail, String ownerPassword) {
@@ -32,13 +36,19 @@ public class Event {
         this.costOfEvent = costOfEvent;
         this.eventStartTime = eventStartTime;
         this.eventEndTime = eventEndTime;
+        this.eventConstructionCost=eventConstructionCost;
         placeOfEvent = new Place(nameOfPlace, capacityOfPlace, locationOfPlace);
+
         for (User user: UserRepository.users){
             if(user.getEmail().equals(ownerEmail) && user.getPassword().equals(ownerPassword)){
                 eventOwner =user;
             }
         }
+
+
     }
+
+
     public String getIdOfEvent() {
         return idOfEvent;
     }
@@ -98,12 +108,14 @@ public class Event {
     public User getBookedUser() {
         return bookedUser;
     }
+
     public void setBookedUser(User bookedUser) {
         this.bookedUser = bookedUser;
     }
     public void setEventStatus(String status) {
         this.statusOfEvent = status;
     }
+
 
 
 

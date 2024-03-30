@@ -1,4 +1,5 @@
 package special.event;
+import components.EventComponent;
 import components.UserComponent;
 import repositories.EventRepository;
 import repositories.UserRepository;
@@ -49,9 +50,8 @@ public class Notification {
     public  void createReplyMessage(User sender, Boolean approved,Event event) {
         this.sender = sender;
         this.event = event;
-        String state = "reject";
         if(approved.equals(true)){
-            state = "accept";
+            this.state = "accept";
         }
         this.message = "The "+sender.getType() +" "+ sender.getFirstName() +" "
                 +state + " Your reservation request";
@@ -151,29 +151,20 @@ public class Notification {
     }
     public void sendReservationRequest(){
         if(type.equals(NotificationType.RESERVATIONREQUEST)){
-            User provider = null;
-            Event event1;
-            for(int i = 0; i< EventRepository.events.size(); i++){
-                event1 = EventRepository.events.get(i);
-                if(event1.equals(this.event)){
-                    provider =  event1.getEventOwner();
-                    break;
-                }
-            }
-            if(!provider.equals(null))
-            provider.addNotification(this);
+            User provider =this.event.getEventOwner() ;
+                provider.addNotification(this);
             System.out.println("Your request was sent successfully !");
         }
     }
 
     public void sendCreationRequest(){
         if(type.equals(NotificationType.ACCOUNTREQUEST)){
-        for (User admin : UserRepository.users) {
-            if (admin.getType().equals("ADMIN")) {
-                admin.addNotification(this);
+            for (User admin : UserRepository.users) {
+                if (admin.getType().equals("ADMIN")) {
+                    admin.addNotification(this);
+                }
             }
-        }
-        System.out.println("Wait for the admin's approval to access your account ! ");
+            System.out.println("Wait for the admin's approval to access your account ! ");
         }
 
     }
@@ -202,18 +193,18 @@ public class Notification {
 
         }else if(type.equals(NotificationType.RESERVATIONREQUEST)){
             details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+" with this email: "+sender.getEmail() +"\nsubmitted a reservation request with this description: \n"
-           +"\nEvent ID: " + event.getIdOfEvent()
-           +"\nEvent Name: " + event.getNameOfEvent()
-           +"\nLocation: " + event.getPlaceOfEvent().getLocationOfPlace()
-           +"\nStart Time: " + event.getEventStartTime()
-           +"\nEnd Time: " + event.getEventEndTime()
-           +"\nCost: " + event.getCostOfEvent()
-           +"\nStatus: " + event.getstatusOfEvent()
-           +"\n------------------------"
-            +"\nDo you agree to the request?";
+                    +"\nEvent ID: " + event.getIdOfEvent()
+                    +"\nEvent Name: " + event.getNameOfEvent()
+                    +"\nLocation: " + event.getPlaceOfEvent().getLocationOfPlace()
+                    +"\nStart Time: " + event.getEventStartTime()
+                    +"\nEnd Time: " + event.getEventEndTime()
+                    +"\nCost: " + event.getCostOfEvent()
+                    +"\nStatus: " + event.getstatusOfEvent()
+                    +"\n------------------------"
+                    +"\nDo you agree to the request?";
 
         }else if(type.equals(NotificationType.ADMINANNOUNCEMENT)){
-        details="No details";
+            details="No details";
 
         }else{
             details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+
@@ -226,4 +217,3 @@ public class Notification {
         return details;
     }
 }
-

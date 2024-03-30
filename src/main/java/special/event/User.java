@@ -14,6 +14,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String message;
+    private float accountBalance;
     List<Notification> notifications = new ArrayList<>();
     public  ArrayList<Event>bookedEvent1 = new ArrayList<>();//to store an event that the service not agree yet .
     public  ArrayList<Event>bookedEvent2 = new ArrayList<>();////to store an event that the service agree.
@@ -71,6 +72,12 @@ public class User {
         return message;
     }
 
+    public float getAccountBalance() {
+        return accountBalance;
+    }
+    public void setAccountBalance(float accountBalance) {
+        this.accountBalance = accountBalance;
+    }
     public void setType(String type) {
         this.type = type;}
 
@@ -90,13 +97,5 @@ public class User {
     }
 
 
-    public  List<Event> getBookedEventsForUser(String Email) {
-        List<Event> bookedEvents = new ArrayList<>();
-        for (Event event : this.bookedEvent2) {
-            if (event.getBookedUser() != null && event.getBookedUser().getEmail().equals(Email)) {
-                bookedEvents.add(event);
-            }
-        }
-        return bookedEvents;
-    }
+
 }
