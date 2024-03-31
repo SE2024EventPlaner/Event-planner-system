@@ -8,17 +8,20 @@
     <artifactId>EventPlaner</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-   
     <properties>
+             <property>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.organization>se2024eventplaner</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <java.version>18</java.version>
-        <jacoco.version>0.8.8</jacoco.version>
-        <javafx-maven-plugin.version>0.0.8</javafx-maven-plugin.version>
+          </property>
+
+        <property>
+            <sonar.organization>se2024eventplaner</sonar.organization>
+            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+       </property>
     </properties>
+
+         
 
 
     <dependencies>
@@ -91,18 +94,17 @@
             <version>7.15.0</version>
         </dependency>
 
+             <dependency>
+               <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+               <version>0.8.11</version>
+            </dependency>
+
     </dependencies>
 
-   <build>
-        <pluginManagement>
-          <plugins>
-                <plugin>
-                   <artifactId>maven-surefire-plugin</artifactId>
-                   <version>2.10</version>
-                   <configuration>
-                   <useFile>false</useFile>
-                   </configuration>
-                </plugin>
+    <build>
+        <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -134,30 +136,28 @@
                         </configuration>
                     </execution>
                 </executions>
-     </plugin>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version> <!-- Use a version that supports Java 17 -->
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
-
-              <plugin>
-                  <groupId>org.jacoco</groupId>
-                  <artifactId>jacoco-maven-plugin</artifactId>
-                  <executions>
-                      <execution>
-                          <goals>
-                              <goal>prepare-agent</goal>
-                          </goals>
-                      </execution>
-                      <execution>
-                          <id>report</id>
-                          <phase>test</phase>
-                          <goals>
-                              <goal>report</goal>
-                          </goals>
-                      </execution>
-                  </executions>
-              </plugin>
-
-           </plugins>
-        </pluginManagement>
     </build>
 
 
