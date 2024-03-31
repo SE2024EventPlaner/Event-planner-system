@@ -17,7 +17,7 @@ public class EventRepository {
     public static List<Event> events = new ArrayList<>();
 
 
-    public static Path filePath = Paths.get("src/main/resources/EventFile.txt");
+    public static Path filePath = Paths.get("Event-planner-system/src/main/resources/EventFile.txt");
     
     public static String fileOfEvent = filePath.toAbsolutePath().toString();
     public EventRepository(){
