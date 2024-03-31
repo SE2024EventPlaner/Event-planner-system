@@ -1,18 +1,9 @@
 package special.event;
 
-import com.thoughtworks.qdox.model.expression.Constant;
-
-import javax.xml.crypto.Data;
-import java.math.BigDecimal;
-import java.sql.Time;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.apache.maven.surefire.shared.lang3.ObjectUtils;
-import repositories.EventRepository;
 import repositories.UserRepository;
 
 
@@ -28,8 +19,8 @@ public class Event {
     LocalDateTime eventEndTime;
     Place placeOfEvent;
     User eventOwner;
-    float constructionCostOfEvent;
-
+    Path imagePath;
+    float eventConstructionCost;
     private User bookedUser;
 
     //   public ArrayList<Reservation> timeSlots;
@@ -45,8 +36,9 @@ public class Event {
         this.costOfEvent = costOfEvent;
         this.eventStartTime = eventStartTime;
         this.eventEndTime = eventEndTime;
+        this.eventConstructionCost=eventConstructionCost;
         placeOfEvent = new Place(nameOfPlace, capacityOfPlace, locationOfPlace);
-        eventOwner = new User(ownerEmail, ownerPassword);
+
         for (User user: UserRepository.users){
             if(user.getEmail().equals(ownerEmail) && user.getPassword().equals(ownerPassword)){
                 eventOwner =user;
@@ -60,6 +52,13 @@ public class Event {
     public String getIdOfEvent() {
         return idOfEvent;
     }
+    public void setpath(Path p) {
+        this.imagePath = p;
+    }
+
+    public Path getpath() {
+        return imagePath;
+    }
 
     public void setIdOfEvent(String idOfEvent) {
         this.idOfEvent = idOfEvent;
@@ -68,13 +67,7 @@ public class Event {
     public String getNameOfEvent() {
         return nameOfEvent;
     }
-    public float geteventConstructionCost() {
-        return constructionCostOfEvent;
-    }
 
-    public void seteventConstructionCost(float constructionCostOfEvent) {
-        this.constructionCostOfEvent = constructionCostOfEvent;
-    }
     public void setNameOfEvent(String nameOfEvent) {
         this.nameOfEvent = nameOfEvent;
     }
@@ -121,6 +114,10 @@ public class Event {
     }
     public void setEventStatus(String status) {
         this.statusOfEvent = status;
+    }
+    public float getEventConstructionCost(){return eventConstructionCost;}
+    public void setEventConstructionCost(float eventConstructionCost){
+        this.eventConstructionCost = eventConstructionCost;
     }
 
 

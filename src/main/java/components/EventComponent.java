@@ -111,6 +111,7 @@ public class EventComponent {
                 System.out.println("Location Of Event :"+ EventRepository.events.get(i).getPlaceOfEvent().getLocationOfPlace());
                 System.out.println("Place Of Event :" +EventRepository.events.get(i).getPlaceOfEvent().getNameOfPlace());
                 System.out.println("Capacity Of Event :" +EventRepository.events.get(i).getPlaceOfEvent().getCapacityOfPlace());
+
                 System.out.println("\n");
             }
         }

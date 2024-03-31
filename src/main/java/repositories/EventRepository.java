@@ -17,14 +17,12 @@ public class EventRepository {
     public static List<Event> events = new ArrayList<>();
 
 
-    public static Path filePath = Paths.get("C:/Users/Dell/SoftwarProject22/EventPlaner99/src/main/resources/EventFile.txt");
+    public static Path filePath = Paths.get("/Users/mbp/Desktop/FinalEventPlaner/src/main/resources/EventFile.txt");
     public static String fileOfEvent = filePath.toAbsolutePath().toString();
     public EventRepository(){
 
-        readEventFile(fileOfEvent);
-
     }
-    public static void readEventFile(String fileName){
+    public  void readEventFile(String fileName){
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {

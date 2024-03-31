@@ -104,7 +104,7 @@ public class ImageUploader extends JFrame {
     }
 
     private void saveImage(Path sourcePath) throws IOException {
-        String destinationPath = "C:\\Users\\DELL\\software_project\\EventPlaner991\\src\\main\\resources\\images";
+        String destinationPath = "/Users/mbp/Desktop/FinalEventPlaner/src/main/resources/images";
         Path destination = Path.of(destinationPath);
         // Create the directory if it doesn't exist
         if (!Files.exists(destination)) {

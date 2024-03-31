@@ -97,13 +97,5 @@ public class User {
     }
 
 
-    public  List<Event> getBookedEventsForUser(String Email) {
-        List<Event> bookedEvents = new ArrayList<>();
-        for (Event event : this.bookedEvent2) {
-            if (event.getBookedUser() != null && event.getBookedUser().getEmail().equals(Email)) {
-                bookedEvents.add(event);
-            }
-        }
-        return bookedEvents;
-    }
+
 }

@@ -18,6 +18,7 @@ public class BookingSystem {
                     ReservationNotification.createReservationRequest(loggedInUser,event);
                     ReservationNotification.sendReservationRequest();
                     System.out.println("We will send you a notification when your reservation request is accepted !");
+
                     return true;
                 } else  {
                     System.out.println("Insufficient funds. Booking failed.");
@@ -32,7 +33,7 @@ public class BookingSystem {
     }
     public static Event findEventByIdAndLocation(String eventId, String location) {
         EventRepository eventRepository = new EventRepository();
-        for (Event event : EventRepository.events) {
+        for (Event event : eventRepository.events) {
             if (event.getIdOfEvent().equals(eventId) && event.getPlaceOfEvent().getLocationOfPlace().equals(location)) {
                 return event;
             }
@@ -69,4 +70,3 @@ public class BookingSystem {
     }
 
 }
-
