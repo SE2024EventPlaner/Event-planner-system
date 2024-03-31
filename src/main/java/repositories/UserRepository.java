@@ -12,7 +12,7 @@ public class UserRepository {
 
     public static List<User> users = new ArrayList<>();
 
-    static Path filePath = Paths.get("src/main/resources/UserFile.txt");
+    static Path filePath = Paths.get("Event-planner-system/src/main/resources/UserFile.txt");
     public static String fileOfUser = filePath.toAbsolutePath().toString();
 
     public UserRepository( ){
