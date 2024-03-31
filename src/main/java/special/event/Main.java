@@ -1298,59 +1298,43 @@ public class Main {
                                 }
                                 case 5: {
                                     System.out.println("\nCancel booked events:");
-                                    if (!loggedInUser.bookedEvent2.isEmpty()) {
-                                        System.out.println("Booked Events:");
-                                        for (Event event : loggedInUser.bookedEvent2) {
-                                            System.out.println("Event Name: " + event.getNameOfEvent());
+                                    boolean foundBookedEvents2 = false;
+                                    for (Event event : loggedInUser.bookedEvent2) {
+                                        if (event.getBookedUser() != null && event.getBookedUser().getEmail().equals(loggedInUser.getEmail())) {
+                                            // Display the booked event details
                                             System.out.println("Event ID: " + event.getIdOfEvent());
-                                            System.out.println("Location: " + event.getPlaceOfEvent().getLocationOfPlace());
-                                            System.out.println("Event Start Time: " + event.getEventStartTime());
-                                            System.out.println("Event End Time: " + event.getEventEndTime());
-                                            System.out.println("------------------------------------");
-                                        }
-                                    } else {
-                                        System.out.println("You have not booked any events.");
-                                        break;
-                                    }
-
-                                    String IDC;
-                                    boolean flagID = false;
-                                    while (true) {
-                                        System.out.print("Enter the ID of event you want to cancel it: ");
-                                        IDC = scanner.next();
-                                        for (Event event : loggedInUser.bookedEvent2) {
-                                            if (event.getIdOfEvent().equals(IDC)) {
-                                                flagID = true;
-                                                break;
+                                            System.out.println("Event Name: " + event.getNameOfEvent());
+                                            System.out.println("Event Location: " + event.getPlaceOfEvent().getLocationOfPlace());
+                                            System.out.println("Event Date: " + event.getEventStartTime());
+                                            System.out.println();
+                                            String IDC;
+                                            while (true) {
+                                                System.out.print("Enter the ID of event you want to cancle it :");
+                                                IDC = scanner.next();
+                                                boolean flagID = eventComponent.checkIdOfEvent(IDC);
+                                                if (flagID == true) {
+                                                    break;
+                                                } else {
+                                                    System.out.println(" please try again....!");
+                                                }
                                             }
-                                        }
-                                        if (flagID) {
-                                            break;
-                                        } else {
-                                            System.out.println("Please try again....!");
+                                            System.out.print("Do you want to cancel this event? (yes/no): ");
+                                            String cancelChoice = scanner.next();
+                                            if (cancelChoice.equalsIgnoreCase("yes")) {
+                                                // Remove the booking
+                                                for (Event event2 : loggedInUser.bookedEvent2) {
+                                                    if (event2.getIdOfEvent().equals(IDC)) {
+                                                        loggedInUser.bookedEvent2.remove(event2);
+                                                        event2.setEventStatus("unbook"); // Update event status
+                                                    }
+                                                }
+                                                System.out.println("Event has been cancelled successfully.");
+                                            }
+                                            foundBookedEvents2 = true; // flag to true as booked events
                                         }
                                     }
-
-                                    System.out.print("Do you want to cancel this event? (yes/no): ");
-                                    String cancelChoice = scanner.next();
-                                    if (cancelChoice.equalsIgnoreCase("yes")) {
-                                        // Remove the booking
-                                        Iterator<Event> iterator = loggedInUser.bookedEvent2.iterator();
-                                        while (iterator.hasNext()) {
-                                            Event event2 = iterator.next();
-                                            if (event2.getIdOfEvent().equals(IDC)) {
-                                                iterator.remove();
-                                                event2.setEventStatus("unbook"); // Update event status
-                                                flagID = true; // Set flag to true as event is found
-                                            }
-                                        }
-                                        if (flagID) {
-                                            System.out.println("Event has been cancelled successfully.");
-                                        } else {
-                                            System.out.println("Event with ID " + IDC + " not found in your booked events.");
-                                        }
-                                    } else {
-                                        System.out.println("Cancellation aborted.");
+                                    if (!foundBookedEvents2) {
+                                        System.out.println("No booked events found.");
                                     }
                                     break;
                                 }
