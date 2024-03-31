@@ -17,7 +17,8 @@ public class EventRepository {
     public static List<Event> events = new ArrayList<>();
 
 
-    public static Path filePath = Paths.get("C:/Users/Dell/software_project/EventPlaner9911/src/main/resources/EventFile.txt");
+    public static Path filePath = Paths.get("src/main/resources/EventFile.txt");
+    
     public static String fileOfEvent = filePath.toAbsolutePath().toString();
     public EventRepository(){
 
