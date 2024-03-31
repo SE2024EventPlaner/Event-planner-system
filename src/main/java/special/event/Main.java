@@ -376,25 +376,42 @@ public class Main {
                                     break;
                                 }
                                 case 2: {
+                                    int numberOfEvent = 0;
                                     System.out.println("\t\tYOUR EVENTS :  \n");
                                     for (Event event : EventRepository.events) {
-                                        if (event.eventOwner.getEmail().equals(loggedInUser.getEmail()))
+                                        if (event.getEventOwner().getEmail().equals(loggedInUser.getEmail())) {
+
+                                            numberOfEvent++;
                                             System.out.println("Name Of Event :" + event.getNameOfEvent() + "\tID Of Event :" + event.getIdOfEvent() + "\n");
+                                        }
                                     }
-                                    System.out.println("The total number of your events = " + EventRepository.events.size() + "\n");
+                                    System.out.println("The total number of your events = " + numberOfEvent + "\n");
+
+
+
                                     int numberOfBookedEvent = 0;
+                                    float totalProfit = 0;
+                                    float profit = 0;
                                     System.out.println("\n\t\tYOUR BOOKED EVENTS :");
                                     for (Event event : EventRepository.events) {
-                                        if (event.getstatusOfEvent().equalsIgnoreCase("booked")) {
+                                        if (event.getstatusOfEvent().equalsIgnoreCase("booked")&&event.getEventOwner().getEmail().equals(loggedInUser.getEmail())) {
+                                            profit = ( event.getCostOfEvent()-event.getEventConstructionCost() );
+                                            totalProfit += ( event.getCostOfEvent()-event.getEventConstructionCost() );
                                             System.out.println("Name Of Event :" + event.getNameOfEvent() + "\tID Of Event:" + event.getIdOfEvent());
+                                            System.out.println("The profit from this event :" +profit);
+
                                             numberOfBookedEvent++;
+
                                         }
                                     }
                                     System.out.println("\nThe total number of your booked events = " + numberOfBookedEvent + "\n");
+                                    System.out.println("The total profit from booked events = " + profit + "\n");
+
+
                                     int numberOfUnbookedEvent = 0;
                                     System.out.println("\n\t\tYOUR UnBOOKED EVENTS :");
                                     for (Event event : EventRepository.events) {
-                                        if (event.getstatusOfEvent().equalsIgnoreCase("unbooked")) {
+                                        if (event.getstatusOfEvent().equalsIgnoreCase("unbooked")&&event.getEventOwner().getEmail().equals(loggedInUser.getEmail())) {
                                             System.out.println("Name Of Event :" + event.getNameOfEvent() + "\tID Of Event:" + event.getIdOfEvent());
                                             numberOfUnbookedEvent++;
                                         }
@@ -405,6 +422,7 @@ public class Main {
                                     /////
                                     break;
                                 }
+                                    
                                 case 3: {
 
                                   //طباعة الايفت القادمة فقط
@@ -775,7 +793,86 @@ public class Main {
                                     break;
                                 }
                                 case 2: {
-                                    //reports
+                                    UserRepository userRepository = new UserRepository();
+                                    EventRepository eventRepository = new EventRepository();
+                                    LocalDateTime now = LocalDateTime.now();
+                                    int NumberOfUsers = 0;
+                                    int NumberOfProviders = 0;
+                                    int NumberOfEvents = eventRepository.events.size();
+                                    float totalProfit = 0;
+
+
+                                    System.out.println("------------------------");
+                                    System.out.println("    System statistics   ");
+                                    for(User user : userRepository.users){
+                                        if(user.getType().equals("USER")){
+                                            NumberOfUsers++;
+                                        }
+                                        if(user.getType().equals("SERVICE_PROVIDER")){
+                                            NumberOfProviders++;
+                                        }
+                                        for(Event event : user.bookedEvent2){
+                                            if(event.getEventEndTime().isBefore(now))
+                                                totalProfit += (event.getCostOfEvent()-event.getEventConstructionCost());
+                                        }
+
+                                    }
+
+                                    for (User user : userRepository.users) {
+
+                                        if (user.getType().equals("USER")) {
+                                            NumberOfUsers++;
+                                        }
+                                        if (user.getType().equals("SERVICE_PROVIDER")) {
+                                            NumberOfProviders++;
+                                        }
+                                        for (Event event : user.bookedEvent2) {
+                                            if (event.getstatusOfEvent().equalsIgnoreCase("booked")) {
+                                                totalProfit += (event.getCostOfEvent() - event.getEventConstructionCost());
+                                            }
+                                        }
+                                    }
+                                    int maxCount = 0;
+                                    Event mostRepeatedEvent = null ;
+                                    LocalTime mostPopularTime = null;
+                                    int maxCount1 = 0;
+                                    float averageOfEvents = 0;
+
+                                    for (Event event : EventRepository.events) {
+                                        averageOfEvents +=  event.getCostOfEvent();
+
+                                        int eventCount1 = 1;
+                                        for (User innerUser : userRepository.users) {
+                                            for (Event innerEvent : innerUser.bookedEvent2) {
+
+                                                if (event.getEventStartTime().toLocalTime().equals(innerEvent.getEventStartTime().toLocalTime())) {
+                                                    eventCount1++;
+                                                }
+                                            }
+                                        }
+                                        if (eventCount1 > maxCount1) {
+                                            maxCount1 = eventCount1;
+                                            mostPopularTime = event.getEventStartTime().toLocalTime();
+                                        }
+
+                                    }
+                                    averageOfEvents /= EventRepository.events.size();
+
+                                    System.out.println("Number of users registered in the system :");
+                                    System.out.println(NumberOfUsers);
+                                    System.out.println("The number of service providers registered in the system :");
+                                    System.out.println(NumberOfProviders);
+                                    System.out.println("The number of events inside the system :");
+                                    System.out.println(NumberOfEvents);
+                                    System.out.println("Average cost of an event :");
+                                    System.out.println(averageOfEvents);
+                                    System.out.println("Total profit from Complete events :");
+                                    System.out.println(totalProfit);
+                                    if(!mostPopularTime.equals(null)) {
+                                        System.out.println("Most popular time to book :");
+                                        System.out.println(mostPopularTime);
+                                    }
+
                                     break;
                                 }
                                 case 3: {
