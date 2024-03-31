@@ -818,20 +818,7 @@ public class Main {
 
                                     }
 
-                                    for (User user : userRepository.users) {
-
-                                        if (user.getType().equals("USER")) {
-                                            NumberOfUsers++;
-                                        }
-                                        if (user.getType().equals("SERVICE_PROVIDER")) {
-                                            NumberOfProviders++;
-                                        }
-                                        for (Event event : user.bookedEvent2) {
-                                            if (event.getstatusOfEvent().equalsIgnoreCase("booked")) {
-                                                totalProfit += (event.getCostOfEvent() - event.getEventConstructionCost());
-                                            }
-                                        }
-                                    }
+                                    
                                     int maxCount = 0;
                                     Event mostRepeatedEvent = null ;
                                     LocalTime mostPopularTime = null;
