@@ -87,6 +87,10 @@ public class Event {
     public void setEventStartTime(LocalDateTime eventStartTime) {
         this.eventStartTime = eventStartTime;
     }
+    public float getEventConstructionCost()
+ {
+     return eventConstructionCost;
+ }
 
     public LocalDateTime getEventEndTime() {
         return eventEndTime;
