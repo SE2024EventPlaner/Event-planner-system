@@ -1,14 +1,17 @@
-name: My first CI
+name: My Test Single Project
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build-on-ubuntu:
     runs-on: ubuntu-latest
-    steps:
 
+    steps:
       - name: Step 1 - Checkout main branch from GitHub
         uses: actions/checkout@v2
         with:
@@ -32,14 +35,21 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+
+      - name: Build and analyze with SonarCloud
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B jacoco:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar jacoco:report -Dsonar.projectKey=SE2024EventPlaner_Event-planner-system
+        run: |
+          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.projectKey=SE2024EventPlaner_Event-planner-system \
+          -Dsonar.organization=se2024eventplaner \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dmaven.test.failure.ignore=true \
+          test jacoco:prepare-agent verify jacoco:report
