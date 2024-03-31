@@ -62,4 +62,3 @@ Feature: Search
     Given I am on the search page
     When I need to see all events
     Then I should see all events
-
