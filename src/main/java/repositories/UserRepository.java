@@ -12,7 +12,7 @@ public class UserRepository {
 
     public static List<User> users = new ArrayList<>();
 
-    static Path filePath = Paths.get("C:/Users/Dell/software_project/EventPlaner9911/src/main/resources/UserFile.txt");
+    static Path filePath = Paths.get("src/main/resources/UserFile.txt");
     public static String fileOfUser = filePath.toAbsolutePath().toString();
 
     public UserRepository( ){
