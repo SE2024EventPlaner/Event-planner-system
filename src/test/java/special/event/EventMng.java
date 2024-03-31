@@ -1,10 +1,12 @@
 package special.event;
 
 import components.UserComponent;
+import components.EventComponent;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import repositories.EventRepository;
+import repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,19 +24,27 @@ public class EventMng {
     String idOfEvent;
     String nameOfPlace;
     float costOfEvent;
+    float constructionCost;
     int capacityOfPlace;
     LocalDateTime eventStartTime;
     LocalDateTime eventEndTime;
     String locationOfPlace;
     User user;
     Event event;
+    UserRepository o=new UserRepository();
+    EventRepository kk=new EventRepository();
     boolean A;
+    EventComponent eventComponent= new EventComponent();
+
 
 
     @Given("The user login as Service Provider with   {string} and {string}")
     public void theUserLoginAsServiceProviderWithAnd(String email, String password) {
         this.user = new UserComponent().validateLoginAsServiceProvider(email, password);
-       // assertNotNull(this.user);
+        // assertNotNull(this.user);
+        o.readUsers(UserRepository.fileOfUser);
+        kk.readEventFile(EventRepository.fileOfEvent);
+
 
     }
 
@@ -44,7 +54,7 @@ public class EventMng {
     }
     @Then("The User enter name of event with {string}")
     public void theUserEnterNameOfEventWith(String name) {
-      this.nameOfEvent=name;
+        this.nameOfEvent=name;
     }
     @Then("The User enter id of event with {string}")
     public void theUserEnterIdOfEventWith(String id) {
@@ -64,10 +74,29 @@ public class EventMng {
 
 
     }
+
+
+
+    @Then("The User enter Construction Cost Of Event with {string}")
+    public void theUserEnterConstructionCostOfEventWith(String constructionCost) {
+        try {
+
+            this.constructionCost = Float.parseFloat(constructionCost);
+
+
+        } catch (NumberFormatException e) {
+
+            System.out.println("Invalid input. Please enter a valid float number.");
+        }
+
+
+    }
+
+
     @Then("The User enter  Event start time with {string}")
     public void theUserEnterEventStartTimeWith(String startTime) {
 
-    this.eventStartTime=LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.eventStartTime=LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
     }
     @Then("The User enter  Event end time with {string}")
@@ -88,7 +117,7 @@ public class EventMng {
 
         try {
 
-           this.capacityOfPlace = Integer.parseInt(capacity);
+            this.capacityOfPlace = Integer.parseInt(capacity);
 
         } catch (NumberFormatException e) {
 
@@ -96,14 +125,16 @@ public class EventMng {
         }
 
     }
+
+
     @Then("the new event must  be added to the event list")
     public void theNewEventMustBeAddedToTheEventList() {
-     assertTrue(Event.addEvent(nameOfEvent,idOfEvent,costOfEvent,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.email,user.password));
+        assertTrue(eventComponent.addEvent(nameOfEvent,idOfEvent,costOfEvent,constructionCost,eventStartTime,eventEndTime,nameOfPlace,capacityOfPlace,locationOfPlace,user.getEmail(),user.getPassword()));
 
     }
     @Then("The user should see a message that the event was added successfully")
     public void theUserShouldSeeAMessageThatTheEventWasAddedSuccessfully() {
-       System.out.println("The event was added successfully");
+        System.out.println("The event was added successfully");
     }
 
 
@@ -112,7 +143,7 @@ public class EventMng {
 
     @When("The user add an existing event with the id {string} and the name {string}")
     public void theUserAddAnExistingEventWithTheIdAndTheName(String id, String name) {
-        this.event =Event.theEventExists(name,id);
+        this.event =eventComponent.theEventExists(name,id);
         assertNotNull(this.event);
     }
 
@@ -122,7 +153,7 @@ public class EventMng {
     }
     @Then("The user should see a message that adding the event failed")
     public void theUserShouldSeeAMessageThatAddingTheEventFailed() {
-      assertTrue(true);
+        assertTrue(true);
 
     }
 
@@ -132,7 +163,7 @@ public class EventMng {
     {
         if (string.equals("idOfEvent"))
         {
-            assertFalse(Event.checkIdOfEvent(string2));
+            assertFalse(eventComponent.checkIdOfEvent(string2));
         }
         else if(string.equals("capacityOfPlace"))
         {
@@ -150,7 +181,7 @@ public class EventMng {
             try {
 
                 float c = Float.parseFloat(string2);
-                assertFalse(Event.checkCostOfEvent(c));
+                assertFalse(eventComponent.checkCostOfEvent(c));
 
             } catch (NumberFormatException e) {
 
@@ -161,7 +192,7 @@ public class EventMng {
     }
     @Then("The user should see  a {string}")
     public void theUserShouldSeeA(String string) {
-      assert (true);
+        assert (true);
     }
 
 
@@ -170,7 +201,7 @@ public class EventMng {
 
     @When("the user deletes an event with not available id {string} and not available name {string}")
     public void theUserDeletesAnEventWithNotAvailableIdAndNotAvailableName(String name, String id) {
-      assertFalse(Event.deleteEvent(name,id ));
+        assertFalse(eventComponent.deleteEvent(name,id ));
     }
     @Then("The user should see a message that this event does not exist")
     public void theUserShouldSeeAMessageThatThisEventDoesNotExist() {
@@ -183,12 +214,12 @@ public class EventMng {
 
     @When("the user selects valid  {string} and {string}")
     public void theUserSelectsValidAnd(String id , String name) {
-        this.event=Event.theEventExists(name,id);
+        this.event=eventComponent.theEventExists(name,id);
         assertNotNull(this.event);
     }
     @When("The system will delete the selected event from events list")
     public void theSystemWillDeleteTheSelectedEventFromEventsList() {
-       assertTrue(Event.deleteEvent(this.event.getNameOfEvent(),this.event.getIdOfEvent()));
+        assertTrue(eventComponent.deleteEvent(this.event.getNameOfEvent(),this.event.getIdOfEvent()));
     }
     @Then("The user will see that the event has been modified")
     public void theUserWillSeeThatTheEventHasBeenModified() {
@@ -196,7 +227,7 @@ public class EventMng {
     }
     @Then("the modified event will be added to the events list")
     public void theModifiedEventWillBeAddedToTheEventsList() {
-        Event.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
+        eventComponent.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.constructionCost,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
     }
 
 
@@ -208,7 +239,7 @@ public class EventMng {
     }
     @When("the user selects an invalid event {string} and {string}")
     public void theUserSelectsAnInvalidEventAnd(String name, String id) {
-        assertNull(Event.theEventExists(name,id));
+        assertNull(eventComponent.theEventExists(name,id));
     }
     @Then("the system displays an error message")
     public void theSystemDisplaysAnErrorMessage() {
@@ -217,4 +248,39 @@ public class EventMng {
 
 
 
+
+    @Given("The user is logged in as a Service Provider with email {string} and password {string}")
+    public void theUserIsLoggedInAsAServiceProviderWithEmailAndPassword(String email, String password) {
+        this.user = new UserComponent().validateLoginAsServiceProvider(email, password);
+
+    }
+
+
+    @When("The user tries to add a new event with location {string} and name of place {string} and start time {string}  and end time {string}")
+    public void theUserTriesToAddANewEventWithLocationAndNameOfPlaceAndStartTimeAndEndTime(String location, String namePlace, String startTime, String endTime) {
+        locationOfPlace= location;
+        this.eventEndTime=LocalDateTime.parse(endTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.eventStartTime=LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        nameOfPlace = namePlace;
+    }
+    @When("there is another event with this places and dates")
+    public void thereIsAnotherEventWithThisPlacesAndDates() {
+        assertTrue(eventComponent.checkSimilarityEvent(nameOfPlace,eventStartTime,eventEndTime,locationOfPlace));
+    }
+    @Then("A message {string} should be displayed")
+    public void aMessageShouldBeDisplayed(String string) {
+        System.out.println(string);
+    }
+
+    @When("The user tries to add a new event with start time {string} and end time {string}")
+    public void theUserTriesToAddANewEventWithStartTimeAndEndTime(String start_time, String end_time) {
+        this.eventEndTime=LocalDateTime.parse(end_time, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.eventStartTime=LocalDateTime.parse(start_time, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+    @Then("No save of information should occur")
+    public void noSaveOfInformationShouldOccur() {
+        assertEquals(eventStartTime,eventEndTime);
+    }
+
 }
+
