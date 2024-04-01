@@ -3,7 +3,6 @@ import components.UserComponent;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +22,7 @@ public class BookEvent {
 
     UserComponent userComponent =new UserComponent();
     Event event1,event2,event3;
+    String cardNumber,cardNumber2;
 
 
 
@@ -149,6 +149,30 @@ public class BookEvent {
     }
 
 
+    // payment process
+    @When("The user is trying to book an event with valid card number {string}")
+    public void theUserIsTryingToBookAnEventWithValidCardNumber(String cardNumber) {
+        this.cardNumber=cardNumber;
+        assertTrue(BookingSystem.isValidCardNumberFormat(cardNumber));
+    }
 
+    @Then("the system should confirm the payment  with a success message")
+    public void theSystemShouldConfirmThePaymentWithASuccessMessage() {
+        assertTrue(BookingSystem.processPayment(cardNumber,event1,loggedInUser));
+    }
+
+
+    @When("The user is trying to book an event with  invalid card number {string}")
+    public void theUserIsTryingToBookAnEventWithInvalidCardNumber(String cardNumber2) {
+
+        this.cardNumber2=cardNumber2;
+        assertFalse(BookingSystem.isValidCardNumberFormat(cardNumber2));
+    }
+    @Then("the system should confirm the payment  with a Unsuccess message")
+    public void theSystemShouldConfirmThePaymentWithAUnsuccessMessage() {
+        assertFalse(BookingSystem.processPayment(cardNumber2,event1,loggedInUser));
+
+
+    }
 
 }

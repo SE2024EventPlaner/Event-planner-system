@@ -19,11 +19,16 @@ public class NotificationSteps {
     String userEmail;
     String SeviceMessage;
     String announcementMessage;
-    UserComponent usercompo=new UserComponent();
     Notification notification = new Notification();
     User admin ;
     User user;
     Event event;
+    public enum NotificationType {
+        ADMINANNOUNCEMENT,
+        REPLYANNOUNCEMENT,
+        RESERVATIONREQUEST,
+        ACCOUNTREQUEST
+    }
 
 
     @Given("the admin is on the notification page in the admin account with email {string}")
@@ -45,11 +50,14 @@ public class NotificationSteps {
         }
         this.SeviceMessage = SeviceMessage;
         notification.createAccountCreationRequest(user,SeviceMessage);
+        notification.sendCreationRequest();
     }
 
     @When("the admin receives a notification regarding the request for a business account")
     public void theAdminReceivesANotificationRegardingTheRequestForABusinessAccount() {
-        admin.addNotification(notification);
+
+        assertNotNull(notification.getSentDateTime());
+        assertNotNull(notification.showNtificationDetails());
     }
     @When("the admin approves the request")
     public void theAdminApprovesTheRequest() {
@@ -60,9 +68,11 @@ public class NotificationSteps {
     @Then("a confirmation message {string} is sent to the user's email address {string}")
     public void aConfirmationMessageIsSentToTheUserSEmailAddress(String emailMessage, String userEmail) {
         //email message
+
         if(notification.isApproved()){
             System.out.println("Message sent !");
         }
+
 
     }
 
@@ -102,12 +112,8 @@ public class NotificationSteps {
         this.announcementMessage = announcementMessage;
         notification.createAnnouncement(admin,announcementMessage);
 
-        int size = UserRepository.users.size();
-        for(int i=0;i<size;i++){
-            if(!UserRepository.users.get(i).getEmail().equals(adminEmail)){
-                UserRepository.users.get(i).addNotification(notification);
-            }
-        }
+        notification.sendAdminAnnouncement();
+
     }
     @Then("all users receive the announcement message")
     public void allUsersReceiveTheAnnouncementMessage() {
@@ -121,20 +127,22 @@ public class NotificationSteps {
         assertTrue(allUsersReceived);
     }
 
-
+    //////////////////
     @When("a user with email {string} submits a reservation request an Event")
     public void aUserWithEmailSubmitsAReservationRequest(String userEmail) {
+
         this.user = getUser(userEmail);
         assertNotNull(userEmail);
         this.event= EventRepository.events.get(0);
         notification.createReservationRequest(user,event);
+        notification.sendReservationRequest();
 
     }
     @When("the service provider {string} receives a notification regarding the reservation request")
     public void theServiceProviderReceivesANotificationRegardingTheReservationRequest(String providerEmail) {
         this.serviceProvider = getUser(providerEmail);
         assertNotNull(providerEmail);
-        serviceProvider.addNotification(notification);
+
     }
     @When("the service provider approves the request")
     public void theServiceProviderApprovesTheRequest() {
@@ -144,7 +152,7 @@ public class NotificationSteps {
     @Then("a confirmation message {string} is sent to the user as notification")
     public void aConfirmationMessageIsSentToTheUserAsNotification(String string) {
         notification.createReplyMessage(serviceProvider,true,event);
-        user.addNotification(notification);
+        notification.sendReplyMessage(user);
         assertTrue(user.isNotificationExit(notification));
     }
 
@@ -156,7 +164,7 @@ public class NotificationSteps {
     @Then("a rejection message {string} is sent to the user as notification")
     public void aRejectionMessageIsSentToTheUserAsNotification(String string) {
         notification.createReplyMessage(serviceProvider,false,event);
-        user.addNotification(notification);
+        notification.sendReplyMessage(user);
         assertTrue(user.isNotificationExit(notification));
     }
 

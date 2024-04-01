@@ -1,5 +1,6 @@
 package special.event;
 
+import components.ImageUploader;
 import components.UserComponent;
 import components.EventComponent;
 import io.cucumber.java.en.Given;
@@ -8,6 +9,8 @@ import io.cucumber.java.en.Then;
 import repositories.EventRepository;
 import repositories.UserRepository;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -27,6 +30,10 @@ public class EventMng {
     String locationOfPlace;
     User user;
     Event event;
+    private String eventId;
+
+    private ImageUploader uploader;
+    private Path imagePath;
 
     boolean A;
     EventComponent eventComponent= new EventComponent();
@@ -152,37 +159,23 @@ public class EventMng {
 
     //third scenario
     @Then("The User fill in {string} with {string}")
-    public void theUserFillInWith(String string, String string2)
-    {
-        if (string.equals("idOfEvent"))
-        {
+
+    public void theUserFillInWith(String string, String string2) {
+        if (string.equals("idOfEvent")) {
             assertFalse(eventComponent.checkIdOfEvent(string2));
-        }
-        else if(string.equals("capacityOfPlace"))
-        {
-            try {
-                int c = Integer.parseInt(string2);
+        } else if (string.equals("capacityOfPlace")) {
+            int c = Integer.parseInt(string2);
+            if (c <= 0) {
                 assertFalse(Place.checkCapacityOfPlace(c));
-
-            } catch (NumberFormatException e) {
-
-                System.out.println("Invalid input. Please enter a valid integer number.");
+            } else {
+                assertTrue(Place.checkCapacityOfPlace(c));
             }
-
-        } else if (string.equals("costOfEvent"))
-        {
-            try {
-
-                float c = Float.parseFloat(string2);
-                assertFalse(eventComponent.checkCostOfEvent(c));
-
-            } catch (NumberFormatException e) {
-
-                System.out.println("Invalid input. Please enter a valid float number.");
-            }
-
+        } else if (string.equals("costOfEvent")) {
+            float c = Float.parseFloat(string2);
+            assertFalse(eventComponent.checkCostOfEvent(c));
         }
     }
+
     @Then("The user should see  a {string}")
     public void theUserShouldSeeA(String string) {
         assert (true);
@@ -274,5 +267,10 @@ public class EventMng {
     public void noSaveOfInformationShouldOccur() {
         assertEquals(eventStartTime,eventEndTime);
     }
+
+
+
+
+
 
 }

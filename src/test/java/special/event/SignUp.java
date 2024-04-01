@@ -62,7 +62,7 @@ public class SignUp {
     @Then("creating an account successfully")
     public void creatingAnAccountSuccessfully() {
         user=new User(email,password,type,firstName,finalName);
-
+          userComponent.existEmail(email);
         assertTrue(userComponent.validateSignup(firstName,finalName,email,password,Confirm_password,type));
         UserRepository.addToUsers(user);
 
