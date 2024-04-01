@@ -1,9 +1,7 @@
 package special.event;
 import java.util.ArrayList;
 import java.util.List;
-import repositories.EventRepository;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class User {
 
@@ -16,8 +14,8 @@ public class User {
     private String message;
     private float accountBalance;
     List<Notification> notifications = new ArrayList<>();
-    public  ArrayList<Event>bookedEvent1 = new ArrayList<>();//to store an event that the service not agree yet .
-    public  ArrayList<Event>bookedEvent2 = new ArrayList<>();////to store an event that the service agree.
+    public List<Event>bookedEvent1 = new ArrayList<>();
+    public List<Event>bookedEvent2 = new ArrayList<>();
 
     public User(String email, String password, String type,String firstName,String lastName) {
         this.email = email;
