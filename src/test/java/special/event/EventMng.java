@@ -10,12 +10,8 @@ import repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-
-/*        this.user = new UserComponent().validateLogin(email, password);
- */
 public class EventMng {
 
     public EventMng(){}
@@ -31,8 +27,7 @@ public class EventMng {
     String locationOfPlace;
     User user;
     Event event;
-    UserRepository o=new UserRepository();
-    EventRepository kk=new EventRepository();
+
     boolean A;
     EventComponent eventComponent= new EventComponent();
 
@@ -41,9 +36,7 @@ public class EventMng {
     @Given("The user login as Service Provider with   {string} and {string}")
     public void theUserLoginAsServiceProviderWithAnd(String email, String password) {
         this.user = new UserComponent().validateLoginAsServiceProvider(email, password);
-        // assertNotNull(this.user);
-        o.readUsers(UserRepository.fileOfUser);
-        kk.readEventFile(EventRepository.fileOfEvent);
+
 
 
     }
@@ -227,7 +220,7 @@ public class EventMng {
     }
     @Then("the modified event will be added to the events list")
     public void theModifiedEventWillBeAddedToTheEventsList() {
-        eventComponent.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.constructionCost,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.eventOwner.getEmail(),this.event.eventOwner.getPassword());
+        eventComponent.addEvent(this.nameOfEvent,this.idOfEvent,this.costOfEvent,this.constructionCost,this.eventStartTime,this.eventEndTime,this.nameOfPlace,this.capacityOfPlace,this.locationOfPlace,this.event.getEventOwner().getEmail(),this.event.getEventOwner().getPassword());
     }
 
 
@@ -283,4 +276,3 @@ public class EventMng {
     }
 
 }
-

@@ -1,4 +1,5 @@
 package special.event;
+import components.SendMail;
 import components.UserComponent;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -52,8 +53,8 @@ public class SignUp {
         password=inpass;
         email=inemail;
         type=typ;
-        o.readUsers(UserRepository.fileOfUser);
-        kk.readEventFile(EventRepository.fileOfEvent);
+        o.readUsers(UserRepository.FILE_NAME1);
+        kk.readEventFile(EventRepository.FILE_NAME);
 
     }
 
@@ -108,6 +109,13 @@ public class SignUp {
         assertTrue(true);
     }
 
+    @Then("a message is sent to the user via email to inform them that their booking was successful")
+    public void aMessageIsSentToTheUserViaEmailToInformThemThatTheirBookingWasSuccessful() {
+        // Write code here that turns the phrase above into concrete actions
+        SendMail.sendEmail("Accepted :) ",email);
+
+
+    }
     @Then("the user data is added to the arraylist")
     public void theUserDataIsAddedToTheArraylist() {
         UserRepository.addToUsers(user);
