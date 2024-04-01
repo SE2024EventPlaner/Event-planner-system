@@ -2,14 +2,13 @@ package components;
 
 import repositories.EventRepository;
 import special.event.Event;
-import special.event.Main;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
 public class EventComponent {
+    Boolean i=true;
     public EventRepository eventRepository = new EventRepository();
     private static final Logger logger = Logger.getLogger(EventComponent.class.getName());
 
@@ -40,14 +39,6 @@ public class EventComponent {
         if (String.valueOf(id).length() != 6 || id.equals("000000")) {
 
             logger.info("ID of event must not be  zeros or more/less than 6 numbers");
-            return false;
-        } else
-            return true;
-    }
-
-    public  boolean checkCostOfEvent(float cost) {
-        if (cost == 0 || cost < 0) {
-            logger.info("Cost of event must not be  zeros negative value ");
             return false;
         } else
             return true;
@@ -90,7 +81,10 @@ public class EventComponent {
             , String nameOfPlace, int capacityOfPlace,
                              String locationOfPlace, String ownerEmail, String ownerPassword) {
 
-        if (theEventExists(nameOfEvent, idOfEvent) == null && checkIdOfEvent(idOfEvent) &&checkCostOfEvent(costOfEvent)) {
+           if (costOfEvent<= 0) {
+            i=false;
+             }
+        if (theEventExists(nameOfEvent, idOfEvent) == null && checkIdOfEvent(idOfEvent) &&i) {
             EventRepository.events.add(new Event(nameOfEvent, idOfEvent, costOfEvent,eventConstructionCost, eventStartTime, eventEndTime, nameOfPlace, capacityOfPlace, locationOfPlace, ownerEmail, ownerPassword));
             logger.info("The event was added successfully");
             return true;
