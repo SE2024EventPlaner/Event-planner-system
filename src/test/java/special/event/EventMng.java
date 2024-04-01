@@ -197,6 +197,18 @@ public class EventMng {
         assert (true);
 
     }
+    @When("The information is valid name is {string} and id is {string}")
+    public void theInformationIsValidNameIsAndIdIs(String name, String id) {
+        assertTrue(eventComponent.deleteEvent(name,id ));
+    }
+    @Then("The specified event  must be deleted from  event list")
+    public void theSpecifiedEventMustBeDeletedFromEventList() {
+
+    }
+    @Then("The User should see the event successfully deleted")
+    public void theUserShouldSeeTheEventSuccessfullyDeleted() {
+
+    }
 
 
 //edit feature
