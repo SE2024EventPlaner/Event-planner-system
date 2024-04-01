@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 public class EventComponent {
+    
     Boolean i=true;
     public EventRepository eventRepository = new EventRepository();
     private static final Logger logger = Logger.getLogger(EventComponent.class.getName());
