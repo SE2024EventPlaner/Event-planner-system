@@ -21,7 +21,7 @@ public class ImageUploader extends JFrame {
 
     private JLabel imageLabel;
     private File selectedFile;
-    private transient Event event = null;
+    public transient Event event = null;
     public ImageUploader() {
         setTitle("Image Uploader");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
