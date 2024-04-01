@@ -25,14 +25,7 @@ public class UserComponent {
         }
         return false;
     }
-    public boolean existPassword(String username,String password){
-        for (User user: UserRepository.users){
-            if(user.getEmail().equals(username) ){
-                return user.getPassword().equals(password);
-            }
-        }
-        return false;
-    }
+
     public User validateLoginAsServiceProvider(String username, String password){
         UserRepository userRepository = new UserRepository();
         for (User user: UserRepository.users){
