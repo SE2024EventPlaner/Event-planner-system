@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Checker {
-    public static List<Event> resultEvents = new ArrayList<>();
-
+    protected static final List<Event> resultEvents = new ArrayList<>();
+    private Checker() {
+    }
 
     public static List<Event> checkNameOfEvent(String searchName) {
         resultEvents.clear();
@@ -91,9 +92,6 @@ public class Checker {
         return resultEvents;
 
 
-    }
-    public static boolean checkStringLength(String str) {
-        return str.length() == 14;
     }
 
 }
