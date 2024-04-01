@@ -4,6 +4,8 @@ import repositories.EventRepository;
 import java.util.logging.Logger;
 public class BookingSystem {
     private static final Logger logger3 = Logger.getLogger(BookingSystem.class.getName());
+        private BookingSystem() {
+    }
     public static boolean bookEvent(String eventId, String location, LocalDateTime bookingDate, float userBalance,User loggedInUser) {
         Event event = findEventByIdAndLocation(eventId,location);
         if (loggedInUser.bookedEvent2.isEmpty()){
@@ -14,9 +16,9 @@ public class BookingSystem {
             if (isBookingDateValid(bookingDate,event)){
                 if (loggedInUser.getAccountBalance() >= event.getCostOfEvent() ) {
                     loggedInUser.bookedEvent1.add(event);
-                    Notification ReservationNotification = new Notification();
-                    ReservationNotification.createReservationRequest(loggedInUser,event);
-                    ReservationNotification.sendReservationRequest();
+                    Notification reservationNotification = new Notification();
+                    reservationNotification.createReservationRequest(loggedInUser,event);
+                    reservationNotification.sendReservationRequest();
                     logger3.info("We will send you a notification when your reservation request is accepted !");
                     return true;
                 } else  {
