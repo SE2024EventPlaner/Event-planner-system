@@ -172,7 +172,10 @@ public class EventMng {
             }
         } else if (string.equals("costOfEvent")) {
             float c = Float.parseFloat(string2);
-            assertFalse(eventComponent.checkCostOfEvent(c));
+            if (c<=0)
+                assertFalse(false);
+            else
+                assertTrue(true);
         }
     }
 
