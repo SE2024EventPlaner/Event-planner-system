@@ -13,14 +13,14 @@ public class Notification {
     boolean approved;
     String state = "reject";
     Date sentDateTime;
-    final String s="The USER ";
+    final static String s="The USER ";
     public enum NotificationType {
         ADMINANNOUNCEMENT,
         REPLYANNOUNCEMENT,
         RESERVATIONREQUEST,
         ACCOUNTREQUEST
     }
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static final Logger logger = Logger.getLogger(Notification.class.getName());
 
 
 
