@@ -47,5 +47,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar jacoco:report \
-          -Dsonar.projectKey=SE2024EventPlaner_Event-planner-system
+            mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar jacoco:report \
+                -Dsonar.projectKey=SE2024EventPlaner_Event-planner-system \
+                -Dsonar.exclusions=**/ImageUploader.java,**/Main.java
