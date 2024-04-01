@@ -131,7 +131,7 @@ public class Main {
                 while (true) {
                     System.out.print("Password:");
                     password = scanner.next();
-                    if (userComponent.existPassword(username, password)) {
+                    if (userComponent.validateLogin(username, password)!=null) {
                         break;
                     } else {
                         System.out.print("The Password is invalid. Please try again\n");
