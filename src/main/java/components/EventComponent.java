@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class EventComponent {
     public EventRepository eventRepository = new EventRepository();
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static final Logger logger = Logger.getLogger(EventComponent.class.getName());
 
     public  Event theEventExists(String nameOfEvent, String idOfEvent) {
 
