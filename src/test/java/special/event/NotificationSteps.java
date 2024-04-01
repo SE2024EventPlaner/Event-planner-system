@@ -55,13 +55,11 @@ public class NotificationSteps {
 
     @When("the admin receives a notification regarding the request for a business account")
     public void theAdminReceivesANotificationRegardingTheRequestForABusinessAccount() {
-
         assertNotNull(notification.getSentDateTime());
         assertNotNull(notification.showNtificationDetails());
     }
     @When("the admin approves the request")
     public void theAdminApprovesTheRequest() {
-
         notification.setApproved(true);
         assertTrue(notification.isApproved());
     }
@@ -137,6 +135,7 @@ public class NotificationSteps {
         notification.createReservationRequest(user,event);
         notification.sendReservationRequest();
 
+
     }
     @When("the service provider {string} receives a notification regarding the reservation request")
     public void theServiceProviderReceivesANotificationRegardingTheReservationRequest(String providerEmail) {
@@ -151,7 +150,9 @@ public class NotificationSteps {
     }
     @Then("a confirmation message {string} is sent to the user as notification")
     public void aConfirmationMessageIsSentToTheUserAsNotification(String string) {
+
         notification.createReplyMessage(serviceProvider,true,event);
+        assertEquals(notification.getEvent(), event);
         notification.sendReplyMessage(user);
         assertTrue(user.isNotificationExit(notification));
     }
@@ -162,10 +163,14 @@ public class NotificationSteps {
         assertFalse(notification.isApproved());
     }
     @Then("a rejection message {string} is sent to the user as notification")
+
     public void aRejectionMessageIsSentToTheUserAsNotification(String string) {
+
         notification.createReplyMessage(serviceProvider,false,event);
+        assertEquals(notification.getEvent(), event);
         notification.sendReplyMessage(user);
         assertTrue(user.isNotificationExit(notification));
+
     }
 
 
