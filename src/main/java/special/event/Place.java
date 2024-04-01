@@ -1,10 +1,14 @@
 package special.event;
 
+import java.util.logging.Logger;
+
 public class Place {
 
-    String nameOfPlace;
-    int capacityOfPlace;
-    String locationOfPlace;
+    private String nameOfPlace;
+    private int capacityOfPlace;
+    private String locationOfPlace;
+
+    private static final Logger logger3 = Logger.getLogger(Place.class.getName());
 
 
     public Place(String nameOfPlace,int capacityOfPlace,String locationOfPlace)
@@ -25,8 +29,8 @@ public class Place {
     public void setLocationOfPlace(String locationOfPlace){this.locationOfPlace=locationOfPlace;}
 
     public static boolean checkCapacityOfPlace( int capacity) {
-        if (capacity == 0 || capacity < 0) {
-            System.out.println( "capacity of place must not be  zeros or negative value" );
+        if (capacity <= 0) {
+            logger3.info( "capacity of place must not be  zeros or negative value" );
             return false;
         }
         else
