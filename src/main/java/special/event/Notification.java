@@ -1,12 +1,9 @@
 package special.event;
-import components.EventComponent;
-import components.UserComponent;
-import repositories.EventRepository;
 import repositories.UserRepository;
-import special.event.User;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
+
 public class Notification {
     User sender;
     String message;
@@ -16,20 +13,20 @@ public class Notification {
     boolean approved;
     String state = "reject";
     Date sentDateTime;
+    final String s="The USER ";
     public enum NotificationType {
         ADMINANNOUNCEMENT,
         REPLYANNOUNCEMENT,
         RESERVATIONREQUEST,
         ACCOUNTREQUEST
     }
-
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
 
 
     public Notification() {
 
     }
-    //create notification with its type
     public Notification(User  sender, String message, NotificationType type, boolean approved) {
         this.sender = sender;
         this.message = message;
@@ -38,7 +35,6 @@ public class Notification {
         this.sentDateTime = new Date();
     }
 
-    //create ANNOUNCEMENT notification
     public  void createAnnouncement(User sender, String announcementMessage) {
         this.sender = sender;
         this.message = "ADMIN " + sender.getFirstName() + " sent the following announcement: "
@@ -61,10 +57,9 @@ public class Notification {
         this.sentDateTime = new Date();
     }
 
-    //create REQUEST notification
     public void createReservationRequest(User sender, Event event) {
         this.sender = sender;
-        this.message = "The USER " + sender.getFirstName() +
+        this.message = s+" " + sender.getFirstName() +
                 " submitted a reservation request";
         this.event = event;
         this.approved = false;
@@ -73,7 +68,7 @@ public class Notification {
         this.sentDateTime = new Date();
 
     }
-    public void createAccountCreationRequest(User sender, String SeviceMessage) {
+    public void createAccountCreationRequest(User sender, String seviceMessage) {
         this.sender = sender;
         this.message = "Someone submitted an account creation request with the following name and email: "
                 + sender.getFirstName() + " - " + sender.getEmail();
@@ -131,8 +126,9 @@ public class Notification {
     public void setSentDateTime(Date sentDateTime) {
         this.sentDateTime = sentDateTime;
     }
-    public void setSeviceMessage(String SeviceMessage){
-        this.seviceMessage = SeviceMessage;
+    public void setSeviceMessage(String seviceMessage){
+
+        this.seviceMessage = seviceMessage;
     }
     public String getSeviceMessage(){
         return seviceMessage;
@@ -146,14 +142,14 @@ public class Notification {
                     reciever.addNotification(this);
                 }
             }
-            System.out.println("The message was sent successfully !");
+            logger.info("The message was sent successfully !");
         }
     }
     public void sendReservationRequest(){
         if(type.equals(NotificationType.RESERVATIONREQUEST)){
             User provider =this.event.getEventOwner() ;
-                provider.addNotification(this);
-            System.out.println("Your request was sent successfully !");
+            provider.addNotification(this);
+            logger.info("Your request was sent successfully !");
         }
     }
 
@@ -164,7 +160,7 @@ public class Notification {
                     admin.addNotification(this);
                 }
             }
-            System.out.println("Wait for the admin's approval to access your account ! ");
+            logger.info("Wait for the admin's approval to access your account ! ");
         }
 
     }
@@ -175,7 +171,7 @@ public class Notification {
                     user.addNotification(this);
                 }
             }
-            System.out.println("Your reply was sent successfully !");
+            logger.info("Your reply was sent successfully !");
         }
 
     }
@@ -192,7 +188,8 @@ public class Notification {
 
 
         }else if(type.equals(NotificationType.RESERVATIONREQUEST)){
-            details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+" with this email: "+sender.getEmail() +"\nsubmitted a reservation request with this description: \n"
+
+            details= s+" " + sender.getFirstName() +" "+sender.getLastName()+" with this email: "+sender.getEmail() +"\nsubmitted a reservation request with this description: \n"
                     +"\nEvent ID: " + event.getIdOfEvent()
                     +"\nEvent Name: " + event.getNameOfEvent()
                     +"\nLocation: " + event.getPlaceOfEvent().getLocationOfPlace()
@@ -207,9 +204,9 @@ public class Notification {
             details="No details";
 
         }else{
-            details="The USER "+ sender.getFirstName() +" "+sender.getLastName()+
+            details= s+" " + sender.getFirstName() +" "+sender.getLastName()+
                     " submitted a service porovider account creation request with this description: \n"
-                    +seviceMessage
+                    +this.seviceMessage
                     +"\n------------------------"
                     +"\nDo you agree to the request?";
 

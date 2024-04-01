@@ -10,23 +10,20 @@ import repositories.UserRepository;
 public class Event {
     private String nameOfEvent;
     private String idOfEvent;
-    public static final String[] serviceOfEvent = {"DJ", "Restaurant", "Studio", "People to organize event", "Decorations"};
+    private static final String[] SERVICE_OF_EVENT = {"DJ", "Restaurant", "Studio", "People to organize event", "Decorations"};
 
     private float costOfEvent;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     String statusOfEvent="unbook";
-    LocalDateTime eventStartTime;
-    LocalDateTime eventEndTime;
-    Place placeOfEvent;
-    User eventOwner;
-    Path imagePath;
-    float eventConstructionCost;
+    private LocalDateTime eventStartTime;
+    private LocalDateTime eventEndTime;
+    private Place placeOfEvent;
+    private User eventOwner;
+    private Path imagePath;
+    private float eventConstructionCost;
     private User bookedUser;
 
-    //   public ArrayList<Reservation> timeSlots;
-    public Event() {
 
-    }
     public Event(String nameOfEvent, String idOfEvent, float costOfEvent,float eventConstructionCost,
                  LocalDateTime eventStartTime, LocalDateTime eventEndTime,
                  String nameOfPlace, int capacityOfPlace,
@@ -87,10 +84,6 @@ public class Event {
     public void setEventStartTime(LocalDateTime eventStartTime) {
         this.eventStartTime = eventStartTime;
     }
-    public float getEventConstructionCost()
- {
-     return eventConstructionCost;
- }
 
     public LocalDateTime getEventEndTime() {
         return eventEndTime;
@@ -120,8 +113,10 @@ public class Event {
         this.statusOfEvent = status;
     }
 
-
-
+    public float getEventConstructionCost()
+    {
+        return eventConstructionCost;
+    }
 
 
     public Place getPlaceOfEvent() {
@@ -130,13 +125,5 @@ public class Event {
     public User getEventOwner(){return eventOwner;}
 
 
-    public boolean bookEvent(User user) {
-        if (this.bookedUser == null) {
-            this.bookedUser = user;
-            return true;
-        } else {
-            System.out.println("Event is already booked.");
-            return false;
-        }
-    }
+
 }
