@@ -12,7 +12,7 @@ public class UserRepository {
     public static List<User> users = new ArrayList<>();
 
     public static final String FILE_NAME1 = "userfile.txt";
-    private static final Logger logger3 = Logger.getLogger(EventRepository.class.getName());
+    private static final Logger logger3 = Logger.getLogger(UserRepository.class.getName());
 
 
     public UserRepository( ){
@@ -46,11 +46,6 @@ public class UserRepository {
     public static void addToUsers(User user1)
     {
         users.add(user1);
-    }
-    public static User getfromuser(int i)
-    {
-        return users.get(i);
-
     }
 
     public static List<User> reviw = new ArrayList<>();
