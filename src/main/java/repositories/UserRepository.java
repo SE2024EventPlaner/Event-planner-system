@@ -32,13 +32,10 @@ public class UserRepository {
                     String firstName = parts[3].trim();
                     String lastName = parts[4].trim();
                     users.add(new User(userEmail,userPassword,userType,firstName,lastName));
-                } else {
-                    logger3.info("Invalid format in line: " + line);
                 }
 
             }
         } catch (IOException e) {
-            logger3.info("Error reading file: " + e.getMessage());
         }
 
 

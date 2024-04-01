@@ -41,13 +41,10 @@ public class EventRepository {
 
 
                     events.add(new Event(eventName,eventId,eventCost,constructionCostOfEvent,startTime2,endTime2,eventPlace,capacityPlace,eventLocation,ownerEmail,ownerPassword));
-                } else {
-                    logger2.info("Invalid format in line: " + line);
                 }
 
             }
         } catch (IOException e) {
-            logger2.info("Error reading file: " + e.getMessage());
         }
 
 
