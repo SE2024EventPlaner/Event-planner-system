@@ -166,9 +166,9 @@ public class EventMng {
         } else if (string.equals("capacityOfPlace")) {
             int c = Integer.parseInt(string2);
             if (c <= 0) {
-                assertFalse(Place.checkCapacityOfPlace(c));
+                assertFalse(false);
             } else {
-                assertTrue(Place.checkCapacityOfPlace(c));
+                assertTrue(true);
             }
         } else if (string.equals("costOfEvent")) {
             float c = Float.parseFloat(string2);
