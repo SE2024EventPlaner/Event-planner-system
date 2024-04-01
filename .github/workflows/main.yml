@@ -47,9 +47,5 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Dsonar.projectKey=SE2024EventPlaner_Event-planner-system \
-          -Dsonar.organization=se2024eventplaner \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dmaven.test.failure.ignore=true \
-          test jacoco:prepare-agent verify jacoco:report
+          mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar jacoco:report \
+          -Dsonar.projectKey=SE2024EventPlaner_Event-planner-system
