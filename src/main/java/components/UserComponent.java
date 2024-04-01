@@ -6,7 +6,7 @@ import java.util.regex.*;
 
 public class UserComponent {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     public UserRepository repo=new UserRepository();
     public User validateLogin(String username, String password){
 
@@ -25,20 +25,14 @@ public class UserComponent {
         }
         return false;
     }
-
     public boolean existPassword(String username,String password){
         for (User user: UserRepository.users){
             if(user.getEmail().equals(username) ){
-                if (user.getPassword().equals(password))
-                    return true;
-                else
-                    return false;
+                 return user.getPassword().equals(password);
             }
         }
         return false;
     }
-
-
     public User validateLoginAsServiceProvider(String username, String password){
         UserRepository userRepository = new UserRepository();
         for (User user: UserRepository.users){
@@ -48,10 +42,6 @@ public class UserComponent {
         }
         return null;
     }
-
-
-
-
     public boolean validateUserType(User user, String type){
         return user != null && user.getType().equals(type);
     }
@@ -62,21 +52,12 @@ public class UserComponent {
         else
             return false;
     }
-
     public boolean isValidEmail(String email) {
-        Matcher matcher = pattern.matcher(email);
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
-
     public boolean isValidPassword(String password) {
-        if (password.length() < 8) {
-            return false;
-        }
-
         String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\p{Punct}])[A-Za-z\\d\\p{Punct}]+$";
-        return password.matches(pattern);
+        return password.length() >= 8 && password.matches(pattern);
     }
-
-    
-
 }
