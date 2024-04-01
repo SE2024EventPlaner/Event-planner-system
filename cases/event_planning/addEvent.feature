@@ -67,3 +67,5 @@ Feature: Adding new Event
     When The user tries to add a new event with start time "2024-03-05T10:00:00" and end time "2024-03-05T10:00:00"
     Then No save of information should occur
     And  A message "You need to set a valid duration for the event" should be displayed
+
+
