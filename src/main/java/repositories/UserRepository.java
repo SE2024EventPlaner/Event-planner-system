@@ -3,17 +3,17 @@ package repositories;
 import special.event.User;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class UserRepository {
 
     public static List<User> users = new ArrayList<>();
 
-    //static Path filePath = Paths.get("Event-planner-system/src/main/resources/UserFile.txt");
-    public static String fileOfUser = "userfile.txt";//filePath.toAbsolutePath().toString();
+    public static final String FILE_NAME1 = "userfile.txt";
+    private static final Logger logger3 = Logger.getLogger(EventRepository.class.getName());
+
 
     public UserRepository( ){
 
@@ -33,12 +33,12 @@ public class UserRepository {
                     String lastName = parts[4].trim();
                     users.add(new User(userEmail,userPassword,userType,firstName,lastName));
                 } else {
-                    System.err.println("Invalid format in line: " + line);
+                    logger3.info("Invalid format in line: " + line);
                 }
 
             }
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
+            logger3.info("Error reading file: " + e.getMessage());
         }
 
 
@@ -60,23 +60,7 @@ public class UserRepository {
     }
 
 
-    public static void appendUser(String fileName, String Email ,String password , String Type ,String firstName ,String lastName ) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            writer.newLine();  // Add a newline after each entry
-            writer.write(Email);
-            writer.write(",");
-            writer.write(password);
-            writer.write(",");
-            writer.write(Type);
-            writer.write(",");
-            writer.write(firstName);
-            writer.write(",");
-            writer.write(lastName);
-        } catch (IOException e) {
-            System.err.println("Error: Could not append data to " + fileName);
-            e.printStackTrace();
-        }
-    }
+
 
 
 
