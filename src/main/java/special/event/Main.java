@@ -104,7 +104,8 @@ public class Main {
 
         do {
 
-            System.out.print("\n\nPress 1 for login, 2 for Signup: ");
+            System.out.print("\n\nPress:\n" +
+                    " 1- login\n 2- Signup:\n ");
             while (true) {
                 if (scanner.hasNextInt()) {
                     x = scanner.nextInt();
@@ -1418,7 +1419,7 @@ public class Main {
                                                             Event event2 = iterator.next();
                                                             if (event2.getIdOfEvent().equals(IDC)) {
                                                                 iterator.remove();
-                                                                event2.setEventStatus("unbook"); // Update event status
+                                                                event2.setstatusOfEvent("unbook"); // Update event status
                                                                 flagID = true; // Set flag to true as event is found
                                                                 System.out.println("Event has been cancelled successfully.");
                                                                 break;

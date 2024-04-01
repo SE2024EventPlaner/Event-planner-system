@@ -59,13 +59,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+
 
     public void setMessage(String message){
         this.message = message;
     }
+
     public String getMessage(){
         return message;
     }
@@ -76,15 +75,11 @@ public class User {
     public void setAccountBalance(float accountBalance) {
         this.accountBalance = accountBalance;
     }
-    public void setType(String type) {
-        this.type = type;}
 
     public void addNotification(Notification n){
         notifications.add(n);
     }
-    public List<Notification> getNotifications(){
-        return notifications;
-    }
+
     public Boolean isNotificationExit(Notification n) {
         for (int i = 0; i < notifications.size(); i++) {
             if (n.equals(notifications.get(i))) {

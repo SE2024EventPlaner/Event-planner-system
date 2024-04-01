@@ -2,8 +2,6 @@ package special.event;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import repositories.UserRepository;
 
 
@@ -13,7 +11,6 @@ public class Event {
     private static final String[] SERVICE_OF_EVENT = {"DJ", "Restaurant", "Studio", "People to organize event", "Decorations"};
 
     private float costOfEvent;
-    //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     String statusOfEvent="unbook";
     private LocalDateTime eventStartTime;
     private LocalDateTime eventEndTime;
@@ -57,41 +54,31 @@ public class Event {
         return imagePath;
     }
 
-    public void setIdOfEvent(String idOfEvent) {
-        this.idOfEvent = idOfEvent;
-    }
+
 
     public String getNameOfEvent() {
         return nameOfEvent;
     }
 
-    public void setNameOfEvent(String nameOfEvent) {
-        this.nameOfEvent = nameOfEvent;
-    }
+
 
     public float getCostOfEvent() {
         return costOfEvent;
     }
 
-    public void setCostOfEvent(float costOfEvent) {
-        this.costOfEvent = costOfEvent;
-    }
+
 
     public LocalDateTime getEventStartTime() {
         return eventStartTime;
     }
 
-    public void setEventStartTime(LocalDateTime eventStartTime) {
-        this.eventStartTime = eventStartTime;
-    }
+
 
     public LocalDateTime getEventEndTime() {
         return eventEndTime;
     }
 
-    public void setEventEndTime(LocalDateTime eventEndTime) {
-        this.eventEndTime = eventEndTime;
-    }
+
     public String getEventLocation() {  return placeOfEvent.getLocationOfPlace(); }
 
     public String getstatusOfEvent() {
@@ -102,16 +89,7 @@ public class Event {
         this.statusOfEvent= statusOfEvent;
     }
 
-    public User getBookedUser() {
-        return bookedUser;
-    }
 
-    public void setBookedUser(User bookedUser) {
-        this.bookedUser = bookedUser;
-    }
-    public void setEventStatus(String status) {
-        this.statusOfEvent = status;
-    }
 
     public float getEventConstructionCost()
     {

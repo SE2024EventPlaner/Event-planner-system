@@ -4,7 +4,7 @@ import repositories.EventRepository;
 import java.util.logging.Logger;
 public class BookingSystem {
     private static final Logger logger3 = Logger.getLogger(BookingSystem.class.getName());
-        private BookingSystem() {
+    private BookingSystem() {
     }
     public static boolean bookEvent(String eventId, String location, LocalDateTime bookingDate, float userBalance,User loggedInUser) {
         Event event = findEventByIdAndLocation(eventId,location);

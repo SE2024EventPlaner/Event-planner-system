@@ -13,7 +13,7 @@ public class Notification {
     boolean approved;
     String state = "reject";
     Date sentDateTime;
-    final static String s="The USER ";
+    static final String THE_USER = "The USER ";
     public enum NotificationType {
         ADMINANNOUNCEMENT,
         REPLYANNOUNCEMENT,
@@ -27,13 +27,7 @@ public class Notification {
     public Notification() {
 
     }
-    public Notification(User  sender, String message, NotificationType type, boolean approved) {
-        this.sender = sender;
-        this.message = message;
-        this.type = type;
-        this.approved = approved;
-        this.sentDateTime = new Date();
-    }
+
 
     public  void createAnnouncement(User sender, String announcementMessage) {
         this.sender = sender;
@@ -59,7 +53,7 @@ public class Notification {
 
     public void createReservationRequest(User sender, Event event) {
         this.sender = sender;
-        this.message = s+" " + sender.getFirstName() +
+        this.message = THE_USER+" " + sender.getFirstName() +
                 " submitted a reservation request";
         this.event = event;
         this.approved = false;
@@ -80,37 +74,23 @@ public class Notification {
 
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 
     public Event getEvent() {
         return event;
     }
 
-    public User getSender() {
-        return sender;
-    }
 
-    public void setSenderId(User sender) {
-        this.sender = sender;
-    }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+
 
     public NotificationType getType() {
         return type;
     }
 
-    public void setType(NotificationType type) {
-        this.type = type;
-    }
 
     public boolean isApproved() {
         return approved;
@@ -123,16 +103,7 @@ public class Notification {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return sdf.format(sentDateTime);
     }
-    public void setSentDateTime(Date sentDateTime) {
-        this.sentDateTime = sentDateTime;
-    }
-    public void setSeviceMessage(String seviceMessage){
 
-        this.seviceMessage = seviceMessage;
-    }
-    public String getSeviceMessage(){
-        return seviceMessage;
-    }
     public void sendAdminAnnouncement(){
         if(type.equals(NotificationType.ADMINANNOUNCEMENT)){
             User reciever;
@@ -189,7 +160,7 @@ public class Notification {
 
         }else if(type.equals(NotificationType.RESERVATIONREQUEST)){
 
-            details= s+" " + sender.getFirstName() +" "+sender.getLastName()+" with this email: "+sender.getEmail() +"\nsubmitted a reservation request with this description: \n"
+            details= THE_USER+" " + sender.getFirstName() +" "+sender.getLastName()+" with this email: "+sender.getEmail() +"\nsubmitted a reservation request with this description: \n"
                     +"\nEvent ID: " + event.getIdOfEvent()
                     +"\nEvent Name: " + event.getNameOfEvent()
                     +"\nLocation: " + event.getPlaceOfEvent().getLocationOfPlace()
@@ -204,7 +175,7 @@ public class Notification {
             details="No details";
 
         }else{
-            details= s+" " + sender.getFirstName() +" "+sender.getLastName()+
+            details= THE_USER+" " + sender.getFirstName() +" "+sender.getLastName()+
                     " submitted a service porovider account creation request with this description: \n"
                     +this.seviceMessage
                     +"\n------------------------"
