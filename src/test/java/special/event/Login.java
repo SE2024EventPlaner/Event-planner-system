@@ -54,7 +54,7 @@ public class Login {
         }
         else if(string.equals(password))
         {
-            assertFalse(userComponent.existPassword(y,string2));
+            assertNull(userComponent.validateLogin(y,string2));
         }
 
 
