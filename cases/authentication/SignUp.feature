@@ -24,7 +24,8 @@ Feature: Sign Up
     When The user enter firstName with 'aseel' and finalName with 'zaid' and email with 'barhamshifaa@gmail.com' and password with 'Secret@567' and Confirm password with 'Secret@567' and type with 'SERVICE_PROVIDER'
     Then the user's application for service provider is stored for review
     And the admin approves the application
-    Then the user data is added to the arraylist
+    Then a message is sent to the user via email to inform them that their booking was successful
+    And the user data is added to the arraylist
 
 
 
