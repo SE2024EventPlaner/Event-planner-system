@@ -89,7 +89,7 @@ public class ImageUploader extends JFrame {
         cardLayout.show(cardPanel, "upload");
     }
 
-    private void saveImage(Path sourcePath) throws IOException {
+    public void saveImage(Path sourcePath) throws IOException {
         String destinationPath = "C:\\Users\\DELL\\software_project\\EventPlaner991\\src\\main\\resources\\images";
         Path destination = Path.of(destinationPath);
         if (!Files.exists(destination)) {

@@ -25,6 +25,7 @@ public class SendMail {
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
+                // Use an app password generated from your Google Account settings
                 return new PasswordAuthentication("aaadmain78@gmail.com", "vxsckjrirjzqnrvx");
             }
         });
@@ -32,7 +33,7 @@ public class SendMail {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); // Using email directly
             message.setSubject("Your Account Status!!");
             message.setText("Your request to create a business account on the Event Planner System : \n " + toUserMessage);
 

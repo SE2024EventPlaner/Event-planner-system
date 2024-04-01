@@ -28,7 +28,7 @@ public class UserComponent {
     public boolean existPassword(String username,String password){
         for (User user: UserRepository.users){
             if(user.getEmail().equals(username) ){
-                 return user.getPassword().equals(password);
+                return user.getPassword().equals(password);
             }
         }
         return false;
