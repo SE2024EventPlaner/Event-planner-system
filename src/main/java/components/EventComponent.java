@@ -45,15 +45,11 @@ public class EventComponent {
     }
 
     public static  LocalDateTime dateConverter(String date){
-        try {
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
             return  LocalDateTime.parse(date, formatter);
 
-        } catch (Exception e) {
-            logger.info("Error: Invalid input string or format");
-        }
-        return null;
 
     }
 
