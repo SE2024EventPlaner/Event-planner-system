@@ -491,7 +491,7 @@ public class Main {
 
                                                 System.out.println("Enter the capacity of the place:");
                                                 capacity = scanner.next();
-                                                if (!Place.checkCapacityOfPlace(Integer.parseInt(capacity))) {
+                                                if ((Integer.parseInt(capacity)<=0)) {
                                                     System.out.println("Please enter a valid capacity.");
                                                 } else {
                                                     break;
@@ -583,7 +583,7 @@ public class Main {
 
                                                 System.out.println("Enter the new capacity of the place:");
                                                 capacity = scanner.next();
-                                                if (!Place.checkCapacityOfPlace(Integer.parseInt(capacity))) {
+                                                if ((Integer.parseInt(capacity)<=0)) {
                                                     System.out.println("Please enter a valid capacity.");
                                                 } else {
                                                     break;

@@ -25,11 +25,6 @@ public class User {
         this.lastName=lastName;
     }
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }

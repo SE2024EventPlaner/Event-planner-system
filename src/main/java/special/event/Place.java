@@ -24,14 +24,6 @@ public class Place {
 
     public String getLocationOfPlace(){return locationOfPlace;}
 
-    public static boolean checkCapacityOfPlace( int capacity) {
-        if (capacity <= 0) {
-            logger3.info( "capacity of place must not be  zeros or negative value" );
-            return false;
-        }
-
-            return true;
-    }
 
 
 
