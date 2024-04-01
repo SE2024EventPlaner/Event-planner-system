@@ -9,9 +9,7 @@ import java.util.logging.Logger;
 public class SendMail {
     private static final Logger logger = Logger.getLogger(SendMail.class.getName());
 
-    private SendMail() {
-        throw new IllegalStateException("Utility class");
-    }
+
 
     public static void sendEmail(String toUserMessage, String email) {
         String from = "aaadmain78@gmail.com";
@@ -41,7 +39,6 @@ public class SendMail {
             Transport.send(message);
             logger.info("Sent message successfully.");
         } catch (MessagingException mex) {
-            mex.printStackTrace();
         }
     }
 }
