@@ -17,11 +17,11 @@ public class ImageUploader extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private transient Path copiedFilePath;
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static final Logger logger = Logger.getLogger(ImageUploader.class.getName());
 
     private JLabel imageLabel;
     private File selectedFile;
-    public transient Event event = null;
+    private transient Event event = null;
     public ImageUploader() {
         setTitle("Image Uploader");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
