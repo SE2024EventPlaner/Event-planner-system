@@ -26,7 +26,7 @@ public class BookingSystem {
                 logger3.info("Invalid booking date. Please choose a future date.");
             }
         } else {
-            logger3.info("Event with ID " + eventId + " in " + location + " not available for booking.");
+            logger3.info("Event with ID {} in {} not available for booking.".format(eventId, location));
         }
         return false;
     }
@@ -39,8 +39,8 @@ public class BookingSystem {
         }
         return null;
     }
-    public static boolean processPayment(String CardNumber,Event event,User loggedInUser) {
-        if (!isValidCardNumberFormat(CardNumber)) {
+    public static boolean processPayment(String cardNumber, Event event, User loggedInUser) {
+        if (!isValidCardNumberFormat(cardNumber)) {
             logger3.info("Invalid card number format.");
             return false;
         } else {
