@@ -482,7 +482,7 @@ public class Main {
                                             while (true) {
                                                 System.out.println("Enter the cost of the event:");
                                                 cost = scanner.nextFloat();
-                                                if (!eventComponent.checkCostOfEvent(cost))
+                                                if (cost<=0)
                                                     System.out.println(" please try again....!");
                                                 else
                                                     break;
@@ -574,7 +574,7 @@ public class Main {
                                             while (true) {
                                                 System.out.println("Enter the new cost of the event:");
                                                 cost = scanner.nextFloat();
-                                                if (!eventComponent.checkCostOfEvent(cost))
+                                                if (cost<=0)
                                                     System.out.println(" please try again....!");
                                                 else
                                                     break;
